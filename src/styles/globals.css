@@ -1,0 +1,305 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    color: #1f2937;
+    background-color: #ffffff;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-max {
+    @apply max-w-7xl mx-auto;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent;
+  }
+  
+  .bg-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-secondary-600;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-sm bg-white/80 border border-white/20;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+}
+
+/* Dark mode styles */
+.dark {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .input-field {
+  @apply bg-gray-800 border-gray-600 text-gray-100;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Loading spinner */
+.spinner {
+  border: 2px solid #f3f4f6;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 500;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.toast.success {
+  background-color: #10b981;
+}
+
+.toast.error {
+  background-color: #ef4444;
+}
+
+.toast.warning {
+  background-color: #f59e0b;
+}
+
+.toast.info {
+  background-color: #3b82f6;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Markdown styles */
+.markdown {
+  @apply max-w-none;
+}
+
+.markdown h1 {
+  @apply text-3xl font-bold mb-4 text-gray-900 dark:text-white;
+}
+
+.markdown h2 {
+  @apply text-2xl font-bold mb-3 text-gray-900 dark:text-white;
+}
+
+.markdown h3 {
+  @apply text-xl font-semibold mb-2 text-gray-900 dark:text-white;
+}
+
+.markdown p {
+  @apply mb-4 text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.markdown ul {
+  @apply mb-4 list-disc list-inside text-gray-700 dark:text-gray-300;
+}
+
+.markdown ol {
+  @apply mb-4 list-decimal list-inside text-gray-700 dark:text-gray-300;
+}
+
+.markdown li {
+  @apply mb-1;
+}
+
+.markdown a {
+  @apply text-primary-600 dark:text-primary-400 hover:underline;
+}
+
+.markdown blockquote {
+  @apply border-l-4 border-primary-500 pl-4 italic text-gray-600 dark:text-gray-400 mb-4;
+}
+
+.markdown code {
+  @apply bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm font-mono;
+}
+
+.markdown pre {
+  @apply bg-gray-100 dark:bg-gray-700 p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.markdown pre code {
+  @apply bg-transparent p-0;
+}
+
+.markdown h1 {
+  @apply text-3xl font-bold text-gray-900 mb-6;
+}
+
+.markdown h2 {
+  @apply text-2xl font-semibold text-gray-800 mb-4 mt-8;
+}
+
+.markdown h3 {
+  @apply text-xl font-medium text-gray-800 mb-3 mt-6;
+}
+
+.markdown p {
+  @apply text-gray-700 mb-4 leading-relaxed;
+}
+
+.markdown ul {
+  @apply list-disc list-inside mb-4 space-y-2;
+}
+
+.markdown ol {
+  @apply list-decimal list-inside mb-4 space-y-2;
+}
+
+.markdown li {
+  @apply text-gray-700;
+}
+
+.markdown code {
+  @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
+}
+
+.markdown pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+}
+
+.markdown pre code {
+  @apply bg-transparent text-gray-100 p-0;
+}
+
+.markdown blockquote {
+  @apply border-l-4 border-primary-500 pl-4 italic text-gray-600 mb-4;
+}
+
+.markdown a {
+  @apply text-primary-600 hover:text-primary-700 underline;
+}
+
+/* Dark mode markdown */
+.dark .markdown h1 {
+  @apply text-gray-100;
+}
+
+.dark .markdown h2 {
+  @apply text-gray-200;
+}
+
+.dark .markdown h3 {
+  @apply text-gray-200;
+}
+
+.dark .markdown p {
+  @apply text-gray-300;
+}
+
+.dark .markdown li {
+  @apply text-gray-300;
+}
+
+.dark .markdown code {
+  @apply bg-gray-800 text-gray-200;
+}
+
+.dark .markdown blockquote {
+  @apply text-gray-400;
+}
+
+.dark .markdown a {
+  @apply text-primary-400 hover:text-primary-300;
+} 
