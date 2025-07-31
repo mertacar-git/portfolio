@@ -142,7 +142,13 @@ const Footer = () => {
               <span className="flex items-center space-x-1">
                 <span>Made with</span>
                 <Heart className="w-4 h-4 text-red-500" />
-                <span>by Mert</span>
+                <span>by</span>
+                <Link
+                  to="/admin/login"
+                  className="text-primary-400 hover:text-primary-300 transition-colors duration-200 font-medium"
+                >
+                  Mert
+                </Link>
               </span>
             </div>
           </div>
