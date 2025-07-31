@@ -1,6 +1,84 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
+// Admin Authentication
+export const adminAuth = {
+  // Giriş kontrolü
+  login: (username, password) => {
+    // Demo kullanıcı bilgileri
+    const validCredentials = {
+      'mert': 'Mert123!',
+      'admin': 'Admin123!'
+    };
+
+    if (validCredentials[username] && validCredentials[username] === password) {
+      // Session bilgilerini localStorage'a kaydet
+      const session = {
+        username,
+        loginTime: Date.now(),
+        isAdmin: true
+      };
+      
+      localStorage.setItem('adminSession', JSON.stringify(session));
+      return true;
+    }
+    
+    return false;
+  },
+
+  // Çıkış
+  logout: () => {
+    localStorage.removeItem('adminSession');
+  },
+
+  // Giriş durumu kontrolü
+  isLoggedIn: () => {
+    const session = localStorage.getItem('adminSession');
+    if (!session) return false;
+    
+    try {
+      const sessionData = JSON.parse(session);
+      // Session'ın 24 saat geçerli olup olmadığını kontrol et
+      const now = Date.now();
+      const sessionAge = now - sessionData.loginTime;
+      const maxAge = 24 * 60 * 60 * 1000; // 24 saat
+      
+      if (sessionAge > maxAge) {
+        localStorage.removeItem('adminSession');
+        return false;
+      }
+      
+      return true;
+    } catch (error) {
+      localStorage.removeItem('adminSession');
+      return false;
+    }
+  },
+
+  // Kullanıcı bilgilerini al
+  getUser: () => {
+    const session = localStorage.getItem('adminSession');
+    if (!session) return null;
+    
+    try {
+      return JSON.parse(session);
+    } catch (error) {
+      return null;
+    }
+  }
+};
+
+// Protected Route bileşeni
+export const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = adminAuth.isLoggedIn();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  return children;
+};
+
 // Güvenlik ayarları
 const SECURITY_CONFIG = {
   maxLoginAttempts: 5,
@@ -261,134 +339,6 @@ export const securityUtils = {
   }
 };
 
-// Protected Route bileşeni
-export const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = securityUtils.checkSession();
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />;
-  }
-  
-  return children;
-};
-
-// Admin giriş sayfası bileşeni
-export const AdminLogin = () => {
-  const [credentials, setCredentials] = React.useState({ username: '', password: '' });
-  const [message, setMessage] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setMessage('');
-
-    // Rate limiting kontrolü
-    const rateLimitCheck = securityUtils.checkRateLimit();
-    if (rateLimitCheck.isLocked) {
-      setMessage(rateLimitCheck.message);
-      setIsLoading(false);
-      return;
-    }
-
-    // Input sanitization
-    const sanitizedUsername = securityUtils.sanitizeInput(credentials.username);
-    const sanitizedPassword = securityUtils.sanitizeInput(credentials.password);
-
-    const result = securityUtils.login(sanitizedUsername, sanitizedPassword);
-    
-    if (result.success) {
-      setMessage(result.message);
-      setTimeout(() => {
-        window.location.href = '/admin';
-      }, 1000);
-    } else {
-      setMessage(result.message);
-    }
-    
-    setIsLoading(false);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials(prev => ({
-      ...prev,
-      [name]: securityUtils.sanitizeInput(value)
-    }));
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Admin Girişi
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Güvenli erişim için giriş yapın
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="username" className="sr-only">Kullanıcı Adı</label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-700"
-                placeholder="Kullanıcı Adı"
-                value={credentials.username}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Şifre</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-700"
-                placeholder="Şifre"
-                value={credentials.password}
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-
-          {message && (
-            <div className={`text-sm text-center p-3 rounded-md ${
-              message.includes('başarılı') 
-                ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300' 
-                : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300'
-            }`}>
-              {message}
-            </div>
-          )}
-
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
-            </button>
-          </div>
-
-          <div className="text-xs text-center text-gray-500 dark:text-gray-400">
-            <p>Demo Giriş Bilgileri:</p>
-            <p>Kullanıcı: admin | Şifre: Admin123!</p>
-            <p>Kullanıcı: mert | Şifre: Mert123!</p>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-const authUtils = { ProtectedRoute, AdminLogin, securityUtils };
+const authUtils = { ProtectedRoute, adminAuth, securityUtils };
 
 export default authUtils; 

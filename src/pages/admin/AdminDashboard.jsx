@@ -21,7 +21,7 @@ import {
   Shield,
   CheckCircle
 } from 'lucide-react';
-import { ProtectedRoute, securityUtils } from '../../utils/auth';
+import { ProtectedRoute, adminAuth } from '../../utils/auth';
 import { useToast } from '../../contexts/ToastContext';
 import { analytics } from '../../utils/dataManager';
 import { storageService } from '../../services/storageService';
@@ -95,7 +95,7 @@ const AdminDashboard = () => {
   }, [loadDashboardData]);
 
   const handleLogout = () => {
-    securityUtils.logout();
+    adminAuth.logout();
     showToast('Başarıyla çıkış yapıldı', 'success');
     setTimeout(() => {
       window.location.href = '/admin/login';

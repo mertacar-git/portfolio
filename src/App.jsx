@@ -17,13 +17,14 @@ import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 
 // Admin Pages
-import { AdminLogin } from './utils/auth';
+import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminBlog from './pages/admin/AdminBlog';
 import AdminSettings from './pages/admin/AdminSettings';
 
 // Utils
+import { ProtectedRoute } from './utils/auth';
 import { userPreferences } from './utils/dataManager';
 import { analytics } from './utils/dataManager';
 
@@ -87,11 +88,31 @@ function App() {
                   
                   {/* Admin Routes */}
                   <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                  <Route path="/admin/projects" element={<AdminProjects />} />
-                  <Route path="/admin/blog" element={<AdminBlog />} />
-                  <Route path="/admin/settings" element={<AdminSettings />} />
+                  <Route path="/admin" element={
+                    <ProtectedRoute>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/projects" element={
+                    <ProtectedRoute>
+                      <AdminProjects />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/blog" element={
+                    <ProtectedRoute>
+                      <AdminBlog />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/settings" element={
+                    <ProtectedRoute>
+                      <AdminSettings />
+                    </ProtectedRoute>
+                  } />
                   
                   {/* 404 Route */}
                   <Route path="*" element={<NotFound />} />

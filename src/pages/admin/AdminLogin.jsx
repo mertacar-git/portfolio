@@ -228,8 +228,8 @@ const AdminLogin = () => {
               Demo Bilgileri:
             </h3>
             <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-              <p><strong>Kullanıcı Adı:</strong> admin</p>
-              <p><strong>Şifre:</strong> admin123</p>
+              <p><strong>Kullanıcı Adı:</strong> mert</p>
+              <p><strong>Şifre:</strong> Mert123!</p>
             </div>
           </div>
 
