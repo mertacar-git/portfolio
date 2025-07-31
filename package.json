@@ -2,7 +2,7 @@
   "name": "mert-kisisel-website",
   "version": "1.0.0",
   "description": "Mert'in kişisel web sitesi",
-  "homepage": "https://mertacar.github.io",
+  "homepage": "https://mertacar-git.github.io/portfolio",
   "private": true,
   "dependencies": {
     "framer-motion": "^10.0.0",
