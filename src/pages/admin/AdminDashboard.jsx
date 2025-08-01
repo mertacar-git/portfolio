@@ -14,7 +14,10 @@ import {
   LogOut,
   RefreshCw,
   Shield,
-  CheckCircle
+  CheckCircle,
+  Home,
+  Code,
+  Award
 } from 'lucide-react';
 import { ProtectedRoute, adminAuth } from '../../utils/auth';
 import { useToast } from '../../contexts/ToastContext';
@@ -235,7 +238,7 @@ const AdminDashboard = () => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Hızlı İşlemler
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               <Link
                 to="/admin/projects"
                 className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200 group"
@@ -321,20 +324,54 @@ const AdminDashboard = () => {
                  </div>
                </Link>
               
+              <Link
+                to="/admin/homepage"
+                className="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors duration-200 group"
+              >
+                <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <Home className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                </div>
+                <div>
+                  <span className="text-orange-700 dark:text-orange-300 font-medium block">
+                    Ana Sayfa
+                  </span>
+                  <span className="text-orange-600 dark:text-orange-400 text-xs">
+                    Ana sayfa içeriklerini düzenle
+                  </span>
+                </div>
+              </Link>
+              
+              <Link
+                to="/admin/analytics"
+                className="flex items-center p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900/30 transition-colors duration-200 group"
+              >
+                <div className="p-2 bg-teal-100 dark:bg-teal-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <BarChart3 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                </div>
+                <div>
+                  <span className="text-teal-700 dark:text-teal-300 font-medium block">
+                    Analytics
+                  </span>
+                  <span className="text-teal-600 dark:text-teal-400 text-xs">
+                    Site istatistiklerini görüntüle
+                  </span>
+                </div>
+              </Link>
+              
               <a
                 href="/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors duration-200 group"
+                className="flex items-center p-4 bg-gray-50 dark:bg-gray-900/20 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900/30 transition-colors duration-200 group"
               >
-                <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Eye className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+                <div className="p-2 bg-gray-100 dark:bg-gray-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                  <Eye className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </div>
                 <div>
-                  <span className="text-orange-700 dark:text-orange-300 font-medium block">
+                  <span className="text-gray-700 dark:text-gray-300 font-medium block">
                     Siteyi Görüntüle
                   </span>
-                  <span className="text-orange-600 dark:text-orange-400 text-xs">
+                  <span className="text-gray-600 dark:text-gray-400 text-xs">
                     Yeni sekmede aç
                   </span>
                 </div>

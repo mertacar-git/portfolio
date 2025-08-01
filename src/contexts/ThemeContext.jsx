@@ -12,13 +12,13 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     // Load saved theme from localStorage
     const savedTheme = userPreferences.getTheme();
-    setTheme(savedTheme);
+    setTheme(savedTheme || 'dark');
     setIsLoaded(true);
   }, []);
 

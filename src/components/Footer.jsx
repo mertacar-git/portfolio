@@ -143,12 +143,12 @@ const Footer = () => {
                 <span>Made with</span>
                 <Heart className="w-4 h-4 text-red-500" />
                 <span>by</span>
-                <Link
-                  to="/admin/login"
-                  className="text-primary-400 hover:text-primary-300 transition-colors duration-200 font-medium"
+                <button
+                  onClick={() => window.location.href = '/admin/login'}
+                  className="text-primary-400 hover:text-primary-300 transition-colors duration-200 font-medium cursor-pointer"
                 >
                   Mert
-                </Link>
+                </button>
               </span>
             </div>
           </div>

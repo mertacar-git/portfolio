@@ -55,7 +55,7 @@ export const storage = {
 export const userPreferences = {
   // Tema tercihi
   getTheme: () => {
-    return storage.get('theme', 'light');
+    return storage.get('theme', 'dark');
   },
 
   setTheme: (theme) => {

@@ -24,6 +24,8 @@ import AdminBlog from './pages/admin/AdminBlog';
 import AdminSettings from './pages/admin/AdminSettings';
 import AdminSkills from './pages/admin/AdminSkills';
 import AdminAchievements from './pages/admin/AdminAchievements';
+import AdminHomepage from './pages/admin/AdminHomepage';
+import AdminAnalytics from './pages/admin/AdminAnalytics';
 
 // Utils
 import { ProtectedRoute } from './utils/auth';
@@ -123,6 +125,16 @@ function App() {
                   <Route path="/admin/achievements" element={
                     <ProtectedRoute>
                       <AdminAchievements />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/homepage" element={
+                    <ProtectedRoute>
+                      <AdminHomepage />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/analytics" element={
+                    <ProtectedRoute>
+                      <AdminAnalytics />
                     </ProtectedRoute>
                   } />
                   

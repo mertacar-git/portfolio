@@ -60,16 +60,7 @@ export const personalInfo = {
   ],
 
   // Referanslar
-  references: [
-    {
-      name: "Referans 1",
-      title: "Pozisyon",
-      company: "Şirket",
-      phone: "+90 555 123 4567",
-      email: "referans@email.com",
-      description: "Referans açıklaması buraya gelecek."
-    }
-  ],
+  references: [],
 
   // İlgi Alanları
   interests: [
@@ -101,12 +92,5 @@ export const personalInfo = {
   },
 
   // Sertifikalar
-  certifications: [
-    {
-      name: "Web Development Certificate",
-      issuer: "Online Platform",
-      year: "2023",
-      description: "Web geliştirme konusunda temel sertifikasyon"
-    }
-  ]
+  certifications: []
 }; 

@@ -214,9 +214,13 @@ const Home = () => {
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
           >
             {personalInfo.skills && personalInfo.skills.slice(0, 10).map((skill, index) => (
-              <div
+              <motion.div
                 key={skill.name}
-                className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-shadow duration-300"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-all duration-300 hover:scale-105"
               >
                 <div className="text-2xl font-bold text-primary-600 mb-2">
                   {skill.level}%
@@ -224,7 +228,7 @@ const Home = () => {
                 <div className="text-sm text-gray-600 dark:text-gray-300">
                   {skill.name}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -258,9 +262,15 @@ const Home = () => {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                <motion.div 
+                  className="text-4xl md:text-5xl font-bold text-white mb-2"
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
+                  viewport={{ once: true }}
+                >
                   {value}+
-                </div>
+                </motion.div>
                 <div className="text-primary-100 text-sm md:text-base capitalize">
                   {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                 </div>
