@@ -287,7 +287,7 @@ const AdminProjects = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4" />
-                        <span>{project.year}</span>
+                        <span>{project.publishDate}</span>
                       </div>
                     </div>
 
@@ -348,10 +348,11 @@ const ProjectModal = ({ project, onSave, onClose, isLoading }) => {
     description: project?.description || '',
     image: project?.image || '',
     technologies: project?.technologies || [],
-    category: project?.category || 'Oyun Geliştirme',
+    category: project?.category || 'Web Uygulaması',
     liveUrl: project?.liveUrl || '',
     githubUrl: project?.githubUrl || '',
-    featured: project?.featured || false
+    featured: project?.featured || false,
+    publishDate: project?.publishDate || ''
   });
 
   const [newTech, setNewTech] = useState('');
@@ -385,6 +386,11 @@ const ProjectModal = ({ project, onSave, onClose, isLoading }) => {
       githubUrl: {
         required: false,
         pattern: /^https?:\/\/github\.com\/.+/
+      },
+      publishDate: {
+        required: true,
+        minLength: 5,
+        maxLength: 20
       }
     };
 
@@ -664,6 +670,25 @@ const ProjectModal = ({ project, onSave, onClose, isLoading }) => {
               </select>
               {touched.category && errors.category && errors.category.length > 0 && (
                 <p className="text-red-500 text-xs mt-1">{errors.category[0]}</p>
+              )}
+            </div>
+
+            {/* Publish Date */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Yayın Tarihi
+              </label>
+              <input
+                type="text"
+                name="publishDate"
+                value={formData.publishDate}
+                onChange={handleInputChange}
+                onBlur={() => handleBlur('publishDate')}
+                className="input-field"
+                placeholder="15 Ocak 2024"
+              />
+              {touched.publishDate && errors.publishDate && errors.publishDate.length > 0 && (
+                <p className="text-red-500 text-xs mt-1">{errors.publishDate[0]}</p>
               )}
             </div>
 

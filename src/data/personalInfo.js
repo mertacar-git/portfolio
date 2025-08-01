@@ -1,12 +1,12 @@
 // Kişisel Bilgiler
 export const personalInfo = {
   name: "Mert Açar",
-  title: "Software Developer",
-  subtitle: "Modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.",
+  title: "Full Stack Developer",
+  subtitle: "Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer",
   email: "mertacar011@gmail.com",
   phone: "+90 553 751 8433",
   location: "İstanbul, Türkiye",
-  about: "Merhaba! Ben Mert Açar, tutkulu bir yazılım geliştiricisiyim. Web teknolojileri alanında deneyim kazanmaya odaklanıyorum. React, Node.js gibi modern teknolojileri öğrenmeye ve kullanmaya devam ediyorum. Sürekli öğrenmeye ve yeni teknolojileri keşfetmeye odaklanıyorum. Takım çalışmasına değer veriyor ve her projede en iyi sonucu elde etmek için çaba gösteriyorum.",
+  about: "Merhaba! Ben Mert Açar, tutkulu bir Full Stack Developer'ım. Web teknolojileri alanında sürekli kendimi geliştirmeye odaklanıyorum. React, Node.js, ve modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum. Her projede en iyi kullanıcı deneyimini sunmak için çaba gösteriyorum ve yeni teknolojileri öğrenmeye her zaman açığım.",
   
   // Hakkımda yazısı format ayarları
   aboutFormat: {
@@ -22,7 +22,7 @@ export const personalInfo = {
   },
   
   socialLinks: {
-    github: "https://github.com/mertacar",
+    github: "https://github.com/mertacar-git",
     linkedin: "https://linkedin.com/in/mertacar",
     twitter: "https://twitter.com/mertacar",
     instagram: "https://instagram.com/mertacar"

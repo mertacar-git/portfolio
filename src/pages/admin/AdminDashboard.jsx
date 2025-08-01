@@ -13,11 +13,6 @@ import {
   Clock,
   LogOut,
   RefreshCw,
-  TestTube,
-  Database,
-  Gamepad2,
-  Globe,
-  Award,
   Shield,
   CheckCircle
 } from 'lucide-react';
@@ -25,18 +20,14 @@ import { ProtectedRoute, adminAuth } from '../../utils/auth';
 import { useToast } from '../../contexts/ToastContext';
 import { analytics } from '../../utils/dataManager';
 import { storageService } from '../../services/storageService';
-import { testLocalStorage } from '../../utils/testLocalStorage';
+
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalProjects: 0,
     totalBlogPosts: 0,
     totalViews: 0,
-    recentActivity: [],
-    gameProjects: 3,
-    webProjects: 4,
-    certifications: 3,
-    references: 2
+    recentActivity: []
   });
   const [isLoading, setIsLoading] = useState(true);
   const { showToast } = useToast();
@@ -60,28 +51,24 @@ const AdminDashboard = () => {
             id: 1,
             type: 'project',
             title: 'Yeni proje eklendi',
-            description: 'E-Ticaret Platformu projesi eklendi',
-            time: '2 saat önce'
+            description: `${savedProjects.length > 0 ? savedProjects[savedProjects.length - 1].title : 'Proje'} eklendi`,
+            time: 'Az önce'
           },
           {
             id: 2,
             type: 'blog',
             title: 'Blog yazısı yayınlandı',
-            description: 'React 18 yazısı yayınlandı',
-            time: '1 gün önce'
+            description: `${savedBlogPosts.length > 0 ? savedBlogPosts[savedBlogPosts.length - 1].title : 'Blog yazısı'} yayınlandı`,
+            time: 'Az önce'
           },
           {
             id: 3,
             type: 'view',
-            title: 'Yüksek trafik',
-            description: 'Ana sayfa 150 görüntüleme aldı',
-            time: '2 gün önce'
+            title: 'Site ziyaret edildi',
+            description: 'Ana sayfa görüntülendi',
+            time: 'Az önce'
           }
-        ],
-        gameProjects: 3,
-        webProjects: 4,
-        certifications: 3,
-        references: 2
+        ]
       });
     } catch (error) {
       showToast('Dashboard verileri yüklenirken hata oluştu', 'error');
@@ -102,36 +89,7 @@ const AdminDashboard = () => {
     }, 1000);
   };
 
-  const handleRunTests = () => {
-    try {
-      testLocalStorage.runAllTests();
-      showToast('Testler başarıyla çalıştırıldı. Console\'u kontrol edin.', 'success');
-    } catch (error) {
-      showToast('Testler çalıştırılırken hata oluştu', 'error');
-    }
-  };
 
-  const handleCreateDemoData = () => {
-    try {
-      testLocalStorage.createDemoData();
-      showToast('Demo veriler başarıyla oluşturuldu', 'success');
-      loadDashboardData(); // Dashboard'u yenile
-    } catch (error) {
-      showToast('Demo veriler oluşturulurken hata oluştu', 'error');
-    }
-  };
-
-  const handleClearAllData = () => {
-    if (window.confirm('Tüm verileri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.')) {
-      try {
-        storageService.clearAll();
-        showToast('Tüm veriler başarıyla silindi', 'success');
-        loadDashboardData(); // Dashboard'u yenile
-      } catch (error) {
-        showToast('Veriler silinirken hata oluştu', 'error');
-      }
-    }
-  };
 
   if (isLoading) {
     return (
@@ -164,27 +122,7 @@ const AdminDashboard = () => {
                 >
                   <RefreshCw className="w-5 h-5" />
                 </button>
-                <button
-                  onClick={handleRunTests}
-                  className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors duration-200"
-                  title="Test Çalıştır"
-                >
-                  <TestTube className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={handleCreateDemoData}
-                  className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 transition-colors duration-200"
-                  title="Demo Veriler Oluştur"
-                >
-                  <Database className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={handleClearAllData}
-                  className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-200"
-                  title="Tüm Verileri Temizle"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
+
                 <button
                   onClick={handleLogout}
                   className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-200"
@@ -285,92 +223,7 @@ const AdminDashboard = () => {
             </motion.div>
           </div>
 
-          {/* Additional Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-red-100 dark:bg-red-900/20 rounded-lg">
-                  <Gamepad2 className="w-6 h-6 text-red-600 dark:text-red-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Oyun Projeleri
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.gameProjects || 3}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-indigo-100 dark:bg-indigo-900/20 rounded-lg">
-                  <Globe className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Web Projeleri
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.webProjects || 4}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
-                  <Award className="w-6 h-6 text-yellow-600 dark:text-yellow-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Sertifikalar
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.certifications || 3}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-teal-100 dark:bg-teal-900/20 rounded-lg">
-                  <Users className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Referanslar
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.references || 2}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
 
           {/* Quick Actions */}
           <motion.div
@@ -382,7 +235,7 @@ const AdminDashboard = () => {
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Hızlı İşlemler
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
               <Link
                 to="/admin/projects"
                 className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200 group"
@@ -417,22 +270,56 @@ const AdminDashboard = () => {
                 </div>
               </Link>
               
-              <Link
-                to="/admin/settings"
-                className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <span className="text-purple-700 dark:text-purple-300 font-medium block">
-                    Ayarlar
-                  </span>
-                  <span className="text-purple-600 dark:text-purple-400 text-xs">
-                    Site konfigürasyonu
-                  </span>
-                </div>
-              </Link>
+                             <Link
+                 to="/admin/settings"
+                 className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors duration-200 group"
+               >
+                 <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                   <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                 </div>
+                 <div>
+                   <span className="text-purple-700 dark:text-purple-300 font-medium block">
+                     Ayarlar
+                   </span>
+                   <span className="text-purple-600 dark:text-purple-400 text-xs">
+                     Site konfigürasyonu
+                   </span>
+                 </div>
+               </Link>
+               
+               <Link
+                 to="/admin/skills"
+                 className="flex items-center p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors duration-200 group"
+               >
+                 <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                   <BarChart3 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                 </div>
+                 <div>
+                   <span className="text-indigo-700 dark:text-indigo-300 font-medium block">
+                     Yetenekler
+                   </span>
+                   <span className="text-indigo-600 dark:text-indigo-400 text-xs">
+                     Yetenek seviyelerini düzenle
+                   </span>
+                 </div>
+               </Link>
+               
+               <Link
+                 to="/admin/achievements"
+                 className="flex items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors duration-200 group"
+               >
+                 <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
+                   <TrendingUp className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                 </div>
+                 <div>
+                   <span className="text-yellow-700 dark:text-yellow-300 font-medium block">
+                     Başarılar
+                   </span>
+                   <span className="text-yellow-600 dark:text-yellow-400 text-xs">
+                     Başarı istatistiklerini düzenle
+                   </span>
+                 </div>
+               </Link>
               
               <a
                 href="/"
@@ -455,69 +342,7 @@ const AdminDashboard = () => {
             </div>
           </motion.div>
 
-          {/* Advanced Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8"
-          >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Gelişmiş İşlemler
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <button
-                onClick={handleCreateDemoData}
-                className="flex items-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Database className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                </div>
-                <div>
-                  <span className="text-emerald-700 dark:text-emerald-300 font-medium block">
-                    Demo Veriler
-                  </span>
-                  <span className="text-emerald-600 dark:text-emerald-400 text-xs">
-                    Test verileri oluştur
-                  </span>
-                </div>
-              </button>
 
-              <button
-                onClick={handleRunTests}
-                className="flex items-center p-4 bg-cyan-50 dark:bg-cyan-900/20 rounded-lg hover:bg-cyan-100 dark:hover:bg-cyan-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <TestTube className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                </div>
-                <div>
-                  <span className="text-cyan-700 dark:text-cyan-300 font-medium block">
-                    Sistem Testi
-                  </span>
-                  <span className="text-cyan-600 dark:text-cyan-400 text-xs">
-                    Local storage test et
-                  </span>
-                </div>
-              </button>
-
-              <button
-                onClick={handleClearAllData}
-                className="flex items-center p-4 bg-red-50 dark:bg-red-900/20 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Trash2 className="w-5 h-5 text-red-600 dark:text-red-400" />
-                </div>
-                <div>
-                  <span className="text-red-700 dark:text-red-300 font-medium block">
-                    Verileri Temizle
-                  </span>
-                  <span className="text-red-600 dark:text-red-400 text-xs">
-                    Tüm verileri sil
-                  </span>
-                </div>
-              </button>
-            </div>
-          </motion.div>
 
           {/* Security Status */}
           <motion.div

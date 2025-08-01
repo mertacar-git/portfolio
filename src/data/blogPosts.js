@@ -71,7 +71,7 @@ Side effect'leri yönetmek başlangıçta karmaşıktı. API çağrıları ve DO
 React öğrenme sürecim hala devam ediyor. Her yeni proje ile daha fazla şey öğreniyorum. Sabırlı olmak ve pratik yapmak en önemlisi.
 
 Bu yolculukta bana yardımcı olan tüm kaynaklara teşekkürler!`,
-    publishDate: "2024-01-15",
+    publishDate: "15 Ocak 2024",
     readTime: "5 min",
     category: "Web Geliştirme",
     tags: ["React", "JavaScript", "Frontend", "Öğrenme"],
@@ -135,7 +135,7 @@ git merge yeni-ozellik
 ## Sonuç
 
 Git ve GitHub kullanımı başlangıçta karmaşık görünebilir, ancak pratik yaptıkça kolaylaşır. Bu araçlar yazılım geliştirme sürecinizi çok daha verimli hale getirir.`,
-    publishDate: "2024-01-10",
+    publishDate: "10 Ocak 2024",
     readTime: "4 min",
     category: "Araçlar",
     tags: ["Git", "GitHub", "Versiyon Kontrol", "Araçlar"],
@@ -214,7 +214,7 @@ async function veriGetir() {
 ## Sonuç
 
 JavaScript öğrenmek web geliştirme yolculuğunuzda çok önemlidir. Temelleri iyi öğrenmek, daha karmaşık konuları anlamanızı kolaylaştırır.`,
-    publishDate: "2024-01-05",
+    publishDate: "5 Ocak 2024",
     readTime: "6 min",
     category: "Programlama",
     tags: ["JavaScript", "ES6", "Programlama", "Temeller"],
@@ -281,7 +281,7 @@ Modern web geliştirme için React öğrenmeye karar verdim. Component tabanlı 
 Web geliştirme yolculuğum henüz başlangıç aşamasında. Her gün yeni şeyler öğreniyorum ve bu süreçten büyük keyif alıyorum.
 
 Bu yolculukta bana destek olan herkese teşekkürler!`,
-    publishDate: "2023-12-28",
+    publishDate: "28 Aralık 2023",
     readTime: "7 min",
     category: "Kişisel",
     tags: ["Web Geliştirme", "Öğrenme", "Deneyim", "Hedefler"],

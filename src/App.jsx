@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Components
@@ -22,6 +22,8 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProjects from './pages/admin/AdminProjects';
 import AdminBlog from './pages/admin/AdminBlog';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminSkills from './pages/admin/AdminSkills';
+import AdminAchievements from './pages/admin/AdminAchievements';
 
 // Utils
 import { ProtectedRoute } from './utils/auth';
@@ -111,6 +113,16 @@ function App() {
                   <Route path="/admin/settings" element={
                     <ProtectedRoute>
                       <AdminSettings />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/skills" element={
+                    <ProtectedRoute>
+                      <AdminSkills />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/achievements" element={
+                    <ProtectedRoute>
+                      <AdminAchievements />
                     </ProtectedRoute>
                   } />
                   

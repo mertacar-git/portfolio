@@ -5,60 +5,60 @@ export const projects = [
     title: "Kişisel Portfolio Web Sitesi",
     description: "React ve Tailwind CSS ile geliştirdiğim modern portfolio web sitesi. Responsive tasarım, dark mode ve admin paneli özellikleri içeriyor.",
     image: "/images/projects/portfolio.jpg",
-    technologies: ["React", "Tailwind CSS", "JavaScript", "GitHub"],
-    category: "Portfolio",
-    liveUrl: "https://mertacar.github.io",
-    githubUrl: "https://github.com/mertacar/portfolio",
+    technologies: ["React", "Tailwind CSS", "JavaScript", "GitHub Pages"],
+    category: "Web Uygulaması",
+    liveUrl: "https://mertacar-git.github.io/portfolio",
+    githubUrl: "https://github.com/mertacar-git/portfolio",
     featured: true,
-    year: "2024"
+    publishDate: "15 Ocak 2024"
   },
   {
     id: 2,
-    title: "Todo Uygulaması",
-    description: "React ile geliştirdiğim basit todo uygulaması. LocalStorage kullanarak veri saklama ve temel CRUD işlemleri.",
-    image: "/images/projects/todo.jpg",
-    technologies: ["React", "JavaScript", "LocalStorage", "CSS"],
+    title: "E-Ticaret Platformu",
+    description: "React ve Node.js ile geliştirdiğim tam özellikli e-ticaret platformu. Kullanıcı yönetimi, ürün kataloğu ve ödeme sistemi.",
+    image: "/images/projects/ecommerce.jpg",
+    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
     category: "Web Uygulaması",
-    liveUrl: "https://mertacar.github.io/todo-app",
-    githubUrl: "https://github.com/mertacar/todo-app",
+    liveUrl: "https://mertacar-git.github.io/ecommerce",
+    githubUrl: "https://github.com/mertacar-git/ecommerce",
     featured: true,
-    year: "2024"
+    publishDate: "10 Ocak 2024"
   },
   {
     id: 3,
-    title: "Hava Durumu Uygulaması",
-    description: "OpenWeatherMap API kullanarak geliştirdiğim hava durumu uygulaması. Gerçek zamanlı hava bilgileri ve responsive tasarım.",
-    image: "/images/projects/weather.jpg",
-    technologies: ["JavaScript", "HTML", "CSS", "API"],
+    title: "Task Management App",
+    description: "React ve Firebase ile geliştirdiğim görev yönetim uygulaması. Gerçek zamanlı veri senkronizasyonu ve kullanıcı yetkilendirmesi.",
+    image: "/images/projects/task-manager.jpg",
+    technologies: ["React", "Firebase", "Material-UI", "JavaScript"],
     category: "Web Uygulaması",
-    liveUrl: "https://mertacar.github.io/weather-app",
-    githubUrl: "https://github.com/mertacar/weather-app",
+    liveUrl: "https://mertacar-git.github.io/task-manager",
+    githubUrl: "https://github.com/mertacar-git/task-manager",
     featured: true,
-    year: "2023"
+    publishDate: "20 Aralık 2023"
   },
   {
     id: 4,
-    title: "Hesap Makinesi",
-    description: "JavaScript ile geliştirdiğim basit hesap makinesi uygulaması. Temel matematik işlemleri ve kullanıcı dostu arayüz.",
-    image: "/images/projects/calculator.jpg",
-    technologies: ["JavaScript", "HTML", "CSS"],
+    title: "Weather Dashboard",
+    description: "OpenWeatherMap API kullanarak geliştirdiğim hava durumu dashboard'u. 5 günlük tahmin ve detaylı hava bilgileri.",
+    image: "/images/projects/weather.jpg",
+    technologies: ["JavaScript", "HTML", "CSS", "API"],
     category: "Web Uygulaması",
-    liveUrl: "https://mertacar.github.io/calculator",
-    githubUrl: "https://github.com/mertacar/calculator",
+    liveUrl: "https://mertacar-git.github.io/weather-app",
+    githubUrl: "https://github.com/mertacar-git/weather-app",
     featured: false,
-    year: "2023"
+    publishDate: "5 Aralık 2023"
   },
   {
     id: 5,
-    title: "Renk Paleti Oluşturucu",
-    description: "CSS ve JavaScript ile geliştirdiğim renk paleti oluşturucu. Rastgele renkler üretme ve kopyalama özellikleri.",
-    image: "/images/projects/color-palette.jpg",
-    technologies: ["JavaScript", "HTML", "CSS"],
+    title: "Blog Platform",
+    description: "React ve Node.js ile geliştirdiğim blog platformu. Markdown desteği, yorum sistemi ve admin paneli.",
+    image: "/images/projects/blog.jpg",
+    technologies: ["React", "Node.js", "MongoDB", "Markdown"],
     category: "Web Uygulaması",
-    liveUrl: "https://mertacar.github.io/color-palette",
-    githubUrl: "https://github.com/mertacar/color-palette",
+    liveUrl: "https://mertacar-git.github.io/blog-platform",
+    githubUrl: "https://github.com/mertacar-git/blog-platform",
     featured: false,
-    year: "2023"
+    publishDate: "15 Kasım 2023"
   }
 ];
 
@@ -66,7 +66,8 @@ export const projects = [
 export const projectCategories = [
   "Tümü",
   "Web Uygulaması",
-  "Portfolio",
+  "Mobile App",
+  "API",
   "Diğer"
 ];
 

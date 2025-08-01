@@ -172,7 +172,7 @@ const Portfolio = () => {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4" />
-                        <span>{project.year}</span>
+                        <span>{project.publishDate}</span>
                       </div>
                     </div>
 
