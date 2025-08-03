@@ -1,41 +1,74 @@
-/* Force dark theme immediately - no flash allowed */
-html, body, #root, * {
+/* ===== ULTIMATE DARK THEME ENFORCEMENT ===== */
+/* This CSS forces dark theme on everything, no exceptions */
+
+/* Force dark theme on ALL elements immediately */
+* {
   background-color: #111827 !important;
   color: #f9fafb !important;
 }
 
-/* Override any light theme */
-html.light, html.light body, html.light #root,
-body.light, #root.light {
+/* Override any and all light backgrounds */
+html, body, #root, div, section, main, header, footer, nav, aside, article {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Override all Tailwind light classes */
+.bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400,
+.bg-blue-50, .bg-blue-100, .bg-green-50, .bg-green-100, .bg-yellow-50, .bg-yellow-100,
+.bg-red-50, .bg-red-100, .bg-purple-50, .bg-purple-100, .bg-pink-50, .bg-pink-100 {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Override any light text */
+.text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-black {
+  color: #f9fafb !important;
+}
+
+/* Force dark theme even for light theme classes */
+html.light, html.light *, body.light, body.light *, #root.light, #root.light * {
   background-color: #111827 !important;
   color: #f9fafb !important;
 }
 
 /* Ensure dark theme is always applied */
-html.dark, html.dark body, html.dark #root,
-body.dark, #root.dark {
+html.dark, html.dark *, body.dark, body.dark *, #root.dark, #root.dark * {
   background-color: #111827 !important;
   color: #f9fafb !important;
 }
 
+/* Override any React component backgrounds */
+[class*="bg-"] {
+  background-color: #111827 !important;
+}
+
+/* Override any inline styles */
+[style*="background-color: white"],
+[style*="background-color: #fff"],
+[style*="background-color: #ffffff"],
+[style*="background-color: rgb(255, 255, 255)"],
+[style*="background-color: rgb(255,255,255)"] {
+  background-color: #111827 !important;
+}
+
+/* Override any computed styles */
+* {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* ===== TAILWIND CSS ===== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS */
+/* ===== CUSTOM CSS ===== */
 @layer base {
   html {
     scroll-behavior: smooth;
     background-color: #111827 !important;
     color: #f9fafb !important;
-  }
-  
-  /* En agresif tema ayarları - flash'i tamamen önlemek için */
-  html, body, #root {
-    background-color: #111827 !important;
-    color: #f9fafb !important;
-    margin: 0 !important;
-    padding: 0 !important;
   }
   
   body {
@@ -47,40 +80,28 @@ body.dark, #root.dark {
     padding: 0;
   }
   
-  /* Dark tema için varsayılan ayarlar */
-  html.dark, html.dark body, html.dark #root {
-    background-color: #111827 !important;
-    color: #f9fafb !important;
-  }
-  
-  /* Light tema için (eğer gerekirse) */
-  html.light, html.light body, html.light #root {
-    background-color: #111827 !important; /* Force dark even for light */
-    color: #f9fafb !important;
-  }
-  
-  /* Tüm elementler için varsayılan dark tema */
   * {
     box-sizing: border-box;
+    background-color: #111827 !important;
+    color: #f9fafb !important;
   }
   
-  /* Div elementleri için özel ayar */
-  div {
-    background-color: transparent !important;
-  }
-  
-  /* Ana container için */
-  .min-h-screen {
+  /* Override all possible light backgrounds */
+  .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400,
+  .bg-blue-50, .bg-blue-100, .bg-green-50, .bg-green-100, .bg-yellow-50, .bg-yellow-100,
+  .bg-red-50, .bg-red-100, .bg-purple-50, .bg-purple-100, .bg-pink-50, .bg-pink-100 {
     background-color: #111827 !important;
   }
   
-  /* Override Tailwind's default background */
-  .bg-white {
-    background-color: #111827 !important;
+  /* Override all possible light text */
+  .text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-black {
+    color: #f9fafb !important;
   }
   
-  .bg-gray-50, .bg-gray-100, .bg-gray-200 {
+  /* Force dark theme on all containers */
+  .min-h-screen, .container, .wrapper, .main, .content {
     background-color: #111827 !important;
+    color: #f9fafb !important;
   }
 }
 
@@ -91,11 +112,11 @@ body.dark, #root.dark {
   }
   
   .btn-secondary {
-    @apply bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    @apply bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
   }
   
   .btn-outline {
-    @apply border border-primary-600 text-primary-600 hover:bg-primary-600 hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
+    @apply border border-primary-600 text-primary-400 hover:bg-primary-600 hover:text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none;
   }
 
   /* Button variants */
@@ -117,16 +138,16 @@ body.dark, #root.dark {
   }
 
   .btn-icon-primary {
-    @apply bg-primary-100 hover:bg-primary-200 dark:bg-primary-900/30 dark:hover:bg-primary-900/50 text-primary-600 dark:text-primary-400 focus:ring-primary-500;
+    @apply bg-primary-900/30 hover:bg-primary-900/50 text-primary-400 focus:ring-primary-500;
   }
 
   .btn-icon-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 focus:ring-gray-500;
+    @apply bg-gray-800 hover:bg-gray-700 text-gray-300 focus:ring-gray-500;
   }
 
   /* Card styles */
   .card {
-    @apply bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
+    @apply bg-gray-800 rounded-lg shadow-md border border-gray-700 transition-all duration-200 hover:shadow-lg hover:scale-[1.02];
   }
 
   .card-hover {
@@ -135,7 +156,7 @@ body.dark, #root.dark {
 
   /* Input styles */
   .input-field {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white dark:placeholder-gray-400;
+    @apply w-full px-3 py-2 border border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-gray-800 text-white placeholder-gray-400;
   }
 
   /* Layout utilities */
@@ -164,7 +185,7 @@ body.dark, #root.dark {
   }
 
   .glass-effect {
-    @apply backdrop-blur-sm bg-white/80 border border-white/20;
+    @apply backdrop-blur-sm bg-gray-800/80 border border-gray-700/20;
   }
 
   /* Animations */
@@ -185,7 +206,7 @@ body.dark, #root.dark {
   }
 
   .animate-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
     background-size: 200px 100%;
     animation: shimmer 1.5s infinite;
   }
@@ -201,15 +222,15 @@ body.dark, #root.dark {
 
   /* Shadows */
   .shadow-soft {
-    @apply shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)];
+    @apply shadow-[0_2px_15px_-3px_rgba(0,0,0,0.3),0_10px_20px_-2px_rgba(0,0,0,0.2)];
   }
 
   .shadow-medium {
-    @apply shadow-[0_4px_25px_-3px_rgba(0,0,0,0.1),0_10px_30px_-2px_rgba(0,0,0,0.05)];
+    @apply shadow-[0_4px_25px_-3px_rgba(0,0,0,0.4),0_10px_30px_-2px_rgba(0,0,0,0.3)];
   }
 
   .shadow-strong {
-    @apply shadow-[0_8px_35px_-3px_rgba(0,0,0,0.15),0_15px_40px_-2px_rgba(0,0,0,0.08)];
+    @apply shadow-[0_8px_35px_-3px_rgba(0,0,0,0.5),0_15px_40px_-2px_rgba(0,0,0,0.4)];
   }
 
   /* Line clamp */
@@ -236,7 +257,7 @@ body.dark, #root.dark {
 
   /* Focus styles */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900;
   }
 }
 
@@ -312,7 +333,7 @@ body.dark, #root.dark {
 
 /* Spinner */
 .spinner {
-  @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary-600;
+  @apply animate-spin rounded-full border-2 border-gray-600 border-t-primary-600;
   width: 20px;
   height: 20px;
 }
@@ -330,7 +351,7 @@ body.dark, #root.dark {
 /* Scrollbar */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #d1d5db #f3f4f6;
+  scrollbar-color: #4b5563 #1f2937;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -338,15 +359,15 @@ body.dark, #root.dark {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800;
+  @apply bg-gray-800;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  @apply bg-gray-600 rounded-full;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  @apply bg-gray-500;
 }
 
 /* Badge styles */
@@ -355,23 +376,23 @@ body.dark, #root.dark {
 }
 
 .badge-primary {
-  @apply bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-400;
+  @apply bg-primary-900/30 text-primary-400;
 }
 
 .badge-secondary {
-  @apply bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300;
+  @apply bg-gray-700 text-gray-300;
 }
 
 .badge-success {
-  @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400;
+  @apply bg-green-900/30 text-green-400;
 }
 
 .badge-warning {
-  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400;
+  @apply bg-yellow-900/30 text-yellow-400;
 }
 
 .badge-error {
-  @apply bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400;
+  @apply bg-red-900/30 text-red-400;
 }
 
 /* Loading dots */
