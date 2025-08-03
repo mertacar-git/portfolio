@@ -67,8 +67,14 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+        {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+        
+        {/* Floating Elements */}
+        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-200 dark:bg-primary-800 rounded-full blur-xl animate-pulse-slow"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary-200 dark:bg-secondary-800 rounded-full blur-xl animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-primary-300 dark:bg-primary-700 rounded-full blur-lg animate-bounce-slow"></div>
         
         <div className="container-max text-center relative z-10 px-4">
           <motion.div
@@ -143,6 +149,7 @@ const Home = () => {
                 <Mail className="w-5 h-5" />
                 <span>İletişime Geç</span>
               </Link>
+
             </motion.div>
 
             {/* Social Links */}

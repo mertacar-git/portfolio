@@ -1,134 +1,128 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
-import { adminAuth } from '../../utils/auth';
-import { useToast } from '../../contexts/ToastContext';
+import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
+import { adminAuth, securityUtils } from '../../utils/auth';
 
 const AdminLogin = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [securityStatus, setSecurityStatus] = useState(null);
   const navigate = useNavigate();
-  const { showToast } = useToast();
 
   useEffect(() => {
-    // Eğer zaten giriş yapmışsa dashboard'a yönlendir
+    // Güvenlik durumunu kontrol et
+    const status = securityUtils.getSecurityStatus();
+    setSecurityStatus(status);
+
+    // Eğer zaten giriş yapılmışsa dashboard'a yönlendir
     if (adminAuth.isLoggedIn()) {
       navigate('/admin/dashboard');
     }
   }, [navigate]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    
-    // Hata mesajını temizle
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.username.trim()) {
-      newErrors.username = 'Kullanıcı adı gereklidir';
-    }
-    
-    if (!formData.password.trim()) {
-      newErrors.password = 'Şifre gereklidir';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
     setIsLoading(true);
-    
+    setError('');
+    setSuccess('');
+
     try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = securityUtils.login(username, password);
       
-      const success = adminAuth.login(formData.username, formData.password);
-      
-      if (success) {
-        showToast('Başarıyla giriş yapıldı!', 'success');
-        navigate('/admin/dashboard');
+      if (result.success) {
+        setSuccess('Giriş başarılı! Yönlendiriliyorsunuz...');
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 1000);
       } else {
-        setErrors({
-          general: 'Kullanıcı adı veya şifre hatalı'
-        });
-        showToast('Giriş başarısız!', 'error');
+        setError(result.message);
       }
     } catch (error) {
-      setErrors({
-        general: 'Giriş sırasında bir hata oluştu'
-      });
-      showToast('Bir hata oluştu!', 'error');
+      setError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        {/* Login Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-full flex items-center justify-center">
-              <Lock className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Lock className="w-8 h-8 text-primary-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Admin Girişi
+              Yönetici Girişi
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Yönetim paneline erişmek için giriş yapın
+              Güvenli erişim için kimlik doğrulaması gerekli
             </p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* General Error */}
-            {errors.general && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center space-x-2 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
-              >
-                <AlertCircle className="w-5 h-5 text-red-500" />
-                <span className="text-red-700 dark:text-red-400 text-sm">
-                  {errors.general}
+          {/* Security Status */}
+          {securityStatus && (
+            <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600 dark:text-gray-400">
+                  Kalan deneme hakkı:
                 </span>
-              </motion.div>
-            )}
+                <span className={`font-semibold ${
+                  securityStatus.remainingAttempts <= 2 ? 'text-red-600' : 'text-green-600'
+                }`}>
+                  {securityStatus.remainingAttempts}
+                </span>
+              </div>
+              {securityStatus.isLocked && (
+                <div className="mt-2 text-xs text-red-600">
+                  Hesap geçici olarak kilitlendi. Lütfen bekleyin.
+                </div>
+              )}
+            </div>
+          )}
 
-            {/* Username Field */}
+          {/* Error/Success Messages */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center space-x-2"
+            >
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              <span className="text-red-700 dark:text-red-300 text-sm">{error}</span>
+            </motion.div>
+          )}
+
+          {success && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center space-x-2"
+            >
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              <span className="text-green-700 dark:text-green-300 text-sm">{success}</span>
+            </motion.div>
+          )}
+
+          {/* Login Form */}
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Kullanıcı Adı
@@ -136,29 +130,16 @@ const AdminLogin = () => {
               <input
                 type="text"
                 id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
-                  errors.username
-                    ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20'
-                    : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700'
-                } text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
                 placeholder="Kullanıcı adınızı girin"
-                disabled={isLoading}
+                required
+                disabled={isLoading || (securityStatus?.isLocked)}
               />
-              {errors.username && (
-                <motion.p
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-1 text-sm text-red-600 dark:text-red-400"
-                >
-                  {errors.username}
-                </motion.p>
-              )}
             </div>
 
-            {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Şifre
@@ -167,21 +148,18 @@ const AdminLogin = () => {
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 ${
-                    errors.password
-                      ? 'border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20'
-                      : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700'
-                  } text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
                   placeholder="Şifrenizi girin"
-                  disabled={isLoading}
+                  required
+                  disabled={isLoading || (securityStatus?.isLocked)}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
                   disabled={isLoading}
                 >
                   {showPassword ? (
@@ -191,27 +169,17 @@ const AdminLogin = () => {
                   )}
                 </button>
               </div>
-              {errors.password && (
-                <motion.p
-                  initial={{ opacity: 0, y: -5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-1 text-sm text-red-600 dark:text-red-400"
-                >
-                  {errors.password}
-                </motion.p>
-              )}
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              disabled={isLoading || (securityStatus?.isLocked) || !username || !password}
+              className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
             >
               {isLoading ? (
                 <>
-                  <div className="spinner"></div>
-                  <span>Giriş Yapılıyor...</span>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <span>Giriş yapılıyor...</span>
                 </>
               ) : (
                 <>
@@ -222,14 +190,15 @@ const AdminLogin = () => {
             </button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Demo Bilgileri:
-            </h3>
-            <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-              <p><strong>Kullanıcı Adı:</strong> mert</p>
-              <p><strong>Şifre:</strong> Mert123!</p>
+          {/* Login Info */}
+          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="flex items-start space-x-2">
+              <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-blue-700 dark:text-blue-300">
+                <p className="font-medium mb-1">Giriş Bilgileri</p>
+                <p>Kullanıcı adı: <strong>admin</strong></p>
+                <p>Şifre: <strong>admin123</strong></p>
+              </div>
             </div>
           </div>
 
@@ -237,18 +206,11 @@ const AdminLogin = () => {
           <div className="mt-6 text-center">
             <a
               href="/"
-              className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 text-sm font-medium transition-colors duration-200"
+              className="text-sm text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors duration-200"
             >
               ← Ana Sayfaya Dön
             </a>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div className="text-center mt-8">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            © 2024 Admin Panel. Güvenli giriş.
-          </p>
         </div>
       </motion.div>
     </div>

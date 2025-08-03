@@ -23,7 +23,7 @@
   "scripts": {
     "start": "set PORT=3003 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+
     "eject": "react-scripts eject",
     "dev": "set PORT=3003 && react-scripts start",
     "predeploy": "npm run build",
@@ -31,8 +31,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {

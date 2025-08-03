@@ -78,7 +78,7 @@ export const personalInfo = {
     programmingLanguages: ["JavaScript", "TypeScript", "Python", "Java"],
     databases: ["MongoDB", "PostgreSQL", "MySQL"],
     devOps: ["Git", "Docker"],
-    testing: ["Jest"],
+
     frameworks: ["React", "Node.js", "Express"],
     tools: ["VS Code", "GitHub"]
   },

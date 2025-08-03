@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollProgress from './components/ScrollProgress';
+import ErrorBoundary from './components/ErrorBoundary';
 import ThemeProvider from './contexts/ThemeContext';
 import ToastProvider from './contexts/ToastContext';
 
@@ -16,7 +18,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Contact from './pages/Contact';
 
-// Admin Pages
+// Admin Pages (Hidden from users)
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProjects from './pages/admin/AdminProjects';
@@ -73,16 +75,14 @@ function App() {
   }
 
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <Router>
-          <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-            <Header />
-            
-            <main className="pt-16">
-              <AnimatePresence mode="wait">
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <Router>
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+              <Header />
+              <main className="pt-16">
                 <Routes>
-                  {/* Public Routes */}
                   <Route path="/" element={<Home />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/portfolio" element={<Portfolio />} />
@@ -90,7 +90,7 @@ function App() {
                   <Route path="/blog/:id" element={<BlogPost />} />
                   <Route path="/contact" element={<Contact />} />
                   
-                  {/* Admin Routes */}
+                  {/* Hidden Admin Routes - Only accessible via direct URL */}
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={
                     <ProtectedRoute>
@@ -139,47 +139,28 @@ function App() {
                   } />
                   
                   {/* 404 Route */}
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={
+                    <div className="min-h-screen flex items-center justify-center">
+                      <div className="text-center">
+                        <h1 className="text-6xl font-bold text-gray-900 dark:text-white mb-4">404</h1>
+                        <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">Sayfa bulunamadı</p>
+                        <Link to="/" className="btn-primary">
+                          Ana Sayfaya Dön
+                        </Link>
+                      </div>
+                    </div>
+                  } />
                 </Routes>
-              </AnimatePresence>
-            </main>
-            
-            <Footer />
-          </div>
-        </Router>
-      </ToastProvider>
-    </ThemeProvider>
+              </main>
+              
+              <Footer />
+              <ScrollProgress />
+            </div>
+          </Router>
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
-
-// 404 Page Component
-const NotFound = () => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="section-padding"
-    >
-      <div className="container-max text-center">
-        <div className="max-w-md mx-auto">
-          <h1 className="text-6xl font-bold text-primary-600 mb-4">404</h1>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
-            Sayfa Bulunamadı
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
-            Aradığınız sayfa mevcut değil veya taşınmış olabilir.
-          </p>
-          <a
-            href="/"
-            className="btn-primary inline-flex items-center"
-          >
-            Ana Sayfaya Dön
-          </a>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 export default App; 

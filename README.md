@@ -1,105 +1,185 @@
-# Mert Açar - Kişisel Web Sitesi
+# Mert Kişisel Web Sitesi
 
-Modern ve responsive kişisel portfolio web sitesi. React, Tailwind CSS ve modern web teknolojileri kullanılarak geliştirilmiştir.
+Modern ve kullanıcı dostu kişisel web sitesi. React, Tailwind CSS ve Framer Motion kullanılarak geliştirilmiştir.
 
-## 🚀 Özellikler
+## ✨ Özellikler
 
-- **Responsive Tasarım**: Tüm cihazlarda mükemmel görünüm
-- **Dark Mode**: Karanlık ve aydınlık tema desteği
-- **Modern UI/UX**: Tailwind CSS ile modern tasarım
-- **Admin Paneli**: İçerik yönetimi için admin paneli
-- **Blog Sistemi**: Markdown desteği ile blog yazıları
-- **Portfolio**: Proje showcase sistemi
-- **İletişim Formu**: Kullanıcı geri bildirimi için form
-- **SEO Optimizasyonu**: Arama motoru dostu yapı
+### 🎨 Kullanıcı Deneyimi
+- **Dark/Light Tema**: Otomatik tema değiştirme ve tercih kaydetme
+- **Global Arama**: Ctrl+K kısayolu ile projeler, blog yazıları ve yeteneklerde arama
+- **Scroll Progress**: Sayfa okuma ilerlemesini gösteren çubuk
+- **Back to Top**: Sayfanın üstüne dönmek için animasyonlu buton
+- **Loading Skeletons**: Veri yüklenirken gösterilen iskelet ekranlar
+- **Error Boundary**: Hata durumlarında kullanıcı dostu mesajlar
+- **Keyboard Navigation**: Klavye ile navigasyon desteği
 
-## 🛠️ Teknolojiler
+### 📱 Responsive Tasarım
+- Mobil, tablet ve masaüstü uyumlu
+- Touch-friendly arayüz
+- Optimized performance
 
-- **Frontend**: React 18, React Router DOM
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Deployment**: GitHub Pages
+### 🔧 Admin Paneli
+- **Dashboard**: Genel istatistikler ve hızlı işlemler
+- **Proje Yönetimi**: Proje ekleme, düzenleme, silme
+- **Blog Yönetimi**: Blog yazısı ekleme, düzenleme, silme
+- **Ana Sayfa Yönetimi**: Tüm içerikleri tek yerden düzenleme
+- **Analytics**: Canlı site istatistikleri
+- **Yetenekler & Başarılar**: Kişisel yetenekler ve başarıları yönetme
 
-## 📦 Kurulum
+### 🎯 Performans
+- Lazy loading
+- Optimized images
+- Smooth animations
+- Fast page transitions
 
-1. Projeyi klonlayın:
-```bash
-git clone https://github.com/mertacar/portfolio.git
-cd portfolio
-```
+## 🚀 Kurulum
 
-2. Bağımlılıkları yükleyin:
+1. **Bağımlılıkları yükleyin:**
 ```bash
 npm install
 ```
 
-3. Geliştirme sunucusunu başlatın:
+2. **Geliştirme sunucusunu başlatın:**
 ```bash
 npm start
 ```
 
-4. Tarayıcınızda `http://localhost:3003` adresini açın.
-
-## 🚀 Deployment
-
-GitHub Pages'e deploy etmek için:
-
+3. **Production build:**
 ```bash
-npm run deploy
+npm run build
 ```
 
 ## 📁 Proje Yapısı
 
 ```
 src/
-├── components/          # React bileşenleri
-├── contexts/           # React context'leri
+├── components/          # Yeniden kullanılabilir bileşenler
+│   ├── Header.jsx      # Navigasyon ve arama
+│   ├── Footer.jsx      # Footer ve back-to-top
+│   ├── LoadingSkeleton.jsx  # Yükleme iskeletleri
+│   ├── NoResults.jsx   # Sonuç bulunamadı bileşeni
+│   ├── ScrollProgress.jsx   # Scroll ilerleme çubuğu
+│   └── ErrorBoundary.jsx    # Hata yakalama
+├── pages/              # Sayfa bileşenleri
+│   ├── Home.jsx        # Ana sayfa
+│   ├── About.jsx       # Hakkımda
+│   ├── Portfolio.jsx   # Projeler
+│   ├── Blog.jsx        # Blog listesi
+│   ├── BlogPost.jsx    # Blog detayı
+│   ├── Contact.jsx     # İletişim
+│   └── admin/          # Admin sayfaları
+├── contexts/           # React Context'leri
 ├── data/              # Statik veriler
-├── pages/             # Sayfa bileşenleri
-├── services/          # Servis fonksiyonları
-├── styles/            # CSS dosyaları
-└── utils/             # Yardımcı fonksiyonlar
+├── services/          # API servisleri
+├── utils/             # Yardımcı fonksiyonlar
+└── styles/            # CSS stilleri
 ```
 
-## 🎨 Özelleştirme
+## 🎨 Tema Sistemi
 
-### Kişisel Bilgiler
-`src/data/personalInfo.js` dosyasında kişisel bilgilerinizi güncelleyin.
+Site iki tema modunu destekler:
+- **Light Mode**: Açık tema
+- **Dark Mode**: Koyu tema (varsayılan)
 
-### Projeler
-`src/data/projects.js` dosyasında portfolio projelerinizi düzenleyin.
+Tema tercihi localStorage'da saklanır ve sayfa yenilendiğinde korunur.
 
-### Blog Yazıları
-`src/data/blogPosts.js` dosyasında blog içeriklerinizi yönetin.
+## 🔍 Arama Sistemi
 
-### Site Konfigürasyonu
-`src/data/siteConfig.js` dosyasında site ayarlarını yapın.
+Global arama özelliği şunları destekler:
+- **Projeler**: Başlık, açıklama ve teknolojilerde arama
+- **Blog Yazıları**: Başlık, özet, içerik ve etiketlerde arama
+- **Yetenekler**: Yetenek adlarında arama
 
-## 🔧 Admin Paneli
+### Klavye Kısayolları
+- `Ctrl+K` (veya `Cmd+K`): Arama modalını aç
+- `ESC`: Arama modalını kapat
+- `↑↓`: Sonuçlar arasında gezin
+- `Enter`: Seçili sonucu aç
 
-Admin paneline erişmek için:
-- URL: `/admin`
-- Kullanıcı adı: `mert`
-- Şifre: `Mert123!`
+## 📊 Admin Paneli
 
-## 📝 Lisans
+Admin paneline `/admin/login` adresinden erişebilirsiniz.
 
-Bu proje MIT lisansı altında lisanslanmıştır.
+### Özellikler:
+- **Güvenli Giriş**: Basit şifre koruması
+- **Dashboard**: Genel istatistikler
+- **İçerik Yönetimi**: Tüm site içeriklerini düzenleme
+- **Analytics**: Canlı ziyaretçi istatistikleri
+- **Yedekleme**: Veri dışa aktarma/aktarma
+
+## 🎭 Animasyonlar
+
+Framer Motion kullanılarak eklenen animasyonlar:
+- Sayfa geçişleri
+- Hover efektleri
+- Loading states
+- Scroll-triggered animations
+- Micro-interactions
+
+## 🔧 Özelleştirme
+
+### Renkler
+`tailwind.config.js` dosyasında tema renklerini özelleştirebilirsiniz:
+
+```javascript
+theme: {
+  extend: {
+    colors: {
+      primary: {
+        50: '#eff6ff',
+        // ... diğer tonlar
+        900: '#1e3a8a',
+      },
+      secondary: {
+        // ... secondary renkler
+      }
+    }
+  }
+}
+```
+
+### İçerik
+`src/data/` klasöründeki dosyaları düzenleyerek site içeriğini değiştirebilirsiniz:
+- `personalInfo.js`: Kişisel bilgiler
+- `projects.js`: Proje listesi
+- `blogPosts.js`: Blog yazıları
+- `siteConfig.js`: Site ayarları
+
+## 📱 Responsive Breakpoints
+
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: > 1024px
+
+## 🚀 Deployment
+
+### GitHub Pages
+1. Repository'yi GitHub'a push edin
+2. Settings > Pages > Source: Deploy from a branch
+3. Branch: main, folder: / (root)
+
+### Netlify
+1. Netlify'e bağlayın
+2. Build command: `npm run build`
+3. Publish directory: `build`
 
 ## 🤝 Katkıda Bulunma
 
-1. Fork yapın
+1. Fork edin
 2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add some amazing feature'`)
-4. Branch'e push yapın (`git push origin feature/amazing-feature`)
+3. Commit edin (`git commit -m 'Add amazing feature'`)
+4. Push edin (`git push origin feature/amazing-feature`)
 5. Pull Request oluşturun
+
+## 📄 Lisans
+
+Bu proje MIT lisansı altında lisanslanmıştır.
 
 ## 📞 İletişim
 
 - **Email**: mertacar011@gmail.com
-- **GitHub**: [@mertacar](https://github.com/mertacar)
 - **LinkedIn**: [Mert Açar](https://linkedin.com/in/mertacar)
+- **GitHub**: [mertacar-git](https://github.com/mertacar-git)
 
 ---
 

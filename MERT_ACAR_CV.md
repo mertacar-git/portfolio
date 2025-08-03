@@ -1,6 +1,5 @@
 # MERT AÇAR
 ## Full Stack Developer & DevOps Engineer
-
 ---
 
 ### 📧 İLETİŞİM BİLGİLERİ

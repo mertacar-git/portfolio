@@ -1,503 +1,226 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
-  BarChart3, 
-  Users, 
-  FileText, 
   Settings, 
-  Plus, 
-  Trash2,
-  Eye,
-  TrendingUp,
-  Clock,
-  LogOut,
-  RefreshCw,
-  Shield,
-  CheckCircle,
+  LogOut, 
+  BarChart3, 
+  FileText, 
+  Briefcase, 
+  User, 
   Home,
-  Code,
-  Award
+  Award,
+  TrendingUp
 } from 'lucide-react';
-import { ProtectedRoute, adminAuth } from '../../utils/auth';
-import { useToast } from '../../contexts/ToastContext';
-import { analytics } from '../../utils/dataManager';
-import { storageService } from '../../services/storageService';
-
+import { adminAuth } from '../../utils/auth';
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({
-    totalProjects: 0,
-    totalBlogPosts: 0,
-    totalViews: 0,
-    recentActivity: []
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const { showToast } = useToast();
-
-  const loadDashboardData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      const analyticsData = analytics.getStats();
-      const savedProjects = storageService.getData('projects') || [];
-      const savedBlogPosts = storageService.getData('blogPosts') || [];
-      
-      setStats({
-        totalProjects: savedProjects.length,
-        totalBlogPosts: savedBlogPosts.length,
-        totalViews: analyticsData.totalPageViews + analyticsData.totalProjectViews + analyticsData.totalBlogViews,
-        recentActivity: [
-          {
-            id: 1,
-            type: 'project',
-            title: 'Yeni proje eklendi',
-            description: `${savedProjects.length > 0 ? savedProjects[savedProjects.length - 1].title : 'Proje'} eklendi`,
-            time: 'Az önce'
-          },
-          {
-            id: 2,
-            type: 'blog',
-            title: 'Blog yazısı yayınlandı',
-            description: `${savedBlogPosts.length > 0 ? savedBlogPosts[savedBlogPosts.length - 1].title : 'Blog yazısı'} yayınlandı`,
-            time: 'Az önce'
-          },
-          {
-            id: 3,
-            type: 'view',
-            title: 'Site ziyaret edildi',
-            description: 'Ana sayfa görüntülendi',
-            time: 'Az önce'
-          }
-        ]
-      });
-    } catch (error) {
-      showToast('Dashboard verileri yüklenirken hata oluştu', 'error');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [showToast]);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    loadDashboardData();
-  }, [loadDashboardData]);
+    const currentUser = adminAuth.getUser();
+    if (!currentUser) {
+      navigate('/admin/login');
+      return;
+    }
+    setUser(currentUser);
+  }, [navigate]);
 
   const handleLogout = () => {
     adminAuth.logout();
-    showToast('Başarıyla çıkış yapıldı', 'success');
-    setTimeout(() => {
-      window.location.href = '/admin/login';
-    }, 1000);
+    navigate('/admin/login');
   };
 
+  const menuItems = [
+    {
+      title: 'Ana Sayfa Yönetimi',
+      description: 'Ana sayfa içeriklerini düzenle',
+      icon: <Home className="w-6 h-6" />,
+      href: '/admin/homepage',
+      color: 'bg-blue-500'
+    },
+    {
+      title: 'Projeler',
+      description: 'Proje portföyünü yönet',
+      icon: <Briefcase className="w-6 h-6" />,
+      href: '/admin/projects',
+      color: 'bg-green-500'
+    },
+    {
+      title: 'Blog Yazıları',
+      description: 'Blog içeriklerini düzenle',
+      icon: <FileText className="w-6 h-6" />,
+      href: '/admin/blog',
+      color: 'bg-purple-500'
+    },
+    {
+      title: 'Yetenekler',
+      description: 'Teknik yetenekleri güncelle',
+      icon: <User className="w-6 h-6" />,
+      href: '/admin/skills',
+      color: 'bg-orange-500'
+    },
+    {
+      title: 'Başarılar',
+      description: 'Başarı ve istatistikleri yönet',
+      icon: <Award className="w-6 h-6" />,
+      href: '/admin/achievements',
+      color: 'bg-red-500'
+    },
+    {
+      title: 'Analitik',
+      description: 'Site istatistiklerini görüntüle',
+      icon: <BarChart3 className="w-6 h-6" />,
+      href: '/admin/analytics',
+      color: 'bg-indigo-500'
+    },
+    {
+      title: 'Ayarlar',
+      description: 'Sistem ayarlarını yapılandır',
+      icon: <Settings className="w-6 h-6" />,
+      href: '/admin/settings',
+      color: 'bg-gray-500'
+    }
+  ];
 
-
-  if (isLoading) {
+  if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="text-center">
-          <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Dashboard yükleniyor...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
       </div>
     );
   }
 
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        {/* Header */}
-        <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-4">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  Admin Dashboard
-                </h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Header */}
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">A</span>
               </div>
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={loadDashboardData}
-                  className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-200"
-                  title="Yenile"
-                >
-                  <RefreshCw className="w-5 h-5" />
-                </button>
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Yönetici Paneli
+              </h1>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
+                Hoş geldin, {user.username}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-200"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Çıkış</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
 
-                <button
-                  onClick={handleLogout}
-                  className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 transition-colors duration-200"
-                  title="Çıkış Yap"
-                >
-                  <LogOut className="w-5 h-5" />
-                </button>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Welcome Section */}
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Yönetici Paneline Hoş Geldiniz
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Web sitenizin içeriklerini yönetmek için aşağıdaki seçenekleri kullanabilirsiniz.
+            </p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <TrendingUp className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Toplam Görüntüleme</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">1,234</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Briefcase className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Aktif Projeler</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">8</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <FileText className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Blog Yazıları</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">12</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                  <User className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Yetenekler</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">15</p>
+                </div>
               </div>
             </div>
           </div>
-        </header>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-                  <BarChart3 className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Toplam Proje
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalProjects}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
-                  <FileText className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Blog Yazısı
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalBlogPosts}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
-                  <Eye className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Toplam Görüntüleme
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {stats.totalViews}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-            >
-              <div className="flex items-center">
-                <div className="p-3 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
-                  <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    Bu Ay
-                  </p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    +12%
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-
-
-          {/* Quick Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8"
-          >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Hızlı İşlemler
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              <Link
-                to="/admin/projects"
-                className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200 group"
+          {/* Menu Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {menuItems.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200 cursor-pointer group"
+                onClick={() => navigate(item.href)}
               >
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Plus className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <span className="text-blue-700 dark:text-blue-300 font-medium block">
-                    Yeni Proje
-                  </span>
-                  <span className="text-blue-600 dark:text-blue-400 text-xs">
-                    Portfolio'a proje ekle
-                  </span>
-                </div>
-              </Link>
-              
-              <Link
-                to="/admin/blog"
-                className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Plus className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-green-700 dark:text-green-300 font-medium block">
-                    Yeni Blog
-                  </span>
-                  <span className="text-green-600 dark:text-green-400 text-xs">
-                    Blog yazısı oluştur
-                  </span>
-                </div>
-              </Link>
-              
-                             <Link
-                 to="/admin/settings"
-                 className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-900/30 transition-colors duration-200 group"
-               >
-                 <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                   <Settings className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                 </div>
-                 <div>
-                   <span className="text-purple-700 dark:text-purple-300 font-medium block">
-                     Ayarlar
-                   </span>
-                   <span className="text-purple-600 dark:text-purple-400 text-xs">
-                     Site konfigürasyonu
-                   </span>
-                 </div>
-               </Link>
-               
-               <Link
-                 to="/admin/skills"
-                 className="flex items-center p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors duration-200 group"
-               >
-                 <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                   <BarChart3 className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                 </div>
-                 <div>
-                   <span className="text-indigo-700 dark:text-indigo-300 font-medium block">
-                     Yetenekler
-                   </span>
-                   <span className="text-indigo-600 dark:text-indigo-400 text-xs">
-                     Yetenek seviyelerini düzenle
-                   </span>
-                 </div>
-               </Link>
-               
-               <Link
-                 to="/admin/achievements"
-                 className="flex items-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors duration-200 group"
-               >
-                 <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                   <TrendingUp className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
-                 </div>
-                 <div>
-                   <span className="text-yellow-700 dark:text-yellow-300 font-medium block">
-                     Başarılar
-                   </span>
-                   <span className="text-yellow-600 dark:text-yellow-400 text-xs">
-                     Başarı istatistiklerini düzenle
-                   </span>
-                 </div>
-               </Link>
-              
-              <Link
-                to="/admin/homepage"
-                className="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Home className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                </div>
-                <div>
-                  <span className="text-orange-700 dark:text-orange-300 font-medium block">
-                    Ana Sayfa
-                  </span>
-                  <span className="text-orange-600 dark:text-orange-400 text-xs">
-                    Ana sayfa içeriklerini düzenle
-                  </span>
-                </div>
-              </Link>
-              
-              <Link
-                to="/admin/analytics"
-                className="flex items-center p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg hover:bg-teal-100 dark:hover:bg-teal-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-teal-100 dark:bg-teal-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <BarChart3 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
-                </div>
-                <div>
-                  <span className="text-teal-700 dark:text-teal-300 font-medium block">
-                    Analytics
-                  </span>
-                  <span className="text-teal-600 dark:text-teal-400 text-xs">
-                    Site istatistiklerini görüntüle
-                  </span>
-                </div>
-              </Link>
-              
-              <a
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center p-4 bg-gray-50 dark:bg-gray-900/20 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-900/30 transition-colors duration-200 group"
-              >
-                <div className="p-2 bg-gray-100 dark:bg-gray-900/30 rounded-lg mr-3 group-hover:scale-110 transition-transform duration-200">
-                  <Eye className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                </div>
-                <div>
-                  <span className="text-gray-700 dark:text-gray-300 font-medium block">
-                    Siteyi Görüntüle
-                  </span>
-                  <span className="text-gray-600 dark:text-gray-400 text-xs">
-                    Yeni sekmede aç
-                  </span>
-                </div>
-              </a>
-            </div>
-          </motion.div>
-
-
-
-          {/* Security Status */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700 mb-8"
-          >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <Shield className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
-              Güvenlik Durumu
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg mr-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-green-700 dark:text-green-300 font-medium block">
-                    Admin Girişi
-                  </span>
-                  <span className="text-green-600 dark:text-green-400 text-xs">
-                    Güvenli
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg mr-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-green-700 dark:text-green-300 font-medium block">
-                    Local Storage
-                  </span>
-                  <span className="text-green-600 dark:text-green-400 text-xs">
-                    Şifrelenmiş
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg mr-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-green-700 dark:text-green-300 font-medium block">
-                    Input Validation
-                  </span>
-                  <span className="text-green-600 dark:text-green-400 text-xs">
-                    Aktif
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg mr-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div>
-                  <span className="text-green-700 dark:text-green-300 font-medium block">
-                    XSS Koruması
-                  </span>
-                  <span className="text-green-600 dark:text-green-400 text-xs">
-                    Aktif
-                  </span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Recent Activity */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-200 dark:border-gray-700"
-          >
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Son Aktiviteler
-            </h2>
-            <div className="space-y-4">
-              {stats.recentActivity.map((activity, index) => (
-                <motion.div
-                  key={activity.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-                  className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
-                >
-                  <div className={`p-2 rounded-lg mr-4 ${
-                    activity.type === 'project' ? 'bg-blue-100 dark:bg-blue-900/20' :
-                    activity.type === 'blog' ? 'bg-green-100 dark:bg-green-900/20' :
-                    'bg-purple-100 dark:bg-purple-900/20'
-                  }`}>
-                    {activity.type === 'project' && <BarChart3 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
-                    {activity.type === 'blog' && <FileText className="w-4 h-4 text-green-600 dark:text-green-400" />}
-                    {activity.type === 'view' && <Eye className="w-4 h-4 text-purple-600 dark:text-purple-400" />}
+                <div className="flex items-start space-x-4">
+                  <div className={`p-3 rounded-lg ${item.color} text-white group-hover:scale-110 transition-transform duration-200`}>
+                    {item.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                      {activity.title}
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+                      {item.title}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {activity.description}
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {item.description}
                     </p>
                   </div>
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {activity.time}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </ProtectedRoute>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </main>
+    </div>
   );
 };
 

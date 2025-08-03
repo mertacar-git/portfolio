@@ -1,350 +1,288 @@
-// Veri Yönetimi Yardımcı Fonksiyonları
+import { storageService } from '../services/storageService';
 import { personalInfo } from '../data/personalInfo';
-import { projects, filterProjectsByCategory, getFeaturedProjects } from '../data/projects';
-import { blogPosts, filterBlogPostsByCategory, getFeaturedBlogPosts, getBlogPostById } from '../data/blogPosts';
+import { projects } from '../data/projects';
+import { blogPosts } from '../data/blogPosts';
 import { siteConfig } from '../data/siteConfig';
 
-// Local Storage Yardımcı Fonksiyonları
-export const storage = {
-  // Veri kaydetme
-  set: (key, value) => {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-      return true;
-    } catch (error) {
-      console.error('Local storage kaydetme hatası:', error);
-      return false;
-    }
-  },
+// Data Manager Class
+class DataManager {
+  constructor() {
+    this.initializeData();
+  }
 
-  // Veri okuma
-  get: (key, defaultValue = null) => {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : defaultValue;
-    } catch (error) {
-      console.error('Local storage okuma hatası:', error);
-      return defaultValue;
+  // Initialize data from localStorage or default data
+  initializeData() {
+    // Personal Info
+    if (!storageService.getData('personalInfo')) {
+      storageService.saveData('personalInfo', personalInfo);
     }
-  },
 
-  // Veri silme
-  remove: (key) => {
-    try {
-      localStorage.removeItem(key);
-      return true;
-    } catch (error) {
-      console.error('Local storage silme hatası:', error);
-      return false;
+    // Projects
+    if (!storageService.getData('projects')) {
+      storageService.saveData('projects', projects);
     }
-  },
 
-  // Tüm verileri temizleme
-  clear: () => {
-    try {
-      localStorage.clear();
-      return true;
-    } catch (error) {
-      console.error('Local storage temizleme hatası:', error);
-      return false;
+    // Blog Posts
+    if (!storageService.getData('blogPosts')) {
+      storageService.saveData('blogPosts', blogPosts);
+    }
+
+    // Site Config
+    if (!storageService.getData('siteConfig')) {
+      storageService.saveData('siteConfig', siteConfig);
+    }
+
+    // Analytics
+    if (!storageService.getData('analytics')) {
+      storageService.saveData('analytics', {
+        pageViews: {},
+        totalViews: 0,
+        uniqueVisitors: 0,
+        lastUpdated: new Date().toISOString()
+      });
     }
   }
-};
 
-// Kullanıcı Tercihleri Yönetimi
-export const userPreferences = {
-  // Tema tercihi
-  getTheme: () => {
-    return storage.get('theme', 'dark');
-  },
-
-  setTheme: (theme) => {
-    storage.set('theme', theme);
-    document.documentElement.setAttribute('data-theme', theme);
-  },
-
-  // Dil tercihi
-  getLanguage: () => {
-    return storage.get('language', 'tr');
-  },
-
-  setLanguage: (language) => {
-    storage.set('language', language);
-  },
-
-  // Bildirim tercihi
-  getNotifications: () => {
-    return storage.get('notifications', true);
-  },
-
-  setNotifications: (enabled) => {
-    storage.set('notifications', enabled);
+  // Personal Info Management
+  getPersonalInfo() {
+    return storageService.getData('personalInfo') || personalInfo;
   }
-};
 
-// Form Veri Yönetimi
-export const formData = {
-  // Form verilerini kaydetme
-  saveFormData: (formName, data) => {
-    const key = `form_${formName}`;
-    storage.set(key, data);
-  },
+  updatePersonalInfo(data) {
+    const currentData = this.getPersonalInfo();
+    const updatedData = { ...currentData, ...data };
+    storageService.saveData('personalInfo', updatedData);
+    return updatedData;
+  }
 
-  // Form verilerini yükleme
-  loadFormData: (formName) => {
-    const key = `form_${formName}`;
-    return storage.get(key, {});
-  },
+  updateSkills(skills) {
+    const currentData = this.getPersonalInfo();
+    currentData.skills = skills;
+    storageService.saveData('personalInfo', currentData);
+    return currentData;
+  }
 
-  // Form verilerini temizleme
-  clearFormData: (formName) => {
-    const key = `form_${formName}`;
-    storage.remove(key);
-  },
+  updateStats(stats) {
+    const currentData = this.getPersonalInfo();
+    currentData.stats = { ...currentData.stats, ...stats };
+    storageService.saveData('personalInfo', currentData);
+    return currentData;
+  }
 
-  // Form validasyonu
-  validateForm: (data, rules) => {
-    const errors = {};
+  // Projects Management
+  getProjects() {
+    return storageService.getData('projects') || projects;
+  }
 
-    Object.keys(rules).forEach(field => {
-      const value = data[field];
-      const rule = rules[field];
+  addProject(project) {
+    const currentProjects = this.getProjects();
+    const newProject = {
+      ...project,
+      id: Math.max(...currentProjects.map(p => p.id), 0) + 1,
+      publishDate: new Date().toLocaleDateString('tr-TR')
+    };
+    currentProjects.push(newProject);
+    storageService.saveData('projects', currentProjects);
+    return newProject;
+  }
 
-      // Gerekli alan kontrolü
-      if (rule.required && (!value || value.trim() === '')) {
-        errors[field] = `${rule.label || field} alanı zorunludur.`;
-        return;
-      }
+  updateProject(id, data) {
+    const currentProjects = this.getProjects();
+    const projectIndex = currentProjects.findIndex(p => p.id === id);
+    if (projectIndex !== -1) {
+      currentProjects[projectIndex] = { ...currentProjects[projectIndex], ...data };
+      storageService.saveData('projects', currentProjects);
+      return currentProjects[projectIndex];
+    }
+    return null;
+  }
 
-      // Email formatı kontrolü
-      if (rule.type === 'email' && value) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value)) {
-          errors[field] = 'Geçerli bir email adresi giriniz.';
-        }
-      }
+  deleteProject(id) {
+    const currentProjects = this.getProjects();
+    const filteredProjects = currentProjects.filter(p => p.id !== id);
+    storageService.saveData('projects', filteredProjects);
+    return filteredProjects;
+  }
 
-      // Minimum uzunluk kontrolü
-      if (rule.minLength && value && value.length < rule.minLength) {
-        errors[field] = `${rule.label || field} en az ${rule.minLength} karakter olmalıdır.`;
-      }
+  // Blog Posts Management
+  getBlogPosts() {
+    return storageService.getData('blogPosts') || blogPosts;
+  }
 
-      // Maksimum uzunluk kontrolü
-      if (rule.maxLength && value && value.length > rule.maxLength) {
-        errors[field] = `${rule.label || field} en fazla ${rule.maxLength} karakter olmalıdır.`;
-      }
-    });
+  addBlogPost(post) {
+    const currentPosts = this.getBlogPosts();
+    const newPost = {
+      ...post,
+      id: Math.max(...currentPosts.map(p => p.id), 0) + 1,
+      publishDate: new Date().toLocaleDateString('tr-TR'),
+      views: 0,
+      likes: 0
+    };
+    currentPosts.push(newPost);
+    storageService.saveData('blogPosts', currentPosts);
+    return newPost;
+  }
+
+  updateBlogPost(id, data) {
+    const currentPosts = this.getBlogPosts();
+    const postIndex = currentPosts.findIndex(p => p.id === id);
+    if (postIndex !== -1) {
+      currentPosts[postIndex] = { ...currentPosts[postIndex], ...data };
+      storageService.saveData('blogPosts', currentPosts);
+      return currentPosts[postIndex];
+    }
+    return null;
+  }
+
+  deleteBlogPost(id) {
+    const currentPosts = this.getBlogPosts();
+    const filteredPosts = currentPosts.filter(p => p.id !== id);
+    storageService.saveData('blogPosts', filteredPosts);
+    return filteredPosts;
+  }
+
+  incrementBlogViews(id) {
+    const currentPosts = this.getBlogPosts();
+    const postIndex = currentPosts.findIndex(p => p.id === id);
+    if (postIndex !== -1) {
+      currentPosts[postIndex].views += 1;
+      storageService.saveData('blogPosts', currentPosts);
+    }
+  }
+
+  // Analytics Management
+  getAnalytics() {
+    return storageService.getData('analytics') || {
+      pageViews: {},
+      totalViews: 0,
+      uniqueVisitors: 0,
+      lastUpdated: new Date().toISOString()
+    };
+  }
+
+  incrementPageView(page) {
+    const analytics = this.getAnalytics();
+    analytics.pageViews[page] = (analytics.pageViews[page] || 0) + 1;
+    analytics.totalViews += 1;
+    analytics.lastUpdated = new Date().toISOString();
+    storageService.saveData('analytics', analytics);
+  }
+
+  incrementUniqueVisitor() {
+    const analytics = this.getAnalytics();
+    analytics.uniqueVisitors += 1;
+    analytics.lastUpdated = new Date().toISOString();
+    storageService.saveData('analytics', analytics);
+  }
+
+  // Site Config Management
+  getSiteConfig() {
+    return storageService.getData('siteConfig') || siteConfig;
+  }
+
+  updateSiteConfig(config) {
+    const currentConfig = this.getSiteConfig();
+    const updatedConfig = { ...currentConfig, ...config };
+    storageService.saveData('siteConfig', updatedConfig);
+    return updatedConfig;
+  }
+
+  // Backup and Restore
+  exportAllData() {
+    return {
+      personalInfo: this.getPersonalInfo(),
+      projects: this.getProjects(),
+      blogPosts: this.getBlogPosts(),
+      siteConfig: this.getSiteConfig(),
+      analytics: this.getAnalytics(),
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  importAllData(data) {
+    if (data.personalInfo) storageService.saveData('personalInfo', data.personalInfo);
+    if (data.projects) storageService.saveData('projects', data.projects);
+    if (data.blogPosts) storageService.saveData('blogPosts', data.blogPosts);
+    if (data.siteConfig) storageService.saveData('siteConfig', data.siteConfig);
+    if (data.analytics) storageService.saveData('analytics', data.analytics);
+    return true;
+  }
+
+  // Statistics and Reports
+  getDashboardStats() {
+    const projects = this.getProjects();
+    const blogPosts = this.getBlogPosts();
+    const analytics = this.getAnalytics();
+    const personalInfo = this.getPersonalInfo();
 
     return {
-      isValid: Object.keys(errors).length === 0,
-      errors
+      totalProjects: projects.length,
+      featuredProjects: projects.filter(p => p.featured).length,
+      totalBlogPosts: blogPosts.length,
+      featuredBlogPosts: blogPosts.filter(p => p.featured).length,
+      totalSkills: personalInfo.skills.length,
+      totalViews: analytics.totalViews,
+      uniqueVisitors: analytics.uniqueVisitors,
+      completedProjects: personalInfo.stats.completedProjects,
+      webAppsBuilt: personalInfo.stats.webAppsBuilt,
+      yearsExperience: personalInfo.stats.yearsExperience,
+      happyClients: personalInfo.stats.happyClients
     };
   }
-};
 
-// Arama ve Filtreleme
-export const searchAndFilter = {
-  // Projelerde arama
-  searchProjects: (query, projects = projects) => {
-    if (!query) return projects;
-
-    const searchTerm = query.toLowerCase();
+  // Search functionality
+  searchProjects(query) {
+    const projects = this.getProjects();
+    const lowercaseQuery = query.toLowerCase();
     return projects.filter(project => 
-      project.title.toLowerCase().includes(searchTerm) ||
-      project.description.toLowerCase().includes(searchTerm) ||
-      project.technologies.some(tech => 
-        tech.toLowerCase().includes(searchTerm)
-      )
+      project.title.toLowerCase().includes(lowercaseQuery) ||
+      project.description.toLowerCase().includes(lowercaseQuery) ||
+      project.technologies.some(tech => tech.toLowerCase().includes(lowercaseQuery))
     );
-  },
+  }
 
-  // Blog yazılarında arama
-  searchBlogPosts: (query, posts = blogPosts) => {
-    if (!query) return posts;
-
-    const searchTerm = query.toLowerCase();
+  searchBlogPosts(query) {
+    const posts = this.getBlogPosts();
+    const lowercaseQuery = query.toLowerCase();
     return posts.filter(post => 
-      post.title.toLowerCase().includes(searchTerm) ||
-      post.excerpt.toLowerCase().includes(searchTerm) ||
-      post.content.toLowerCase().includes(searchTerm) ||
-      post.tags.some(tag => 
-        tag.toLowerCase().includes(searchTerm)
-      )
+      post.title.toLowerCase().includes(lowercaseQuery) ||
+      post.excerpt.toLowerCase().includes(lowercaseQuery) ||
+      post.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery))
     );
+  }
+}
+
+// User Preferences Management
+export const userPreferences = {
+  getTheme() {
+    return storageService.getData('theme') || 'light';
   },
 
-  // Tarihe göre filtreleme
-  filterByDate: (items, startDate, endDate) => {
-    return items.filter(item => {
-      const itemDate = new Date(item.publishDate || item.year);
-      const start = startDate ? new Date(startDate) : null;
-      const end = endDate ? new Date(endDate) : null;
-
-      if (start && itemDate < start) return false;
-      if (end && itemDate > end) return false;
-      return true;
-    });
+  setTheme(theme) {
+    storageService.saveData('theme', theme);
   },
 
-  // Popülerlik sıralaması
-  sortByPopularity: (items) => {
-    return [...items].sort((a, b) => {
-      const scoreA = (a.views || 0) + (a.likes || 0) * 2;
-      const scoreB = (b.views || 0) + (b.likes || 0) * 2;
-      return scoreB - scoreA;
-    });
+  getLanguage() {
+    return storageService.getData('language') || 'tr';
+  },
+
+  setLanguage(language) {
+    storageService.saveData('language', language);
   }
 };
 
-// İstatistik ve Analytics
+// Analytics tracking
 export const analytics = {
-  // Sayfa görüntüleme sayısı
-  incrementPageView: (pageName) => {
-    const key = `page_views_${pageName}`;
-    const currentViews = storage.get(key, 0);
-    storage.set(key, currentViews + 1);
+  incrementPageView(page) {
+    const dataManager = new DataManager();
+    dataManager.incrementPageView(page);
   },
 
-  // Proje görüntüleme sayısı
-  incrementProjectView: (projectId) => {
-    const key = `project_views_${projectId}`;
-    const currentViews = storage.get(key, 0);
-    storage.set(key, currentViews + 1);
-  },
-
-  // Blog yazısı görüntüleme sayısı
-  incrementBlogView: (postId) => {
-    const key = `blog_views_${postId}`;
-    const currentViews = storage.get(key, 0);
-    storage.set(key, currentViews + 1);
-  },
-
-  // İstatistikleri getirme
-  getStats: () => {
-    const stats = {
-      totalPageViews: 0,
-      totalProjectViews: 0,
-      totalBlogViews: 0,
-      popularPages: [],
-      popularProjects: [],
-      popularBlogPosts: []
-    };
-
-    // Local storage'dan tüm istatistikleri topla
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('page_views_')) {
-        const pageName = key.replace('page_views_', '');
-        const views = storage.get(key, 0);
-        stats.totalPageViews += views;
-        stats.popularPages.push({ page: pageName, views });
-      } else if (key.startsWith('project_views_')) {
-        const projectId = key.replace('project_views_', '');
-        const views = storage.get(key, 0);
-        stats.totalProjectViews += views;
-        stats.popularProjects.push({ projectId, views });
-      } else if (key.startsWith('blog_views_')) {
-        const postId = key.replace('blog_views_', '');
-        const views = storage.get(key, 0);
-        stats.totalBlogViews += views;
-        stats.popularBlogPosts.push({ postId, views });
-      }
-    });
-
-    // Popüler listeleri sırala
-    stats.popularPages.sort((a, b) => b.views - a.views);
-    stats.popularProjects.sort((a, b) => b.views - a.views);
-    stats.popularBlogPosts.sort((a, b) => b.views - a.views);
-
-    return stats;
+  trackUniqueVisitor() {
+    const dataManager = new DataManager();
+    dataManager.incrementUniqueVisitor();
   }
 };
 
-// Veri Export/Import
-export const dataExport = {
-  // Tüm verileri export etme
-  exportAllData: () => {
-    const data = {
-      personalInfo,
-      projects,
-      blogPosts,
-      siteConfig,
-      userPreferences: {
-        theme: userPreferences.getTheme(),
-        language: userPreferences.getLanguage(),
-        notifications: userPreferences.getNotifications()
-      },
-      analytics: analytics.getStats(),
-      exportDate: new Date().toISOString()
-    };
-
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: 'application/json'
-    });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mert-portfolio-data-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  },
-
-  // Verileri import etme
-  importData: (jsonData) => {
-    try {
-      const data = JSON.parse(jsonData);
-      
-      // Kullanıcı tercihlerini güncelle
-      if (data.userPreferences) {
-        userPreferences.setTheme(data.userPreferences.theme);
-        userPreferences.setLanguage(data.userPreferences.language);
-        userPreferences.setNotifications(data.userPreferences.notifications);
-      }
-
-      return { success: true, message: 'Veriler başarıyla import edildi.' };
-    } catch (error) {
-      return { success: false, message: 'Veri import hatası: ' + error.message };
-    }
-  }
-};
-
-// Cache Yönetimi
-export const cache = {
-  // Cache'e veri kaydetme
-  set: (key, data, ttl = 3600000) => { // Varsayılan 1 saat
-    const cacheData = {
-      data,
-      timestamp: Date.now(),
-      ttl
-    };
-    storage.set(`cache_${key}`, cacheData);
-  },
-
-  // Cache'den veri okuma
-  get: (key) => {
-    const cacheData = storage.get(`cache_${key}`);
-    
-    if (!cacheData) return null;
-
-    const now = Date.now();
-    const isExpired = (now - cacheData.timestamp) > cacheData.ttl;
-
-    if (isExpired) {
-      storage.remove(`cache_${key}`);
-      return null;
-    }
-
-    return cacheData.data;
-  },
-
-  // Cache'i temizleme
-  clear: () => {
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('cache_')) {
-        storage.remove(key);
-      }
-    });
-  }
-}; 
+// Export singleton instance
+export const dataManager = new DataManager(); 

@@ -1,59 +1,114 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  Search, 
-  Filter, 
-  Calendar, 
-  Clock,
+  Calendar,
+  User,
   Tag,
-  Eye
+  Search,
+  Filter,
+  ArrowRight
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
-import { blogPosts as defaultBlogPosts, blogCategories, filterBlogPostsByCategory } from '../data/blogPosts';
+import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 import { analytics } from '../utils/dataManager';
 
 const Blog = () => {
-  const [blogPosts, setBlogPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('Tümü');
+  const [blogPosts, setBlogPosts] = useState(defaultBlogPosts);
+  const [filteredPosts, setFilteredPosts] = useState(defaultBlogPosts);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedTags, setSelectedTags] = useState([]);
 
   useEffect(() => {
     analytics.incrementPageView('blog');
     loadBlogPosts();
   }, []);
 
-  useEffect(() => {
-    let filtered = blogPosts;
-    
-    // Kategori filtreleme
-    if (selectedCategory !== 'Tümü') {
-      filtered = filtered.filter(post => post.category === selectedCategory);
-    }
-    
-    if (searchTerm) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.tags.some(tag => 
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      );
-    }
-    
-    setFilteredPosts(filtered);
-  }, [selectedCategory, searchTerm, blogPosts]);
-
   const loadBlogPosts = () => {
     const savedPosts = storageService.getData('blogPosts');
     if (savedPosts && savedPosts.length > 0) {
       setBlogPosts(savedPosts);
+      setFilteredPosts(savedPosts);
     } else {
-      // İlk kez çalıştırıldığında varsayılan blog yazılarını yükle
       setBlogPosts(defaultBlogPosts);
+      setFilteredPosts(defaultBlogPosts);
       storageService.saveData('blogPosts', defaultBlogPosts);
     }
+  };
+
+  // Tüm etiketleri topla
+  const allTags = [...new Set(
+    blogPosts.flatMap(post => post.tags || [])
+  )].filter(Boolean);
+
+  // Kategorileri topla
+  const categories = ['all', ...new Set(blogPosts.map(post => post.category).filter(Boolean))];
+
+  useEffect(() => {
+    let filtered = blogPosts;
+
+    // Arama filtresi
+    if (searchTerm) {
+      filtered = filtered.filter(post =>
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (post.tags && post.tags.some(tag => 
+          tag.toLowerCase().includes(searchTerm.toLowerCase())
+        ))
+      );
+    }
+
+    // Kategori filtresi
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(post => post.category === selectedCategory);
+    }
+
+    // Etiket filtresi
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(post =>
+        post.tags && selectedTags.every(tag =>
+          post.tags.includes(tag)
+        )
+      );
+    }
+
+    setFilteredPosts(filtered);
+  }, [blogPosts, searchTerm, selectedCategory, selectedTags]);
+
+  const handleTagToggle = (tag) => {
+    setSelectedTags(prev =>
+      prev.includes(tag)
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+    setSelectedTags([]);
+  };
+
+  const getCategoryName = (category) => {
+    const categoryNames = {
+      'teknoloji': 'Teknoloji',
+      'yazılım': 'Yazılım',
+      'web': 'Web Geliştirme',
+      'kişisel': 'Kişisel',
+      'diğer': 'Diğer'
+    };
+    return categoryNames[category] || category;
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('tr-TR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   return (
@@ -70,140 +125,181 @@ const Blog = () => {
               Blog
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Teknoloji ve yazılım geliştirme hakkında yazılarım
+              Teknoloji, yazılım ve kişisel deneyimlerim hakkında yazılar
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Filters */}
-      <section className="section-padding bg-white dark:bg-gray-800">
+      {/* Filters Section */}
+      <section className="section-padding bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="container-max">
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Blog yazılarında ara..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                />
-              </div>
-
-              {/* Category Filter */}
-              <div className="relative">
-                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                >
-                  {blogCategories.map(category => (
-                    <option key={category} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          <div className="space-y-6">
+            {/* Search */}
+            <div className="relative max-w-md mx-auto">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Blog yazısı ara..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              />
             </div>
-          </div>
 
-          {/* Blog Posts Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <AnimatePresence>
+            {/* Category Filter */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                    selectedCategory === category
+                      ? 'bg-primary-600 text-white'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                  }`}
+                >
+                  {category === 'all' ? 'Tümü' : getCategoryName(category)}
+                </button>
+              ))}
+            </div>
+
+            {/* Tag Filter */}
+            {allTags.length > 0 && (
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
+                  Etiket Filtresi
+                </h3>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {allTags.map(tag => (
+                    <button
+                      key={tag}
+                      onClick={() => handleTagToggle(tag)}
+                      className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 ${
+                        selectedTags.includes(tag)
+                          ? 'bg-secondary-600 text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Clear Filters */}
+            {(searchTerm || selectedCategory !== 'all' || selectedTags.length > 0) && (
+              <div className="text-center">
+                <button
+                  onClick={clearFilters}
+                  className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+                >
+                  Filtreleri Temizle
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Posts Grid */}
+      <section className="section-padding bg-gray-50 dark:bg-gray-900">
+        <div className="container-max">
+          {filteredPosts.length === 0 ? (
+            <div className="text-center py-12">
+              <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                Blog Yazısı Bulunamadı
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Arama kriterlerinize uygun blog yazısı bulunamadı.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
                 <motion.article
                   key={post.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="card overflow-hidden group"
+                  className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300"
                 >
-                  {/* Blog Image */}
-                  <div className="aspect-video bg-gray-200 dark:bg-gray-700"></div>
-
-                  {/* Blog Content */}
-                  <div className="p-6">
-                    <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                      <span className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {post.publishDate}
-                      </span>
-                      <span className="flex items-center">
-                        <Clock className="w-4 h-4 mr-1" />
-                        {post.readTime}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 bg-secondary-100 text-secondary-700 dark:bg-secondary-900/20 dark:text-secondary-300 text-xs rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Meta */}
-                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                      <span className="flex items-center">
-                        <Eye className="w-4 h-4 mr-1" />
-                        {post.views} görüntüleme
-                      </span>
-                      <Link
-                        to={`/blog/${post.id}`}
-                        className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
-                        onClick={() => analytics.incrementBlogView(post.id)}
-                      >
-                        Devamını Oku →
-                      </Link>
-                    </div>
-
-                    {/* Featured Badge */}
-                    {post.featured && (
-                      <div className="mt-3">
-                        <span className="inline-flex items-center px-2 py-1 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300 text-xs rounded-full">
-                          Öne Çıkan
+                  {/* Post Image */}
+                  <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
+                    {post.image ? (
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <span className="text-4xl font-bold text-gray-400">
+                          {post.title.charAt(0)}
                         </span>
                       </div>
                     )}
+                    <div className="absolute top-3 right-3">
+                      <span className="px-2 py-1 bg-primary-600 text-white text-xs font-medium rounded">
+                        {getCategoryName(post.category)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Post Content */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                      {post.excerpt}
+                    </p>
+
+                    {/* Post Meta */}
+                    <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+                      <div className="flex items-center space-x-2">
+                        <User className="w-4 h-4" />
+                        <span>{post.author}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>{formatDate(post.date)}</span>
+                      </div>
+                    </div>
+
+                    {/* Tags */}
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {post.tags.slice(0, 3).map(tag => (
+                          <span
+                            key={tag}
+                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                        {post.tags.length > 3 && (
+                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
+                            +{post.tags.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Read More Link */}
+                    <Link
+                      to={`/blog/${post.id}`}
+                      className="inline-flex items-center space-x-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
+                    >
+                      <span>Devamını Oku</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </motion.article>
               ))}
-            </AnimatePresence>
-          </div>
-
-          {/* Empty State */}
-          {filteredPosts.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-12"
-            >
-              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                <Search className="w-8 h-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                Blog yazısı bulunamadı
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                Arama kriterlerinize uygun blog yazısı bulunamadı.
-              </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>

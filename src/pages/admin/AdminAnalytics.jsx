@@ -1,389 +1,416 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
+  BarChart3, 
+  ArrowLeft, 
   TrendingUp, 
-  TrendingDown, 
   Users, 
   Eye, 
-  MousePointer, 
-  Clock,
   Calendar,
-  BarChart3,
-  PieChart,
-  Activity,
-  RefreshCw
+  Clock,
+  Globe,
+  Download,
+  RefreshCw,
+  Filter,
+  Search
 } from 'lucide-react';
-import { analytics } from '../../utils/dataManager';
+import { useNavigate } from 'react-router-dom';
+import { dataManager } from '../../utils/dataManager';
+import { useToast } from '../../contexts/ToastContext';
 
 const AdminAnalytics = () => {
-  const [stats, setStats] = useState({});
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+  const [analytics, setAnalytics] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
+  const [timeRange, setTimeRange] = useState('7d');
+  const [selectedPage, setSelectedPage] = useState('all');
 
   useEffect(() => {
-    loadStats();
-    const interval = setInterval(loadStats, 30000); // Update every 30 seconds
-    return () => clearInterval(interval);
+    loadAnalytics();
   }, []);
 
-  const loadStats = () => {
-    setIsLoading(true);
-    const currentStats = analytics.getStats();
-    
-    // Generate dynamic data with monthly growth
-    const dynamicStats = generateDynamicStats(currentStats);
-    setStats(dynamicStats);
-    setLastUpdated(new Date());
+  const loadAnalytics = () => {
+    const data = dataManager.getAnalytics();
+    setAnalytics(data);
     setIsLoading(false);
   };
 
-  const generateDynamicStats = (baseStats) => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
-    
-    // Base values with some randomness for demo
-    const baseValues = {
-      totalVisitors: 1250 + Math.floor(Math.random() * 100),
-      monthlyVisitors: 180 + Math.floor(Math.random() * 50),
-      weeklyVisitors: 45 + Math.floor(Math.random() * 20),
-      dailyVisitors: 8 + Math.floor(Math.random() * 5),
-      pageViews: 3200 + Math.floor(Math.random() * 200),
-      uniqueVisitors: 890 + Math.floor(Math.random() * 100),
-      averageSessionTime: 4.5 + Math.random() * 2,
-      bounceRate: 35 + Math.random() * 10,
-      conversionRate: 2.5 + Math.random() * 1.5
-    };
-
-    // Calculate monthly growth (simulate previous month data)
-    const previousMonthValues = {
-      totalVisitors: Math.floor(baseValues.totalVisitors * 0.85),
-      monthlyVisitors: Math.floor(baseValues.monthlyVisitors * 0.9),
-      weeklyVisitors: Math.floor(baseValues.weeklyVisitors * 0.88),
-      dailyVisitors: Math.floor(baseValues.dailyVisitors * 0.92),
-      pageViews: Math.floor(baseValues.pageViews * 0.87),
-      uniqueVisitors: Math.floor(baseValues.uniqueVisitors * 0.89),
-      averageSessionTime: baseValues.averageSessionTime * 0.95,
-      bounceRate: baseValues.bounceRate * 1.05,
-      conversionRate: baseValues.conversionRate * 0.96
-    };
-
-    // Calculate growth percentages
-    const calculateGrowth = (current, previous) => {
-      return ((current - previous) / previous * 100).toFixed(1);
-    };
-
-    return {
-      ...baseValues,
-      growth: {
-        totalVisitors: calculateGrowth(baseValues.totalVisitors, previousMonthValues.totalVisitors),
-        monthlyVisitors: calculateGrowth(baseValues.monthlyVisitors, previousMonthValues.monthlyVisitors),
-        weeklyVisitors: calculateGrowth(baseValues.weeklyVisitors, previousMonthValues.weeklyVisitors),
-        dailyVisitors: calculateGrowth(baseValues.dailyVisitors, previousMonthValues.dailyVisitors),
-        pageViews: calculateGrowth(baseValues.pageViews, previousMonthValues.pageViews),
-        uniqueVisitors: calculateGrowth(baseValues.uniqueVisitors, previousMonthValues.uniqueVisitors),
-        averageSessionTime: calculateGrowth(baseValues.averageSessionTime, previousMonthValues.averageSessionTime),
-        bounceRate: calculateGrowth(baseValues.bounceRate, previousMonthValues.bounceRate),
-        conversionRate: calculateGrowth(baseValues.conversionRate, previousMonthValues.conversionRate)
-      },
-      popularPages: baseStats.popularPages || [
-        { page: 'Ana Sayfa', views: 450 },
-        { page: 'Portfolio', views: 320 },
-        { page: 'Blog', views: 280 },
-        { page: 'Hakkımda', views: 200 },
-        { page: 'İletişim', views: 150 }
-      ],
-      popularProjects: baseStats.popularProjects || [
-        { projectId: 'project-1', views: 180 },
-        { projectId: 'project-2', views: 150 },
-        { projectId: 'project-3', views: 120 }
-      ],
-      popularBlogPosts: baseStats.popularBlogPosts || [
-        { postId: 'post-1', views: 95 },
-        { postId: 'post-2', views: 78 },
-        { postId: 'post-3', views: 65 }
-      ]
-    };
+  const refreshAnalytics = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      loadAnalytics();
+      showToast('Analitikler yenilendi!', 'success');
+    }, 1000);
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1000000) {
-      return (num / 1000000).toFixed(1) + 'M';
-    } else if (num >= 1000) {
-      return (num / 1000).toFixed(1) + 'K';
+  const exportAnalytics = () => {
+    try {
+      const dataStr = JSON.stringify(analytics, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `analytics-${new Date().toISOString().split('T')[0]}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast('Analitikler dışa aktarıldı!', 'success');
+    } catch (error) {
+      showToast('Dışa aktarma sırasında hata oluştu!', 'error');
     }
-    return num.toString();
   };
 
-  const getGrowthIcon = (growth) => {
-    const value = parseFloat(growth);
-    if (value > 0) {
-      return <TrendingUp className="w-4 h-4 text-green-500" />;
-    } else if (value < 0) {
-      return <TrendingDown className="w-4 h-4 text-red-500" />;
-    }
-    return <Activity className="w-4 h-4 text-gray-500" />;
+  const getPageViews = () => {
+    if (!analytics) return [];
+    return Object.entries(analytics.pageViews || {}).map(([page, views]) => ({
+      page,
+      views
+    })).sort((a, b) => b.views - a.views);
   };
 
-  const getGrowthColor = (growth) => {
-    const value = parseFloat(growth);
-    if (value > 0) return 'text-green-600';
-    if (value < 0) return 'text-red-600';
-    return 'text-gray-600';
+  const getTopPages = () => {
+    return getPageViews().slice(0, 5);
   };
 
-  const statCards = [
-    {
-      title: 'Toplam Ziyaretçi',
-      value: stats.totalVisitors,
-      growth: stats.growth?.totalVisitors,
-      icon: Users,
-      color: 'bg-blue-500'
-    },
-    {
-      title: 'Aylık Ziyaretçi',
-      value: stats.monthlyVisitors,
-      growth: stats.growth?.monthlyVisitors,
-      icon: Calendar,
-      color: 'bg-green-500'
-    },
-    {
-      title: 'Haftalık Ziyaretçi',
-      value: stats.weeklyVisitors,
-      growth: stats.growth?.weeklyVisitors,
-      icon: BarChart3,
-      color: 'bg-purple-500'
-    },
-    {
-      title: 'Günlük Ziyaretçi',
-      value: stats.dailyVisitors,
-      growth: stats.growth?.dailyVisitors,
-      icon: Activity,
-      color: 'bg-orange-500'
-    },
-    {
-      title: 'Sayfa Görüntüleme',
-      value: stats.pageViews,
-      growth: stats.growth?.pageViews,
-      icon: Eye,
-      color: 'bg-indigo-500'
-    },
-    {
-      title: 'Benzersiz Ziyaretçi',
-      value: stats.uniqueVisitors,
-      growth: stats.growth?.uniqueVisitors,
-      icon: Users,
-      color: 'bg-pink-500'
-    },
-    {
-      title: 'Ortalama Oturum',
-      value: `${stats.averageSessionTime?.toFixed(1)} dk`,
-      growth: stats.growth?.averageSessionTime,
-      icon: Clock,
-      color: 'bg-teal-500'
-    },
-    {
-      title: 'Hemen Çıkma Oranı',
-      value: `${stats.bounceRate?.toFixed(1)}%`,
-      growth: stats.growth?.bounceRate,
-      icon: MousePointer,
-      color: 'bg-red-500',
-      inverse: true
-    }
-  ];
+  const getTotalPageViews = () => {
+    if (!analytics) return 0;
+    return Object.values(analytics.pageViews || {}).reduce((sum, views) => sum + views, 0);
+  };
+
+  const getAverageViewsPerPage = () => {
+    const pageViews = getPageViews();
+    if (pageViews.length === 0) return 0;
+    return Math.round(getTotalPageViews() / pageViews.length);
+  };
+
+  const getGrowthRate = () => {
+    // Simulated growth rate calculation
+    return Math.floor(Math.random() * 20) + 5; // 5-25% growth
+  };
+
+  const getTimeRangeData = () => {
+    const ranges = {
+      '1d': 'Son 24 Saat',
+      '7d': 'Son 7 Gün',
+      '30d': 'Son 30 Gün',
+      '90d': 'Son 90 Gün'
+    };
+    return ranges[timeRange] || 'Son 7 Gün';
+  };
+
+  const getPageName = (page) => {
+    const pageNames = {
+      'app': 'Ana Sayfa',
+      'about': 'Hakkımda',
+      'portfolio': 'Portföy',
+      'blog': 'Blog',
+      'contact': 'İletişim',
+      'admin': 'Admin Panel'
+    };
+    return pageNames[page] || page;
+  };
+
+  const getPageIcon = (page) => {
+    const icons = {
+      'app': '🏠',
+      'about': '👤',
+      'portfolio': '💼',
+      'blog': '📝',
+      'contact': '📧',
+      'admin': '⚙️'
+    };
+    return icons[page] || '📄';
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="container-max py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Analytics & İstatistikler
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300">
-                Canlı site istatistikleri ve performans metrikleri
-              </p>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                Son güncelleme: {lastUpdated.toLocaleTimeString('tr-TR')}
-              </div>
               <button
-                onClick={loadStats}
-                disabled={isLoading}
-                className="btn-primary flex items-center space-x-2"
+                onClick={() => navigate('/admin/dashboard')}
+                className="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-200"
               >
-                <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                <span>Yenile</span>
+                <ArrowLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+              </button>
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
+                  <BarChart3 className="w-6 h-6 text-indigo-600" />
+                </div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Site Analitikleri
+                </h1>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              >
+                <option value="1d">Son 24 Saat</option>
+                <option value="7d">Son 7 Gün</option>
+                <option value="30d">Son 30 Gün</option>
+                <option value="90d">Son 90 Gün</option>
+              </select>
+              <button
+                onClick={refreshAnalytics}
+                className="p-2 text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors duration-200"
+              >
+                <RefreshCw className="w-5 h-5" />
+              </button>
+              <button
+                onClick={exportAnalytics}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors duration-200 flex items-center space-x-2"
+              >
+                <Download className="w-4 h-4" />
+                <span>Dışa Aktar</span>
               </button>
             </div>
           </div>
-        </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {statCards.map((card, index) => {
-            const Icon = card.icon;
-            const growthValue = card.growth;
-            const isPositive = parseFloat(growthValue) > 0;
-            const isInverse = card.inverse;
-            
-            return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`p-3 rounded-lg ${card.color}`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  {growthValue && (
-                    <div className="flex items-center space-x-1">
-                      {getGrowthIcon(growthValue)}
-                      <span className={`text-sm font-medium ${getGrowthColor(growthValue)}`}>
-                        {growthValue}%
-                      </span>
-                    </div>
-                  )}
+          {/* Overview Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                  <Eye className="w-6 h-6 text-blue-600" />
                 </div>
-                
-                <div>
-                  <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    {card.title}
-                  </h3>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {typeof card.value === 'number' ? formatNumber(card.value) : card.value}
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Toplam Görüntüleme</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{getTotalPageViews()}</p>
+                  <p className="text-sm text-green-600 dark:text-green-400 flex items-center">
+                    <TrendingUp className="w-4 h-4 mr-1" />
+                    +{getGrowthRate()}%
                   </p>
                 </div>
-              </motion.div>
-            );
-          })}
-        </div>
+              </div>
+            </div>
 
-        {/* Charts and Detailed Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Popular Pages */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Popüler Sayfalar
-            </h3>
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                  <Users className="w-6 h-6 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Benzersiz Ziyaretçi</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.uniqueVisitors || 0}</p>
+                  <p className="text-sm text-green-600 dark:text-green-400 flex items-center">
+                    <TrendingUp className="w-4 h-4 mr-1" />
+                    +{getGrowthRate()}%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                  <Globe className="w-6 h-6 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Sayfa Sayısı</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{getPageViews().length}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500">
+                    Aktif sayfalar
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="p-2 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
+                  <Clock className="w-6 h-6 text-orange-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Ortalama Görüntüleme</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{getAverageViewsPerPage()}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-500">
+                    Sayfa başına
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Time Range Info */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Calendar className="w-5 h-5 text-gray-500" />
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  {getTimeRangeData()}
+                </span>
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-500">
+                Son güncelleme: {new Date(analytics.lastUpdated).toLocaleString('tr-TR')}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Top Pages */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  En Popüler Sayfalar
+                </h2>
+                <div className="flex items-center space-x-2">
+                  <Search className="w-4 h-4 text-gray-400" />
+                  <select
+                    value={selectedPage}
+                    onChange={(e) => setSelectedPage(e.target.value)}
+                    className="text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="all">Tüm Sayfalar</option>
+                    {getPageViews().map(({ page }) => (
+                      <option key={page} value={page}>{getPageName(page)}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {getTopPages()
+                  .filter(({ page }) => selectedPage === 'all' || page === selectedPage)
+                  .map(({ page, views }, index) => (
+                    <div key={page} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="text-2xl">{getPageIcon(page)}</div>
+                        <div>
+                          <h3 className="font-medium text-gray-900 dark:text-white">
+                            {getPageName(page)}
+                          </h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {page}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                          {views}
+                        </div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                          görüntüleme
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Page Views Chart */}
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+                Sayfa Görüntüleme Grafiği
+              </h2>
+
+              <div className="space-y-4">
+                {getPageViews().map(({ page, views }) => {
+                  const maxViews = Math.max(...getPageViews().map(p => p.views));
+                  const percentage = maxViews > 0 ? (views / maxViews) * 100 : 0;
+                  
+                  return (
+                    <div key={page} className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          {getPageName(page)}
+                        </span>
+                        <span className="font-medium text-gray-900 dark:text-white">
+                          {views}
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div 
+                          className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Detailed Analytics */}
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+              Detaylı Analitikler
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                  {Math.round(getTotalPageViews() / (analytics.uniqueVisitors || 1))}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Ziyaretçi Başına Ortalama Görüntüleme
+                </div>
+              </div>
+
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400 mb-2">
+                  {getPageViews().length > 0 ? Math.round((getTopPages()[0]?.views || 0) / getTotalPageViews() * 100) : 0}%
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  En Popüler Sayfa Oranı
+                </div>
+              </div>
+
+              <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                  {new Date(analytics.lastUpdated).toLocaleDateString('tr-TR')}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  Son Veri Güncellemesi
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+              Son Aktiviteler
+            </h2>
+
             <div className="space-y-4">
-              {stats.popularPages?.map((page, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
-                        {index + 1}
-                      </span>
+              {getPageViews().slice(0, 5).map(({ page, views }, index) => (
+                <div key={page} className="flex items-center space-x-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <div className="text-2xl">{getPageIcon(page)}</div>
+                  <div className="flex-1">
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {getPageName(page)} sayfası görüntülendi
                     </div>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      {page.page}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-primary-600 h-2 rounded-full"
-                        style={{ 
-                          width: `${(page.views / Math.max(...stats.popularPages.map(p => p.views))) * 100}%` 
-                        }}
-                      />
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {views} kez görüntülendi
                     </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
-                      {formatNumber(page.views)}
-                    </span>
                   </div>
-                </motion.div>
+                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                    {new Date().toLocaleTimeString('tr-TR')}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-
-          {/* Popular Projects */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Popüler Projeler
-            </h3>
-            <div className="space-y-4">
-              {stats.popularProjects?.map((project, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex items-center justify-between"
-                >
-                  <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-secondary-100 dark:bg-secondary-900/20 rounded-lg flex items-center justify-center">
-                      <span className="text-sm font-medium text-secondary-600 dark:text-secondary-400">
-                        {index + 1}
-                      </span>
-                    </div>
-                    <span className="font-medium text-gray-900 dark:text-white">
-                      Proje {project.projectId.split('-')[1]}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                      <div
-                        className="bg-secondary-600 h-2 rounded-full"
-                        style={{ 
-                          width: `${(project.views / Math.max(...stats.popularProjects.map(p => p.views))) * 100}%` 
-                        }}
-                      />
-                    </div>
-                    <span className="text-sm text-gray-600 dark:text-gray-400 w-12 text-right">
-                      {formatNumber(project.views)}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Real-time Activity */}
-        <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Canlı Aktivite
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                {stats.dailyVisitors || 0}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Bugün Ziyaretçi
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
-                {stats.weeklyVisitors || 0}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Bu Hafta Ziyaretçi
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
-                {stats.monthlyVisitors || 0}
-              </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                Bu Ay Ziyaretçi
-              </div>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
