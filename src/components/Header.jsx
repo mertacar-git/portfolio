@@ -22,6 +22,7 @@ import {
 import { useTheme } from '../contexts/ThemeContext';
 import { siteConfig } from '../data/siteConfig';
 import { storageService } from '../services/storageService';
+import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -31,6 +32,7 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
@@ -42,6 +44,20 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Load personal info for social links
+  useEffect(() => {
+    const loadPersonalInfo = () => {
+      const savedPersonalInfo = storageService.getData('personalInfo');
+      if (savedPersonalInfo) {
+        setPersonalInfo(savedPersonalInfo);
+      } else {
+        setPersonalInfo(defaultPersonalInfo);
+      }
+    };
+    
+    loadPersonalInfo();
   }, []);
 
   // Keyboard navigation for search
@@ -226,14 +242,14 @@ const Header = () => {
 
               {/* Social Links */}
               <div className="hidden lg:flex items-center space-x-2">
-                {siteConfig.socialLinks && Object.entries(siteConfig.socialLinks).slice(0, 3).map(([key, social]) => (
+                {personalInfo.socialLinks && Object.entries(personalInfo.socialLinks).slice(0, 3).map(([key, url]) => (
                   <a
                     key={key}
-                    href={social.url}
+                    href={url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
-                    aria-label={social.label}
+                    aria-label={`${key} profilim`}
                   >
                     {getSocialIcon(key)}
                   </a>
@@ -284,14 +300,14 @@ const Header = () => {
                 
                 {/* Mobile Social Links */}
                 <div className="flex items-center space-x-2 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  {siteConfig.socialLinks && Object.entries(siteConfig.socialLinks).map(([key, social]) => (
+                  {personalInfo.socialLinks && Object.entries(personalInfo.socialLinks).map(([key, url]) => (
                     <a
                       key={key}
-                      href={social.url}
+                      href={url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
-                      aria-label={social.label}
+                      aria-label={`${key} profilim`}
                     >
                       {getSocialIcon(key)}
                     </a>
