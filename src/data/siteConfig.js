@@ -29,14 +29,6 @@ export const siteConfig = {
     }
   },
   
-  navigation: [
-    { name: "Ana Sayfa", href: "/" },
-    { name: "Hakkımda", href: "/about" },
-    { name: "Portfolio", href: "/portfolio" },
-    { name: "Blog", href: "/blog" },
-    { name: "İletişim", href: "/contact" }
-  ],
-  
   socialLinks: {
     github: {
       url: "https://github.com/mertacar",

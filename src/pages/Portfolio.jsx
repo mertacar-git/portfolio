@@ -4,9 +4,7 @@ import {
   ExternalLink,
   Github,
   Filter,
-  Search,
-  Calendar,
-  Tag
+  Search
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
 import { projects as defaultProjects } from '../data/projects';
@@ -193,7 +191,7 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Grid */}
-      <section className="section-padding bg-gray-50 dark:bg-gray-900">
+      <section className="section-padding bg-white dark:bg-gray-900">
         <div className="container-max">
           {filteredProjects.length === 0 ? (
             <div className="text-center py-12">

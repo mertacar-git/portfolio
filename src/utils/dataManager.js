@@ -152,27 +152,52 @@ class DataManager {
 
   // Analytics Management
   getAnalytics() {
-    return storageService.getData('analytics') || {
-      pageViews: {},
-      totalViews: 0,
-      uniqueVisitors: 0,
-      lastUpdated: new Date().toISOString()
-    };
+    try {
+      const analytics = storageService.getData('analytics');
+      if (!analytics || typeof analytics !== 'object') {
+        return {
+          pageViews: {},
+          totalViews: 0,
+          uniqueVisitors: 0,
+          lastUpdated: new Date().toISOString()
+        };
+      }
+      return analytics;
+    } catch (error) {
+      console.error('getAnalytics error:', error);
+      return {
+        pageViews: {},
+        totalViews: 0,
+        uniqueVisitors: 0,
+        lastUpdated: new Date().toISOString()
+      };
+    }
   }
 
   incrementPageView(page) {
-    const analytics = this.getAnalytics();
-    analytics.pageViews[page] = (analytics.pageViews[page] || 0) + 1;
-    analytics.totalViews += 1;
-    analytics.lastUpdated = new Date().toISOString();
-    storageService.saveData('analytics', analytics);
+    try {
+      const analytics = this.getAnalytics();
+      if (!analytics.pageViews) {
+        analytics.pageViews = {};
+      }
+      analytics.pageViews[page] = (analytics.pageViews[page] || 0) + 1;
+      analytics.totalViews = (analytics.totalViews || 0) + 1;
+      analytics.lastUpdated = new Date().toISOString();
+      storageService.saveData('analytics', analytics);
+    } catch (error) {
+      console.error('Page view increment error:', error);
+    }
   }
 
   incrementUniqueVisitor() {
-    const analytics = this.getAnalytics();
-    analytics.uniqueVisitors += 1;
-    analytics.lastUpdated = new Date().toISOString();
-    storageService.saveData('analytics', analytics);
+    try {
+      const analytics = this.getAnalytics();
+      analytics.uniqueVisitors = (analytics.uniqueVisitors || 0) + 1;
+      analytics.lastUpdated = new Date().toISOString();
+      storageService.saveData('analytics', analytics);
+    } catch (error) {
+      console.error('Unique visitor increment error:', error);
+    }
   }
 
   // Site Config Management
@@ -255,11 +280,32 @@ class DataManager {
 // User Preferences Management
 export const userPreferences = {
   getTheme() {
-    return storageService.getData('theme') || 'light';
+    try {
+      const theme = localStorage.getItem('theme');
+      // Eğer light tema varsa sil ve dark döndür
+      if (theme === 'light') {
+        localStorage.removeItem('theme');
+        return 'dark';
+      }
+      return theme || 'dark';
+    } catch (error) {
+      console.error('Tema alınamadı:', error);
+      return 'dark';
+    }
   },
 
   setTheme(theme) {
-    storageService.saveData('theme', theme);
+    try {
+      // Sadece dark tema kaydet
+      if (theme === 'dark') {
+        localStorage.setItem('theme', theme);
+      } else {
+        // Light tema ise sil
+        localStorage.removeItem('theme');
+      }
+    } catch (error) {
+      console.error('Tema kaydedilemedi:', error);
+    }
   },
 
   getLanguage() {
@@ -274,13 +320,21 @@ export const userPreferences = {
 // Analytics tracking
 export const analytics = {
   incrementPageView(page) {
-    const dataManager = new DataManager();
-    dataManager.incrementPageView(page);
+    try {
+      const dataManager = new DataManager();
+      dataManager.incrementPageView(page);
+    } catch (error) {
+      console.error('Analytics incrementPageView error:', error);
+    }
   },
 
   trackUniqueVisitor() {
-    const dataManager = new DataManager();
-    dataManager.incrementUniqueVisitor();
+    try {
+      const dataManager = new DataManager();
+      dataManager.incrementUniqueVisitor();
+    } catch (error) {
+      console.error('Analytics trackUniqueVisitor error:', error);
+    }
   }
 };
 

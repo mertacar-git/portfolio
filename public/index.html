@@ -38,6 +38,39 @@
     <noscript>Bu uygulamayı çalıştırmak için JavaScript'i etkinleştirmeniz gerekiyor.</noscript>
     <div id="root"></div>
     
+         <!-- Tema yükleme script'i -->
+     <script>
+       // Sayfa yüklenmeden önce temayı ayarla
+       (function() {
+         try {
+           // Önce localStorage'ı temizle (eğer light tema varsa)
+           var savedTheme = localStorage.getItem('theme');
+           if (savedTheme === 'light') {
+             localStorage.removeItem('theme');
+           }
+           
+           // localStorage'dan tema al
+           var theme = localStorage.getItem('theme');
+           
+           // Eğer tema yoksa veya light ise dark yap
+           if (!theme || theme === 'light') {
+             theme = 'dark';
+             localStorage.setItem('theme', theme);
+           }
+           
+           // Dark tema için class ekle
+           document.documentElement.classList.add('dark');
+           
+           // Light tema class'ını kaldır (eğer varsa)
+           document.documentElement.classList.remove('light');
+           
+         } catch (error) {
+           // Hata durumunda dark tema kullan
+           document.documentElement.classList.add('dark');
+         }
+       })();
+     </script>
+    
     <!-- GitHub Pages SPA Routing -->
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages

@@ -4,9 +4,7 @@ import {
   Mail, 
   Phone, 
   MapPin, 
-  Send,
-  CheckCircle,
-  AlertCircle
+  Send
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
 import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';

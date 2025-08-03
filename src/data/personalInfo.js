@@ -85,10 +85,10 @@ export const personalInfo = {
 
   // Proje İstatistikleri
   stats: {
-    completedProjects: 5,
-    webAppsBuilt: 3,
-    yearsExperience: 1,
-    happyClients: 2
+    completedProjects: 12,
+    webAppsBuilt: 8,
+    yearsExperience: 3,
+    happyClients: 15
   },
 
   // Sertifikalar

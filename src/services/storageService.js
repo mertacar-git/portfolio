@@ -15,9 +15,18 @@ export const storageService = {
   getData(key) {
     try {
       const data = localStorage.getItem(key);
-      return data ? JSON.parse(data) : null;
+      if (!data) return null;
+      
+      // Eğer data bir string ise ve JSON değilse, direkt döndür
+      if (typeof data === 'string' && !data.startsWith('{') && !data.startsWith('[')) {
+        return data;
+      }
+      
+      return JSON.parse(data);
     } catch (error) {
       console.error('Veri okuma hatası:', error);
+      // Hatalı veriyi temizle
+      localStorage.removeItem(key);
       return null;
     }
   },

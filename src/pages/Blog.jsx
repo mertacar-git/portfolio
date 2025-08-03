@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { 
   Calendar,
   User,
-  Tag,
   Search,
   Filter,
   ArrowRight
@@ -205,7 +204,7 @@ const Blog = () => {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="section-padding bg-gray-50 dark:bg-gray-900">
+      <section className="section-padding bg-white dark:bg-gray-900">
         <div className="container-max">
           {filteredPosts.length === 0 ? (
             <div className="text-center py-12">

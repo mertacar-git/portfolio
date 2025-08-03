@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
+import { Lock, Eye, EyeOff, User } from 'lucide-react';
 import { adminAuth } from '../../utils/auth';
+import useNavigation from '../../hooks/useNavigation';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -10,168 +10,146 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
+  const { goToAdmin } = useNavigation();
 
   useEffect(() => {
-    // Eğer zaten giriş yapılmışsa dashboard'a yönlendir
-    if (adminAuth.isLoggedIn()) {
-      navigate('/admin/dashboard');
+    // Check if user is already logged in
+    const user = adminAuth.getUser();
+    if (user) {
+      goToAdmin();
     }
-  }, [navigate]);
+  }, [goToAdmin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    setSuccess('');
 
     try {
-      const result = adminAuth.login(username, password);
-      
-      if (result.success) {
-        setSuccess('Giriş başarılı! Yönlendiriliyorsunuz...');
-        setTimeout(() => {
-          navigate('/admin/dashboard');
-        }, 1000);
+      const success = await adminAuth.login(username, password);
+      if (success) {
+        goToAdmin();
       } else {
-        setError(result.message);
+        setError('Kullanıcı adı veya şifre hatalı');
       }
-    } catch (error) {
-      setError('Giriş sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch (err) {
+      setError('Giriş yapılırken bir hata oluştu');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 px-4">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-8">
+        {/* Login Card */}
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
               <Lock className="w-8 h-8 text-primary-600" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Yönetici Girişi
+              Admin Girişi
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Güvenli erişim için kimlik doğrulaması gerekli
+              Yönetici paneline erişmek için giriş yapın
             </p>
           </div>
 
-          {/* Error/Success Messages */}
-          {error && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center space-x-2"
-            >
-              <AlertCircle className="w-5 h-5 text-red-600" />
-              <span className="text-red-700 dark:text-red-300 text-sm">{error}</span>
-            </motion.div>
-          )}
-
-          {success && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg flex items-center space-x-2"
-            >
-              <CheckCircle className="w-5 h-5 text-green-600" />
-              <span className="text-green-700 dark:text-green-300 text-sm">{success}</span>
-            </motion.div>
-          )}
-
           {/* Login Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Username Field */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Kullanıcı Adı
               </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
-                placeholder="Kullanıcı adınızı girin"
-                required
-                disabled={isLoading}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Kullanıcı adınızı girin"
+                  required
+                />
+              </div>
             </div>
 
+            {/* Password Field */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Şifre
               </label>
               <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
                 <input
-                  type={showPassword ? 'text' : 'password'}
                   id="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
+                  className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="Şifrenizi girin"
                   required
-                  disabled={isLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-                  disabled={isLoading}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
                   {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
+                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   ) : (
-                    <Eye className="w-5 h-5" />
+                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                   )}
                 </button>
               </div>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+              >
+                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+              </motion.div>
+            )}
+
+            {/* Submit Button */}
             <button
               type="submit"
-              disabled={isLoading || !username || !password}
-              className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+              disabled={isLoading}
+              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
             >
               {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Giriş yapılıyor...</span>
-                </>
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Giriş Yapılıyor...
+                </div>
               ) : (
-                <>
-                  <Lock className="w-5 h-5" />
-                  <span>Giriş Yap</span>
-                </>
+                'Giriş Yap'
               )}
             </button>
           </form>
 
-          {/* Back to Home */}
-          <div className="mt-6 text-center">
-            <a
-              href="/"
-              className="text-sm text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 transition-colors duration-200"
-            >
-              ← Ana Sayfaya Dön
-            </a>
+          {/* Footer */}
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Demo hesap: <span className="font-mono">admin</span> / <span className="font-mono">admin123</span>
+            </p>
           </div>
         </div>
       </motion.div>

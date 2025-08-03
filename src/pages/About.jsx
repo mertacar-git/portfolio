@@ -14,9 +14,11 @@ import {
 import { storageService } from '../services/storageService';
 import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';
 import { analytics } from '../utils/dataManager';
+import useProfileImage from '../hooks/useProfileImage';
 
 const About = () => {
   const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
+  const { getImageStyle, getImageUrl } = useProfileImage();
 
   useEffect(() => {
     analytics.incrementPageView('about');
@@ -68,17 +70,11 @@ const About = () => {
               <div className="relative inline-block">
                 <div className="w-64 h-64 mx-auto lg:mx-0 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl">
                   <img
-                    src="/images/profile.jpg"
+                    src={getImageUrl()}
                     alt="Mert Acar"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    style={getImageStyle()}
                   />
-                  <div className="w-full h-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-6xl font-bold" style={{ display: 'none' }}>
-                    M
-                  </div>
                 </div>
                 <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-gray-700"></div>
               </div>
@@ -140,7 +136,7 @@ const About = () => {
       </section>
 
       {/* Skills Section */}
-      <section className="section-padding bg-gray-50 dark:bg-gray-900">
+      <section className="section-padding bg-white dark:bg-gray-900">
         <div className="container-max">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -238,7 +234,7 @@ const About = () => {
       </section>
 
       {/* Education Section */}
-      <section className="section-padding bg-gray-50 dark:bg-gray-900">
+      <section className="section-padding bg-white dark:bg-gray-900">
         <div className="container-max">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -364,7 +360,7 @@ const About = () => {
 
       {/* Certifications Section */}
       {personalInfo.certifications && personalInfo.certifications.length > 0 && (
-        <section className="section-padding bg-gray-50 dark:bg-gray-900">
+        <section className="section-padding bg-white dark:bg-gray-900">
           <div className="container-max">
             <motion.div
               initial={{ opacity: 0, y: 30 }}

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ArrowRight, 
-  ExternalLink,
   Github,
   Linkedin,
+  Twitter,
   Mail,
   ChevronDown,
   Eye
@@ -15,15 +15,15 @@ import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';
 import { projects as defaultProjects } from '../data/projects';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
 import { analytics, dataManager } from '../utils/dataManager';
+import useProfileImage from '../hooks/useProfileImage';
 
 const Home = () => {
   const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
-  const [featuredProjects, setFeaturedProjects] = useState([]);
-  const [featuredBlogPosts, setFeaturedBlogPosts] = useState([]);
   const [analyticsData, setAnalyticsData] = useState({
     totalViews: 0,
     uniqueVisitors: 0
   });
+  const { getImageStyle, getImageUrl } = useProfileImage();
 
   useEffect(() => {
     // Analytics tracking
@@ -32,47 +32,64 @@ const Home = () => {
     
     loadData();
     loadAnalytics();
+    
+    // Her 30 saniyede bir analytics'i güncelle
+    const interval = setInterval(() => {
+      loadAnalytics();
+    }, 30000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   const loadData = () => {
-    // Kişisel bilgileri yükle
-    const savedPersonalInfo = storageService.getData('personalInfo');
-    if (savedPersonalInfo) {
-      setPersonalInfo(savedPersonalInfo);
-    } else {
+    try {
+      // Kişisel bilgileri yükle
+      const savedPersonalInfo = storageService.getData('personalInfo');
+      if (savedPersonalInfo && typeof savedPersonalInfo === 'object') {
+        setPersonalInfo(savedPersonalInfo);
+      } else {
+        setPersonalInfo(defaultPersonalInfo);
+        storageService.saveData('personalInfo', defaultPersonalInfo);
+      }
+
+      // Projeleri yükle
+      const savedProjects = storageService.getData('projects');
+      if (!savedProjects || !Array.isArray(savedProjects) || savedProjects.length === 0) {
+        storageService.saveData('projects', defaultProjects);
+      }
+
+      // Blog yazılarını yükle
+      const savedBlogPosts = storageService.getData('blogPosts');
+      if (!savedBlogPosts || !Array.isArray(savedBlogPosts) || savedBlogPosts.length === 0) {
+        storageService.saveData('blogPosts', defaultBlogPosts);
+      }
+    } catch (error) {
+      console.error('loadData error:', error);
+      // Hata durumunda varsayılan verileri kullan
       setPersonalInfo(defaultPersonalInfo);
       storageService.saveData('personalInfo', defaultPersonalInfo);
-    }
-
-    // Projeleri yükle
-    const savedProjects = storageService.getData('projects');
-    if (savedProjects && savedProjects.length > 0) {
-      const featured = savedProjects.filter(project => project.featured);
-      setFeaturedProjects(featured);
-    } else {
-      const featured = defaultProjects.filter(project => project.featured);
-      setFeaturedProjects(featured);
       storageService.saveData('projects', defaultProjects);
-    }
-
-    // Blog yazılarını yükle
-    const savedBlogPosts = storageService.getData('blogPosts');
-    if (savedBlogPosts && savedBlogPosts.length > 0) {
-      const featured = savedBlogPosts.filter(post => post.featured);
-      setFeaturedBlogPosts(featured);
-    } else {
-      const featured = defaultBlogPosts.filter(post => post.featured);
-      setFeaturedBlogPosts(featured);
       storageService.saveData('blogPosts', defaultBlogPosts);
     }
   };
 
   const loadAnalytics = () => {
-    const analytics = dataManager.getAnalytics();
-    setAnalyticsData({
-      totalViews: analytics.totalViews || 0,
-      uniqueVisitors: analytics.uniqueVisitors || 0
-    });
+    try {
+      const analytics = dataManager.getAnalytics();
+      setAnalyticsData({
+        totalViews: analytics.totalViews || 0,
+        uniqueVisitors: analytics.uniqueVisitors || 0
+      });
+      
+      // Sayfa yüklendiğinde görüntülenme sayısını artır
+      dataManager.incrementPageView('home');
+    } catch (error) {
+      console.error('Analytics yükleme hatası:', error);
+      setAnalyticsData({
+        totalViews: 0,
+        uniqueVisitors: 0
+      });
+    }
   };
 
   const scrollToSection = (sectionId) => {
@@ -84,12 +101,24 @@ const Home = () => {
 
   // Stats with analytics data
   const getStats = () => {
-    const baseStats = { ...personalInfo.stats };
-    return {
-      ...baseStats,
-      totalViews: analyticsData.totalViews,
-      uniqueVisitors: analyticsData.uniqueVisitors
-    };
+    try {
+      const baseStats = personalInfo.stats ? { ...personalInfo.stats } : {};
+      return {
+        ...baseStats,
+        totalViews: analyticsData.totalViews || 0,
+        uniqueVisitors: analyticsData.uniqueVisitors || 0
+      };
+    } catch (error) {
+      console.error('getStats error:', error);
+      return {
+        totalViews: 0,
+        uniqueVisitors: 0,
+        completedProjects: 0,
+        webAppsBuilt: 0,
+        yearsExperience: 0,
+        happyClients: 0
+      };
+    }
   };
 
   return (
@@ -112,30 +141,24 @@ const Home = () => {
               <div className="relative inline-block">
                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl mx-auto">
                   <img
-                    src="/images/profile.jpg"
+                    src={getImageUrl()}
                     alt="Mert Acar"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    style={getImageStyle()}
                   />
-                  <div className="w-full h-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white text-4xl font-bold" style={{ display: 'none' }}>
-                    M
-                  </div>
                 </div>
                 <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white dark:border-gray-700"></div>
               </div>
             </motion.div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              {personalInfo.name}
+              {personalInfo?.name || 'Mert Acar'}
             </h1>
             <h2 className="text-xl md:text-2xl text-blue-600 dark:text-blue-400 font-semibold mb-6">
-              {personalInfo.title}
+              {personalInfo?.title || 'Full Stack Developer'}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-              {personalInfo.subtitle}
+              {personalInfo?.subtitle || 'Modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.'}
             </p>
 
             {/* CTA Buttons */}
@@ -158,7 +181,7 @@ const Home = () => {
 
             {/* Social Links */}
             <div className="flex justify-center space-x-4 mb-8">
-              {personalInfo.socialLinks && Object.entries(personalInfo.socialLinks).map(([platform, url]) => (
+              {personalInfo?.socialLinks && Object.entries(personalInfo.socialLinks).map(([platform, url]) => (
                 <a
                   key={platform}
                   href={url}
@@ -231,17 +254,19 @@ const Home = () => {
                   Teknolojiler
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {personalInfo.technologies.slice(0, 8).map((tech, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center space-x-3 p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg"
-                    >
-                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                      <span className="text-gray-700 dark:text-gray-300 font-medium">
-                        {tech}
-                      </span>
-                    </div>
-                  ))}
+                  {personalInfo.technologies && Array.isArray(personalInfo.technologies) && 
+                    personalInfo.technologies.slice(0, 8).map((tech, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center space-x-3 p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg"
+                      >
+                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                        <span className="text-gray-700 dark:text-gray-300 font-medium">
+                          {tech}
+                        </span>
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
             </motion.div>
