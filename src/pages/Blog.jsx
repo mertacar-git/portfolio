@@ -292,7 +292,7 @@ const Blog = () => {
                     {/* Read More Link */}
                     <Link
                       to={`/blog/${post.id}`}
-                      className="inline-flex items-center space-x-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
+                      className="btn-outline btn-sm inline-flex items-center space-x-2"
                     >
                       <span>Devamını Oku</span>
                       <ArrowRight className="w-4 h-4" />

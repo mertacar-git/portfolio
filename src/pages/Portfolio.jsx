@@ -272,7 +272,7 @@ const Portfolio = () => {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 px-4 py-2 bg-primary-600 text-white text-center rounded-lg hover:bg-primary-700 transition-colors duration-200 flex items-center justify-center space-x-2"
+                          className="btn-primary flex-1 inline-flex items-center justify-center space-x-2"
                         >
                           <ExternalLink className="w-4 h-4" />
                           <span>Demo</span>
@@ -283,7 +283,7 @@ const Portfolio = () => {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex-1 px-4 py-2 bg-gray-800 dark:bg-gray-700 text-white text-center rounded-lg hover:bg-gray-900 dark:hover:bg-gray-600 transition-colors duration-200 flex items-center justify-center space-x-2"
+                          className="btn-secondary flex-1 inline-flex items-center justify-center space-x-2"
                         >
                           <Github className="w-4 h-4" />
                           <span>Kod</span>

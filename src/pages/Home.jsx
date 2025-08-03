@@ -140,14 +140,14 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link
                 to="/portfolio"
-                className="btn-primary inline-flex items-center space-x-2"
+                className="btn-primary btn-lg inline-flex items-center space-x-2"
               >
                 <span>Projelerimi Gör</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/contact"
-                className="btn-secondary inline-flex items-center space-x-2"
+                className="btn-secondary btn-lg inline-flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
                 <span>İletişime Geç</span>
@@ -209,7 +209,7 @@ const Home = () => {
               <div className="mt-8">
                 <Link
                   to="/about"
-                  className="btn-primary inline-flex items-center space-x-2"
+                  className="btn-primary btn-lg inline-flex items-center space-x-2"
                 >
                   <span>Daha Fazla Bilgi</span>
                   <ArrowRight className="w-5 h-5" />
