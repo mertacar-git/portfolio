@@ -1,3 +1,23 @@
+/* Force dark theme immediately - no flash allowed */
+html, body, #root, * {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Override any light theme */
+html.light, html.light body, html.light #root,
+body.light, #root.light {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
+/* Ensure dark theme is always applied */
+html.dark, html.dark body, html.dark #root,
+body.dark, #root.dark {
+  background-color: #111827 !important;
+  color: #f9fafb !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,8 +55,8 @@
   
   /* Light tema için (eğer gerekirse) */
   html.light, html.light body, html.light #root {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
+    background-color: #111827 !important; /* Force dark even for light */
+    color: #f9fafb !important;
   }
   
   /* Tüm elementler için varsayılan dark tema */
@@ -51,6 +71,15 @@
   
   /* Ana container için */
   .min-h-screen {
+    background-color: #111827 !important;
+  }
+  
+  /* Override Tailwind's default background */
+  .bg-white {
+    background-color: #111827 !important;
+  }
+  
+  .bg-gray-50, .bg-gray-100, .bg-gray-200 {
     background-color: #111827 !important;
   }
 }

@@ -35,7 +35,7 @@
     <!-- Critical CSS - Flash'i önlemek için -->
     <style>
       /* Sayfa yüklenmeden önce uygulanacak kritik CSS */
-      html, body {
+      html, body, #root, * {
         background-color: #111827 !important;
         color: #f9fafb !important;
         margin: 0 !important;
@@ -53,6 +53,11 @@
       * {
         background-color: #111827 !important;
         color: #f9fafb !important;
+      }
+      
+      /* Override any light theme classes */
+      .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200 {
+        background-color: #111827 !important;
       }
       
       /* Spinner için */
@@ -100,6 +105,7 @@
         try {
           // localStorage'ı temizle ve dark tema zorla
           localStorage.setItem('theme', 'dark');
+          localStorage.removeItem('light');
           
           // HTML'e dark class ekle
           document.documentElement.classList.add('dark');
@@ -115,12 +121,48 @@
           document.body.style.backgroundColor = '#111827';
           document.body.style.color = '#f9fafb';
           
+          // Root element'e de uygula
+          const root = document.getElementById('root');
+          if (root) {
+            root.style.backgroundColor = '#111827';
+            root.style.color = '#f9fafb';
+          }
+          
+          // Tüm div elementlerini kontrol et ve dark tema uygula
+          const allElements = document.querySelectorAll('*');
+          allElements.forEach(element => {
+            if (element.style.backgroundColor === 'white' || 
+                element.style.backgroundColor === 'rgb(255, 255, 255)' ||
+                element.classList.contains('bg-white') ||
+                element.classList.contains('bg-gray-50') ||
+                element.classList.contains('bg-gray-100') ||
+                element.classList.contains('bg-gray-200')) {
+              element.style.backgroundColor = '#111827';
+              element.style.color = '#f9fafb';
+            }
+          });
+          
         } catch (error) {
           // Hata durumunda da dark tema kullan
           document.documentElement.classList.add('dark');
           document.body.classList.add('dark');
         }
       })();
+      
+      // Sürekli kontrol et
+      setInterval(function() {
+        try {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+          document.body.classList.add('dark');
+          document.body.classList.remove('light');
+          
+          document.documentElement.style.backgroundColor = '#111827';
+          document.body.style.backgroundColor = '#111827';
+        } catch (error) {
+          // Hata durumunda sessizce devam et
+        }
+      }, 100);
     </script>
     
     <!-- GitHub Pages SPA Routing -->
