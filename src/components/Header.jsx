@@ -202,10 +202,10 @@ const Header = () => {
               {/* Search Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200 relative group"
+                className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 relative group shadow-sm"
                 aria-label="Search"
               >
-                <Search className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                <Search className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                 <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">
                   Ctrl+K
                 </span>
@@ -214,13 +214,13 @@ const Header = () => {
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
+                className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
                 aria-label="Toggle theme"
               >
                 {theme === 'light' ? (
-                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  <Moon className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                 ) : (
-                  <Sun className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  <Sun className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                 )}
               </button>
 
@@ -232,7 +232,7 @@ const Header = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
+                    className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
                     aria-label={social.label}
                   >
                     {getSocialIcon(key)}
@@ -243,13 +243,13 @@ const Header = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
+                className="md:hidden p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
                 aria-label="Toggle menu"
               >
                 {isMenuOpen ? (
-                  <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  <X className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                 ) : (
-                  <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
                 )}
               </button>
             </div>
@@ -290,7 +290,7 @@ const Header = () => {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200"
+                      className="p-2 rounded-lg bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors duration-200 shadow-sm"
                       aria-label={social.label}
                     >
                       {getSocialIcon(key)}
@@ -416,9 +416,9 @@ const getIcon = (iconName) => {
 
 const getSocialIcon = (platform) => {
   const icons = {
-    github: <Github className="w-4 h-4" />,
-    linkedin: <Linkedin className="w-4 h-4" />,
-    twitter: <Twitter className="w-4 h-4" />
+    github: <Github className="w-4 h-4 text-gray-700 dark:text-gray-200" />,
+    linkedin: <Linkedin className="w-4 h-4 text-gray-700 dark:text-gray-200" />,
+    twitter: <Twitter className="w-4 h-4 text-gray-700 dark:text-gray-200" />
   };
   return icons[platform] || null;
 };
