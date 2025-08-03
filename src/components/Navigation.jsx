@@ -20,6 +20,11 @@ const iconMap = {
   'AlertTriangle': '⚠️'
 };
 
+// Icon helper function
+const getIcon = (iconName) => {
+  return iconMap[iconName] || '📄';
+};
+
 const Navigation = ({ 
   variant = 'desktop', 
   onItemClick = null,
@@ -34,10 +39,6 @@ const Navigation = ({
     if (onItemClick) {
       onItemClick(route);
     }
-  };
-
-  const getIcon = (iconName) => {
-    return iconMap[iconName] || '📄';
   };
 
   const getActiveClass = (route) => {

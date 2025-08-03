@@ -30,15 +30,71 @@ const componentMap = {
   'NotFound': lazy(() => import('../components/NotFound'))
 };
 
-// Component yükleyici
+// Error fallback component
+const ErrorFallback = ({ componentName }) => (
+  <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+    <div className="text-center">
+      <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
+        <span className="text-2xl">⚠️</span>
+      </div>
+      <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        Sayfa Yüklenemedi
+      </h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-4">
+        {componentName} bileşeni yüklenirken bir hata oluştu.
+      </p>
+      <button
+        onClick={() => window.location.reload()}
+        className="btn-primary"
+      >
+        Sayfayı Yenile
+      </button>
+    </div>
+  </div>
+);
+
+// Component yükleyici with error handling
 const loadComponent = (componentName) => {
   const Component = componentMap[componentName];
   if (!Component) {
     console.error(`Component not found: ${componentName}`);
-    return () => <div>Component bulunamadı: {componentName}</div>;
+    return () => <ErrorFallback componentName={componentName} />;
   }
-  return Component;
+  
+  // Wrap component with error boundary
+  const WrappedComponent = (props) => (
+    <React.Suspense fallback={<LoadingSkeleton />}>
+      <ErrorBoundary>
+        <Component {...props} />
+      </ErrorBoundary>
+    </React.Suspense>
+  );
+  
+  return WrappedComponent;
 };
+
+// Simple Error Boundary for individual components
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Component error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ErrorFallback componentName="Unknown" />;
+    }
+    return this.props.children;
+  }
+}
 
 // Rota renderer
 const RouteRenderer = () => {
