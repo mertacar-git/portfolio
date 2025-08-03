@@ -1,6 +1,6 @@
 {
   "name": "mert-kisisel-website",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mert'in kişisel web sitesi",
   "homepage": "https://mertacar-git.github.io/portfolio",
   "private": true,
@@ -23,7 +23,6 @@
   "scripts": {
     "start": "set PORT=3003 && react-scripts start",
     "build": "react-scripts build",
-
     "eject": "react-scripts eject",
     "dev": "set PORT=3003 && react-scripts start",
     "predeploy": "npm run build",

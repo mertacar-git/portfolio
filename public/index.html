@@ -2,12 +2,17 @@
 <html lang="tr" class="dark">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#111827" />
     <meta name="description" content="Mert - Full Stack Developer. Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer" />
     <meta name="keywords" content="Mert, Full Stack Developer, React, Node.js, Portfolio, Web Development" />
     <meta name="author" content="Mert" />
+    
+    <!-- Cache busting -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -74,6 +79,12 @@
       [style*="background-color: #ffffff"],
       [style*="background-color: rgb(255, 255, 255)"],
       [style*="background-color: rgb(255,255,255)"] {
+        background-color: #111827 !important;
+        color: #f9fafb !important;
+      }
+      
+      /* Force dark theme on all possible elements */
+      html, body, #root, div, section, main, header, footer, nav, aside, article, p, h1, h2, h3, h4, h5, h6, span, a, button, input, textarea, select, option, table, tr, td, th, ul, ol, li {
         background-color: #111827 !important;
         color: #f9fafb !important;
       }
@@ -197,7 +208,7 @@
         } catch (error) {
           // Hata durumunda sessizce devam et
         }
-      }, 50); // 50ms'de bir kontrol et
+      }, 25); // 25ms'de bir kontrol et - daha agresif
       
       // MutationObserver ile DOM değişikliklerini izle
       const observer = new MutationObserver(function(mutations) {
@@ -225,6 +236,15 @@
         childList: true,
         subtree: true
       });
+      
+      // Cache temizleme
+      if ('caches' in window) {
+        caches.keys().then(function(names) {
+          for (let name of names) {
+            caches.delete(name);
+          }
+        });
+      }
     </script>
     
     <!-- GitHub Pages SPA Routing -->
