@@ -6,47 +6,52 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-  }
-  
-  /* Agresif tema ayarları - flash'i önlemek için */
-  html {
     background-color: #111827 !important;
     color: #f9fafb !important;
+  }
+  
+  /* En agresif tema ayarları - flash'i tamamen önlemek için */
+  html, body, #root {
+    background-color: #111827 !important;
+    color: #f9fafb !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   body {
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
-    color: #f9fafb;
+    color: #f9fafb !important;
     background-color: #111827 !important;
     margin: 0;
     padding: 0;
   }
   
   /* Dark tema için varsayılan ayarlar */
-  html.dark {
-    background-color: #111827 !important;
-    color: #f9fafb !important;
-  }
-  
-  html.dark body {
+  html.dark, html.dark body, html.dark #root {
     background-color: #111827 !important;
     color: #f9fafb !important;
   }
   
   /* Light tema için (eğer gerekirse) */
-  html.light {
+  html.light, html.light body, html.light #root {
     background-color: #ffffff !important;
     color: #1f2937 !important;
   }
   
-  html.light body {
-    background-color: #ffffff !important;
-    color: #1f2937 !important;
-  }
-  
+  /* Tüm elementler için varsayılan dark tema */
   * {
     box-sizing: border-box;
+  }
+  
+  /* Div elementleri için özel ayar */
+  div {
+    background-color: transparent !important;
+  }
+  
+  /* Ana container için */
+  .min-h-screen {
+    background-color: #111827 !important;
   }
 }
 

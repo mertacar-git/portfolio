@@ -14,7 +14,6 @@ import ToastProvider from './contexts/ToastContext';
 import { analytics } from './utils/dataManager';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
@@ -27,15 +26,9 @@ function App() {
         } catch (error) {
           console.error('Analytics error:', error);
         }
-        
-        // Daha kısa loading süresi - flash'i önlemek için
-        await new Promise(resolve => setTimeout(resolve, 300));
-        
-        setIsLoading(false);
       } catch (error) {
         console.error('App initialization error:', error);
         setHasError(true);
-        setIsLoading(false);
       }
     };
 
@@ -62,20 +55,6 @@ function App() {
           >
             Sayfayı Yenile
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Loading state - daha hızlı ve dark tema ile
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <div className="spinner mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-300">
-            Yükleniyor...
-          </h2>
         </div>
       </div>
     );
