@@ -93,21 +93,14 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-600/10 to-secondary-600/10"></div>
-        
-        <div className="container-max relative z-10">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800">
+        <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center"
           >
             {/* Profile Image */}
             <motion.div
@@ -127,7 +120,7 @@ const Home = () => {
                       e.target.nextSibling.style.display = 'flex';
                     }}
                   />
-                  <div className="w-full h-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-4xl font-bold" style={{ display: 'none' }}>
+                  <div className="w-full h-full bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white text-4xl font-bold" style={{ display: 'none' }}>
                     M
                   </div>
                 </div>
@@ -138,7 +131,7 @@ const Home = () => {
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               {personalInfo.name}
             </h1>
-            <h2 className="text-xl md:text-2xl text-primary-600 dark:text-primary-400 font-semibold mb-6">
+            <h2 className="text-xl md:text-2xl text-blue-600 dark:text-blue-400 font-semibold mb-6">
               {personalInfo.title}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
@@ -149,14 +142,14 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link
                 to="/portfolio"
-                className="btn-primary btn-lg inline-flex items-center space-x-2"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
               >
                 <span>Projelerimi Gör</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/contact"
-                className="btn-secondary btn-lg inline-flex items-center space-x-2"
+                className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
                 <span>İletişime Geç</span>
@@ -188,7 +181,7 @@ const Home = () => {
             >
               <button
                 onClick={() => scrollToSection('about')}
-                className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
               >
                 <ChevronDown className="w-6 h-6 animate-bounce" />
               </button>
@@ -198,8 +191,8 @@ const Home = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="section-padding bg-white dark:bg-gray-800">
-        <div className="container-max">
+      <section id="about" className="py-16 px-4 bg-white dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -218,7 +211,7 @@ const Home = () => {
               <div className="mt-8">
                 <Link
                   to="/about"
-                  className="btn-primary btn-lg inline-flex items-center space-x-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
                 >
                   <span>Daha Fazla Bilgi</span>
                   <ArrowRight className="w-5 h-5" />
@@ -233,7 +226,7 @@ const Home = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-2xl p-8">
+              <div className="bg-gradient-to-br from-blue-100 to-green-100 dark:from-blue-900/20 dark:to-green-900/20 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Teknolojiler
                 </h3>
@@ -243,7 +236,7 @@ const Home = () => {
                       key={index}
                       className="flex items-center space-x-3 p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg"
                     >
-                      <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
+                      <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                       <span className="text-gray-700 dark:text-gray-300 font-medium">
                         {tech}
                       </span>
@@ -257,8 +250,8 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="section-padding bg-gradient-to-r from-primary-600 to-secondary-600">
-        <div className="container-max">
+      <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-green-600">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -269,7 +262,7 @@ const Home = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Başarılarım
             </h2>
-            <p className="text-xl text-primary-100">
+            <p className="text-xl text-blue-100">
               Kariyerim boyunca elde ettiğim başarılar
             </p>
           </motion.div>
@@ -284,7 +277,7 @@ const Home = () => {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <motion.div 
+                <motion.div
                   className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center justify-center"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
@@ -294,7 +287,7 @@ const Home = () => {
                   {key === 'totalViews' && <Eye className="w-6 h-6 mr-2" />}
                   {value}+
                 </motion.div>
-                <div className="text-primary-100 text-sm capitalize">
+                <div className="text-blue-100 text-sm capitalize">
                   {key === 'totalViews' && 'Toplam Görüntülenme'}
                   {key === 'uniqueVisitors' && 'Benzersiz Ziyaretçi'}
                   {key === 'completedProjects' && 'Tamamlanan Proje'}
@@ -307,227 +300,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Projects */}
-      <section className="section-padding bg-gray-50 dark:bg-gray-900">
-        <div className="container-max">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Öne Çıkan Projeler
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              En son geliştirdiğim projelerden bazıları
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card overflow-hidden group"
-              >
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                    <div className="flex space-x-2">
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors duration-200"
-                        onClick={() => analytics.incrementProjectView(project.id)}
-                      >
-                        <ExternalLink className="w-4 h-4 text-white" />
-                      </a>
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors duration-200"
-                      >
-                        <Github className="w-4 h-4 text-white" />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.technologies && project.technologies.slice(0, 3).map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 bg-primary-100 text-primary-700 dark:bg-primary-900/20 dark:text-primary-300 text-xs rounded-full"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <Link
-                    to={`/portfolio#project-${project.id}`}
-                    className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium inline-flex items-center space-x-1"
-                  >
-                    <span>Detayları Gör</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
-            <Link
-              to="/portfolio"
-              className="btn-outline inline-flex items-center space-x-2"
-            >
-              <span>Tüm Projeleri Gör</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Featured Blog Posts */}
-      <section className="section-padding bg-white dark:bg-gray-800">
-        <div className="container-max">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Son Blog Yazıları
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Teknoloji ve yazılım geliştirme hakkında yazılarım
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredBlogPosts.map((post, index) => (
-              <motion.article
-                key={post.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="card overflow-hidden group"
-              >
-                <div className="aspect-video bg-gray-200 dark:bg-gray-700"></div>
-                <div className="p-6">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    <span>{post.publishDate}</span>
-                    <span>•</span>
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
-                    {post.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.tags && post.tags.slice(0, 2).map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 bg-secondary-100 text-secondary-700 dark:bg-secondary-900/20 dark:text-secondary-300 text-xs rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <Link
-                    to={`/blog/${post.id}`}
-                    className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium inline-flex items-center space-x-1"
-                    onClick={() => analytics.incrementBlogView(post.id)}
-                  >
-                    <span>Devamını Oku</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
-            <Link
-              to="/blog"
-              className="btn-outline inline-flex items-center space-x-2"
-            >
-              <span>Tüm Yazıları Gör</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="section-padding bg-gradient-to-r from-primary-600 to-secondary-600">
-        <div className="container-max text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Projeniz İçin Birlikte Çalışalım
-            </h2>
-            <p className="text-xl text-primary-100 mb-8">
-              Modern ve kullanıcı dostu web uygulamaları geliştirmek için hazırım.
-              Projenizi hayata geçirmek için benimle iletişime geçin.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/contact"
-                className="bg-white text-primary-600 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
-              >
-                <Mail className="w-5 h-5" />
-                <span>İletişime Geç</span>
-              </Link>
-              {personalInfo.socialLinks?.linkedin && (
-                <a
-                  href={personalInfo.socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-primary-700 text-white hover:bg-primary-800 font-medium py-3 px-8 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
-                >
-                  <Linkedin className="w-5 h-5" />
-                  <span>LinkedIn'de Takip Et</span>
-                </a>
-              )}
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 };
@@ -536,10 +308,8 @@ const Home = () => {
 const getSocialIcon = (platform) => {
   const icons = {
     github: <Github className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
-    linkedin: <Linkedin className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
-    twitter: <svg className="w-5 h-5 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-    </svg>
+    linkedin: <Linkedin className="w-5 h-5 text-blue-600" />,
+    twitter: <Twitter className="w-5 h-5 text-blue-400" />
   };
   return icons[platform] || null;
 };
