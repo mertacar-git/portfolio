@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
-import { adminAuth, securityUtils } from '../../utils/auth';
+import { adminAuth } from '../../utils/auth';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -11,14 +11,9 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [securityStatus, setSecurityStatus] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Güvenlik durumunu kontrol et
-    const status = securityUtils.getSecurityStatus();
-    setSecurityStatus(status);
-
     // Eğer zaten giriş yapılmışsa dashboard'a yönlendir
     if (adminAuth.isLoggedIn()) {
       navigate('/admin/dashboard');
@@ -32,7 +27,7 @@ const AdminLogin = () => {
     setSuccess('');
 
     try {
-      const result = securityUtils.login(username, password);
+      const result = adminAuth.login(username, password);
       
       if (result.success) {
         setSuccess('Giriş başarılı! Yönlendiriliyorsunuz...');
@@ -77,27 +72,6 @@ const AdminLogin = () => {
             </p>
           </div>
 
-          {/* Security Status */}
-          {securityStatus && (
-            <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-600 dark:text-gray-400">
-                  Kalan deneme hakkı:
-                </span>
-                <span className={`font-semibold ${
-                  securityStatus.remainingAttempts <= 2 ? 'text-red-600' : 'text-green-600'
-                }`}>
-                  {securityStatus.remainingAttempts}
-                </span>
-              </div>
-              {securityStatus.isLocked && (
-                <div className="mt-2 text-xs text-red-600">
-                  Hesap geçici olarak kilitlendi. Lütfen bekleyin.
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Error/Success Messages */}
           {error && (
             <motion.div
@@ -136,7 +110,7 @@ const AdminLogin = () => {
                 className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
                 placeholder="Kullanıcı adınızı girin"
                 required
-                disabled={isLoading || (securityStatus?.isLocked)}
+                disabled={isLoading}
               />
             </div>
 
@@ -154,7 +128,7 @@ const AdminLogin = () => {
                   className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors duration-200"
                   placeholder="Şifrenizi girin"
                   required
-                  disabled={isLoading || (securityStatus?.isLocked)}
+                  disabled={isLoading}
                 />
                 <button
                   type="button"
@@ -173,7 +147,7 @@ const AdminLogin = () => {
 
             <button
               type="submit"
-              disabled={isLoading || (securityStatus?.isLocked) || !username || !password}
+              disabled={isLoading || !username || !password}
               className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
             >
               {isLoading ? (
@@ -189,18 +163,6 @@ const AdminLogin = () => {
               )}
             </button>
           </form>
-
-          {/* Login Info */}
-          <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <div className="flex items-start space-x-2">
-              <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <div className="text-sm text-blue-700 dark:text-blue-300">
-                <p className="font-medium mb-1">Giriş Bilgileri</p>
-                <p>Kullanıcı adı: <strong>admin</strong></p>
-                <p>Şifre: <strong>admin123</strong></p>
-              </div>
-            </div>
-          </div>
 
           {/* Back to Home */}
           <div className="mt-6 text-center">

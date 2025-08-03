@@ -18,9 +18,15 @@ export const adminAuth = {
         isAdmin: true
       };
       localStorage.setItem('adminSession', JSON.stringify(sessionData));
-      return true;
+      return {
+        success: true,
+        message: 'Giriş başarılı'
+      };
     }
-    return false;
+    return {
+      success: false,
+      message: 'Kullanıcı adı veya şifre hatalı'
+    };
   },
 
   // Çıkış
@@ -74,84 +80,4 @@ export const ProtectedRoute = ({ children }) => {
   }
   
   return children;
-};
-
-// Güvenlik yardımcı fonksiyonları
-export const securityUtils = {
-  // Rate limiting kontrolü
-  checkRateLimit: () => {
-    const attempts = localStorage.getItem('loginAttempts') || 0;
-    const lockoutTime = localStorage.getItem('lockoutTime');
-    
-    if (lockoutTime && Date.now() < parseInt(lockoutTime)) {
-      const remainingTime = Math.ceil((parseInt(lockoutTime) - Date.now()) / 1000 / 60);
-      return {
-        isLocked: true,
-        remainingMinutes: remainingTime,
-        message: `Çok fazla başarısız giriş denemesi. ${remainingTime} dakika sonra tekrar deneyin.`
-      };
-    }
-    
-    if (parseInt(attempts) >= 5) {
-      const lockoutEnd = Date.now() + (15 * 60 * 1000); // 15 dakika
-      localStorage.setItem('lockoutTime', lockoutEnd.toString());
-      return {
-        isLocked: true,
-        remainingMinutes: 15,
-        message: 'Çok fazla başarısız giriş denemesi. 15 dakika sonra tekrar deneyin.'
-      };
-    }
-    
-    return { isLocked: false };
-  },
-
-  // Giriş denemesi kaydet
-  recordLoginAttempt: (success = false) => {
-    if (success) {
-      localStorage.removeItem('loginAttempts');
-      localStorage.removeItem('lockoutTime');
-    } else {
-      const attempts = (parseInt(localStorage.getItem('loginAttempts') || 0) + 1);
-      localStorage.setItem('loginAttempts', attempts.toString());
-    }
-  },
-
-  // Güvenli giriş
-  login: (username, password) => {
-    const rateLimit = securityUtils.checkRateLimit();
-    if (rateLimit.isLocked) {
-      return {
-        success: false,
-        message: rateLimit.message
-      };
-    }
-
-    const isValid = adminAuth.login(username, password);
-    securityUtils.recordLoginAttempt(isValid);
-
-    if (isValid) {
-      return {
-        success: true,
-        message: 'Giriş başarılı'
-      };
-    } else {
-      return {
-        success: false,
-        message: 'Kullanıcı adı veya şifre hatalı'
-      };
-    }
-  },
-
-  // Güvenlik durumu raporu
-  getSecurityStatus: () => {
-    const session = adminAuth.getUser();
-    const attempts = parseInt(localStorage.getItem('loginAttempts') || 0);
-    
-    return {
-      isLoggedIn: !!session,
-      loginAttempts: attempts,
-      remainingAttempts: Math.max(0, 5 - attempts),
-      isLocked: securityUtils.checkRateLimit().isLocked
-    };
-  }
 }; 
