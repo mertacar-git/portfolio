@@ -22,6 +22,7 @@ const Blog = () => {
 
   useEffect(() => {
     analytics.incrementPageView('blog');
+    analytics.trackUniqueVisitor();
     loadBlogPosts();
   }, []);
 

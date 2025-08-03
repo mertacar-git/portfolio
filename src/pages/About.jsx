@@ -20,6 +20,7 @@ const About = () => {
 
   useEffect(() => {
     analytics.incrementPageView('about');
+    analytics.trackUniqueVisitor();
     loadPersonalInfo();
   }, []);
 

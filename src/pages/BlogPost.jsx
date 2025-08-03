@@ -21,6 +21,7 @@ const BlogPost = () => {
     const loadPost = async () => {
       setIsLoading(true);
       try {
+        analytics.trackUniqueVisitor();
         const savedPosts = storageService.getData('blogPosts');
         if (savedPosts && savedPosts.length > 0) {
           const foundPost = savedPosts.find(p => p.id === parseInt(id));

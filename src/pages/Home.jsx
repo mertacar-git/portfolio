@@ -7,21 +7,31 @@ import {
   Github,
   Linkedin,
   Mail,
-  ChevronDown
+  ChevronDown,
+  Eye
 } from 'lucide-react';
 import { storageService } from '../services/storageService';
 import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';
 import { projects as defaultProjects } from '../data/projects';
 import { blogPosts as defaultBlogPosts } from '../data/blogPosts';
-import { analytics } from '../utils/dataManager';
+import { analytics, dataManager } from '../utils/dataManager';
 
 const Home = () => {
   const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
   const [featuredProjects, setFeaturedProjects] = useState([]);
   const [featuredBlogPosts, setFeaturedBlogPosts] = useState([]);
+  const [analyticsData, setAnalyticsData] = useState({
+    totalViews: 0,
+    uniqueVisitors: 0
+  });
 
   useEffect(() => {
+    // Analytics tracking
+    analytics.incrementPageView('home');
+    analytics.trackUniqueVisitor();
+    
     loadData();
+    loadAnalytics();
   }, []);
 
   const loadData = () => {
@@ -57,11 +67,29 @@ const Home = () => {
     }
   };
 
+  const loadAnalytics = () => {
+    const analytics = dataManager.getAnalytics();
+    setAnalyticsData({
+      totalViews: analytics.totalViews || 0,
+      uniqueVisitors: analytics.uniqueVisitors || 0
+    });
+  };
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  // Stats with analytics data
+  const getStats = () => {
+    const baseStats = { ...personalInfo.stats };
+    return {
+      ...baseStats,
+      totalViews: analyticsData.totalViews,
+      uniqueVisitors: analyticsData.uniqueVisitors
+    };
   };
 
   return (
@@ -98,146 +126,124 @@ const Home = () => {
             </motion.div>
 
             {/* Main Content */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6"
-            >
-              Merhaba, Ben <span className="text-gradient">{personalInfo.name}</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8"
-            >
+            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+              {personalInfo.name}
+            </h1>
+            <h2 className="text-xl md:text-2xl text-primary-600 dark:text-primary-400 font-semibold mb-6">
               {personalInfo.title}
-            </motion.p>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-lg text-gray-500 dark:text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed"
-            >
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
               {personalInfo.subtitle}
-            </motion.p>
+            </p>
 
             {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link
                 to="/portfolio"
-                className="btn-primary inline-flex items-center space-x-2 px-8 py-3 text-lg"
-                onClick={() => analytics.incrementPageView('portfolio')}
+                className="btn-primary inline-flex items-center space-x-2"
               >
                 <span>Projelerimi Gör</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              
               <Link
                 to="/contact"
-                className="btn-outline inline-flex items-center space-x-2 px-8 py-3 text-lg"
-                onClick={() => analytics.incrementPageView('contact')}
+                className="btn-secondary inline-flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
                 <span>İletişime Geç</span>
               </Link>
-
-            </motion.div>
+            </div>
 
             {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.6 }}
-              className="flex justify-center space-x-6"
-            >
+            <div className="flex justify-center space-x-4 mb-8">
               {personalInfo.socialLinks && Object.entries(personalInfo.socialLinks).map(([platform, url]) => (
                 <a
                   key={platform}
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                  className="p-3 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-colors duration-200"
                   aria-label={`${platform} profilim`}
                 >
                   {getSocialIcon(platform)}
                 </a>
               ))}
+            </div>
+
+            {/* Scroll Indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            >
+              <button
+                onClick={() => scrollToSection('about')}
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+              >
+                <ChevronDown className="w-6 h-6 animate-bounce" />
+              </button>
             </motion.div>
           </motion.div>
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <button
-            onClick={() => scrollToSection('about')}
-            className="p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors duration-300"
-            aria-label="Aşağı kaydır"
-          >
-            <ChevronDown className="w-6 h-6 text-white animate-bounce" />
-          </button>
-        </motion.div>
       </section>
 
       {/* About Section */}
       <section id="about" className="section-padding bg-white dark:bg-gray-800">
         <div className="container-max">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Hakkımda
-            </h2>
-            <p 
-              className={`text-${personalInfo.aboutFormat?.fontSize || 'lg'} text-${personalInfo.aboutFormat?.textColor || 'gray-600'} dark:text-${personalInfo.aboutFormat?.darkTextColor || 'gray-300'} max-w-${personalInfo.aboutFormat?.maxWidth || '3xl'} mx-auto leading-${personalInfo.aboutFormat?.lineHeight || 'relaxed'} text-${personalInfo.aboutFormat?.textAlign || 'center'} font-${personalInfo.aboutFormat?.fontWeight || 'normal'} tracking-${personalInfo.aboutFormat?.letterSpacing || 'normal'} mb-${personalInfo.aboutFormat?.paragraphSpacing || '6'}`}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
             >
-              {personalInfo.about}
-            </p>
-          </motion.div>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                Hakkımda
+              </h2>
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {personalInfo.about}
+                </p>
+              </div>
+              <div className="mt-8">
+                <Link
+                  to="/about"
+                  className="btn-primary inline-flex items-center space-x-2"
+                >
+                  <span>Daha Fazla Bilgi</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+            </motion.div>
 
-          {/* Skills */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6"
-          >
-            {personalInfo.skills && personalInfo.skills.slice(0, 10).map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:shadow-md transition-all duration-300 hover:scale-105"
-              >
-                <div className="text-2xl font-bold text-primary-600 mb-2">
-                  {skill.level}%
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/20 dark:to-secondary-900/20 rounded-2xl p-8">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+                  Teknolojiler
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {personalInfo.technologies.slice(0, 8).map((tech, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center space-x-3 p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg"
+                    >
+                      <div className="w-2 h-2 bg-primary-600 rounded-full"></div>
+                      <span className="text-gray-700 dark:text-gray-300 font-medium">
+                        {tech}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">
-                  {skill.name}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -259,8 +265,8 @@ const Home = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-            {personalInfo.stats && Object.entries(personalInfo.stats).map(([key, value], index) => (
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8">
+            {Object.entries(getStats()).map(([key, value], index) => (
               <motion.div
                 key={key}
                 initial={{ opacity: 0, scale: 0.5 }}
@@ -270,16 +276,22 @@ const Home = () => {
                 className="text-center"
               >
                 <motion.div 
-                  className="text-4xl md:text-5xl font-bold text-white mb-2"
+                  className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center justify-center"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
                   viewport={{ once: true }}
                 >
+                  {key === 'totalViews' && <Eye className="w-6 h-6 mr-2" />}
                   {value}+
                 </motion.div>
-                <div className="text-primary-100 text-sm md:text-base capitalize">
-                  {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                <div className="text-primary-100 text-sm capitalize">
+                  {key === 'totalViews' && 'Toplam Görüntülenme'}
+                  {key === 'uniqueVisitors' && 'Benzersiz Ziyaretçi'}
+                  {key === 'completedProjects' && 'Tamamlanan Proje'}
+                  {key === 'webAppsBuilt' && 'Web Uygulaması'}
+                  {key === 'yearsExperience' && 'Yıl Deneyim'}
+                  {key === 'happyClients' && 'Mutlu Müşteri'}
                 </div>
               </motion.div>
             ))}

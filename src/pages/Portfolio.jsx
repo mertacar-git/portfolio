@@ -21,6 +21,7 @@ const Portfolio = () => {
 
   useEffect(() => {
     analytics.incrementPageView('portfolio');
+    analytics.trackUniqueVisitor();
     loadProjects();
   }, []);
 

@@ -26,6 +26,7 @@ const Contact = () => {
 
   useEffect(() => {
     analytics.incrementPageView('contact');
+    analytics.trackUniqueVisitor();
     loadPersonalInfo();
   }, []);
 
