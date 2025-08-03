@@ -28,8 +28,8 @@ function App() {
           console.error('Analytics error:', error);
         }
         
-        // Simulate loading time
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Daha kısa loading süresi - flash'i önlemek için
+        await new Promise(resolve => setTimeout(resolve, 300));
         
         setIsLoading(false);
       } catch (error) {
@@ -45,15 +45,15 @@ function App() {
   // Error state
   if (hasError) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-red-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
         <div className="text-center">
           <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
             <span className="text-2xl">⚠️</span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-4">
+          <h2 className="text-xl font-semibold text-gray-300 mb-4">
             Uygulama Başlatılamadı
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-gray-400 mb-4">
             Uygulama başlatılırken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin.
           </p>
           <button
@@ -67,13 +67,13 @@ function App() {
     );
   }
 
-  // Loading state
+  // Loading state - daha hızlı ve dark tema ile
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
         <div className="text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300">
+          <h2 className="text-xl font-semibold text-gray-300">
             Yükleniyor...
           </h2>
         </div>
@@ -86,7 +86,7 @@ function App() {
       <ThemeProvider>
         <ToastProvider>
           <Router>
-            <div className="min-h-screen bg-white dark:bg-gray-900">
+            <div className="min-h-screen bg-gray-900">
               <Header />
               <main className="pt-16">
                 <RouteRenderer />
