@@ -187,8 +187,19 @@ const Header = () => {
           <div className="flex items-center justify-between h-16 px-4">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">M</span>
+              <div className="w-8 h-8 rounded-lg overflow-hidden border-2 border-white dark:border-gray-700 shadow-sm">
+                <img
+                  src="/images/profile.jpg"
+                  alt="Mert Acar"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div className="w-full h-full bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center text-white font-bold text-sm" style={{ display: 'none' }}>
+                  M
+                </div>
               </div>
               <span className="text-xl font-bold text-gray-900 dark:text-white">
                 {siteConfig.site.title.split(' - ')[0]}

@@ -65,12 +65,22 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-center lg:text-left"
             >
-              <div className="w-64 h-64 mx-auto lg:mx-0 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 p-2">
-                <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                  <span className="text-6xl font-bold text-gray-600 dark:text-gray-300">
-                    {personalInfo.name.charAt(0)}
-                  </span>
+              <div className="relative inline-block">
+                <div className="w-64 h-64 mx-auto lg:mx-0 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl">
+                  <img
+                    src="/images/profile.jpg"
+                    alt="Mert Acar"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="w-full h-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-6xl font-bold" style={{ display: 'none' }}>
+                    M
+                  </div>
                 </div>
+                <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white dark:border-gray-700"></div>
               </div>
             </motion.div>
 

@@ -124,6 +124,41 @@ const AdminHomepage = () => {
             </div>
           </div>
 
+          {/* Profile Image Preview */}
+          <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
+              <User className="w-5 h-5 text-primary-600" />
+              <span>Profil Fotoğrafı</span>
+            </h3>
+            <div className="flex items-center space-x-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-lg">
+                  <img
+                    src="/images/profile.jpg"
+                    alt="Profil Fotoğrafı"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="w-full h-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-2xl font-bold" style={{ display: 'none' }}>
+                    M
+                  </div>
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-white dark:border-gray-700"></div>
+              </div>
+              <div className="flex-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                  Profil fotoğrafınızı değiştirmek için <code className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs">public/images/profile.jpg</code> dosyasını güncelleyin.
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Önerilen boyut: 400x400 piksel veya daha büyük, JPG formatında
+                </p>
+              </div>
+            </div>
+          </div>
+
           {/* Tabs */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-6">
             <div className="border-b border-gray-200 dark:border-gray-700">

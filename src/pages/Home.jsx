@@ -95,37 +95,46 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-primary-200 dark:bg-primary-800 rounded-full blur-xl animate-pulse-slow"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-secondary-200 dark:bg-secondary-800 rounded-full blur-xl animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-primary-300 dark:bg-primary-700 rounded-full blur-lg animate-bounce-slow"></div>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-600/10 to-secondary-600/10"></div>
         
-        <div className="container-max text-center relative z-10 px-4">
+        <div className="container-max relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto"
+            className="text-center"
           >
             {/* Profile Image */}
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              className="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 p-1"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="mb-8"
             >
-              <div className="w-full h-full rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <span className="text-4xl font-bold text-gray-600 dark:text-gray-300">
-                  {personalInfo.name.charAt(0)}
-                </span>
+              <div className="relative inline-block">
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl mx-auto">
+                  <img
+                    src="/images/profile.jpg"
+                    alt="Mert Acar"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="w-full h-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white text-4xl font-bold" style={{ display: 'none' }}>
+                    M
+                  </div>
+                </div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white dark:border-gray-700"></div>
               </div>
             </motion.div>
 
-            {/* Main Content */}
             <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
               {personalInfo.name}
             </h1>
