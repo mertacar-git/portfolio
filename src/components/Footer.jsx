@@ -69,8 +69,8 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="bg-aggressive-black text-aggressive-white border-t-4 border-aggressive-white">
-        <div className="max-w-7xl mx-auto">
+      <footer className="bg-aggressive-black text-aggressive-white border-t-4 border-aggressive-white w-full">
+        <div className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 py-12 px-4">
             {/* Brand Section */}
             <motion.div 
