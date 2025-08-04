@@ -14,18 +14,6 @@ export const projects = [
   },
   {
     id: 2,
-    title: "E-Ticaret Platformu",
-    description: "React ve Node.js ile geliştirdiğim tam özellikli e-ticaret platformu. Kullanıcı yönetimi, ürün kataloğu ve ödeme sistemi.",
-    image: "/images/projects/ecommerce.jpg",
-    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
-    category: "Web Uygulaması",
-    liveUrl: "https://mertacar-git.github.io/ecommerce",
-    githubUrl: "https://github.com/mertacar-git/ecommerce",
-    featured: true,
-    publishDate: "10 Ocak 2024"
-  },
-  {
-    id: 3,
     title: "Task Management App",
     description: "React ve Firebase ile geliştirdiğim görev yönetim uygulaması. Gerçek zamanlı veri senkronizasyonu ve kullanıcı yetkilendirmesi.",
     image: "/images/projects/task-manager.jpg",
@@ -37,7 +25,7 @@ export const projects = [
     publishDate: "20 Aralık 2023"
   },
   {
-    id: 4,
+    id: 3,
     title: "Weather Dashboard",
     description: "OpenWeatherMap API kullanarak geliştirdiğim hava durumu dashboard'u. 5 günlük tahmin ve detaylı hava bilgileri.",
     image: "/images/projects/weather.jpg",
@@ -45,11 +33,11 @@ export const projects = [
     category: "Web Uygulaması",
     liveUrl: "https://mertacar-git.github.io/weather-app",
     githubUrl: "https://github.com/mertacar-git/weather-app",
-    featured: false,
+    featured: true,
     publishDate: "5 Aralık 2023"
   },
   {
-    id: 5,
+    id: 4,
     title: "Blog Platform",
     description: "React ve Node.js ile geliştirdiğim blog platformu. Markdown desteği, yorum sistemi ve admin paneli.",
     image: "/images/projects/blog.jpg",
@@ -59,6 +47,30 @@ export const projects = [
     githubUrl: "https://github.com/mertacar-git/blog-platform",
     featured: false,
     publishDate: "15 Kasım 2023"
+  },
+  {
+    id: 5,
+    title: "E-Commerce API",
+    description: "Node.js ve Express ile geliştirdiğim RESTful API. Kullanıcı yönetimi, ürün kataloğu ve ödeme entegrasyonu.",
+    image: "/images/projects/api.jpg",
+    technologies: ["Node.js", "Express", "MongoDB", "JWT"],
+    category: "API",
+    liveUrl: "https://mertacar-git.github.io/ecommerce-api",
+    githubUrl: "https://github.com/mertacar-git/ecommerce-api",
+    featured: false,
+    publishDate: "10 Kasım 2023"
+  },
+  {
+    id: 6,
+    title: "Mobile App UI Kit",
+    description: "React Native ile geliştirdiğim mobil uygulama UI kit'i. Yeniden kullanılabilir componentler ve tema sistemi.",
+    image: "/images/projects/mobile-ui.jpg",
+    technologies: ["React Native", "JavaScript", "Styled Components"],
+    category: "Mobile App",
+    liveUrl: "https://mertacar-git.github.io/mobile-ui-kit",
+    githubUrl: "https://github.com/mertacar-git/mobile-ui-kit",
+    featured: false,
+    publishDate: "1 Kasım 2023"
   }
 ];
 

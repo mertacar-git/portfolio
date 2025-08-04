@@ -29,16 +29,16 @@ export const personalInfo = {
   },
   
   skills: [
-    { name: "JavaScript", level: 75 },
-    { name: "React", level: 70 },
-    { name: "Node.js", level: 65 },
-    { name: "HTML/CSS", level: 80 },
-    { name: "Git", level: 70 },
-    { name: "TypeScript", level: 60 },
-    { name: "Python", level: 55 },
-    { name: "MongoDB", level: 50 },
-    { name: "PostgreSQL", level: 45 },
-    { name: "Docker", level: 40 }
+    { name: "JavaScript", level: 85 },
+    { name: "React", level: 80 },
+    { name: "Node.js", level: 75 },
+    { name: "HTML/CSS", level: 90 },
+    { name: "Git", level: 80 },
+    { name: "TypeScript", level: 70 },
+    { name: "Python", level: 65 },
+    { name: "MongoDB", level: 60 },
+    { name: "PostgreSQL", level: 55 },
+    { name: "Docker", level: 50 }
   ],
   
   education: [
@@ -52,10 +52,16 @@ export const personalInfo = {
   
   experience: [
     {
-      title: "Freelance Developer",
-      company: "Serbest Çalışma",
+      title: "Full Stack Developer",
+      company: "Freelance",
       period: "2023 - Günümüz",
-      description: "Web uygulamaları geliştirme ve proje yönetimi"
+      description: "Web uygulamaları geliştirme, API tasarımı ve proje yönetimi"
+    },
+    {
+      title: "Frontend Developer",
+      company: "Serbest Çalışma",
+      period: "2022 - 2023",
+      description: "React tabanlı web uygulamaları geliştirme"
     }
   ],
 
@@ -77,20 +83,26 @@ export const personalInfo = {
   technologies: {
     programmingLanguages: ["JavaScript", "TypeScript", "Python", "Java"],
     databases: ["MongoDB", "PostgreSQL", "MySQL"],
-    devOps: ["Git", "Docker"],
-
-    frameworks: ["React", "Node.js", "Express"],
-    tools: ["VS Code", "GitHub"]
+    devOps: ["Git", "Docker", "AWS"],
+    frameworks: ["React", "Node.js", "Express", "Next.js"],
+    tools: ["VS Code", "GitHub", "Postman"]
   },
 
   // Proje İstatistikleri
   stats: {
-    completedProjects: 12,
-    webAppsBuilt: 8,
+    completedProjects: 15,
+    webAppsBuilt: 10,
     yearsExperience: 3,
-    happyClients: 15
+    happyClients: 20
   },
 
   // Sertifikalar
-  certifications: []
+  certifications: [
+    {
+      name: "React Developer",
+      issuer: "Meta",
+      year: "2023",
+      url: "#"
+    }
+  ]
 }; 

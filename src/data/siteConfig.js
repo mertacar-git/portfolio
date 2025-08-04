@@ -1,25 +1,25 @@
 export const siteConfig = {
   site: {
-    title: "Mert Açar - Software Developer",
-    description: "Tutkulu yazılım geliştiricisi. React, JavaScript ve modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.",
-    url: "https://mertacar.github.io",
+    title: "Mert Açar - Full Stack Developer",
+    description: "Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer",
+    url: "https://mertacar-git.github.io/portfolio",
     author: "Mert Açar",
     language: "tr",
-    themeColor: "#3B82F6",
-    keywords: ["yazılım geliştirici", "software developer", "react", "javascript", "portfolio", "web geliştirici"]
+    themeColor: "#111827",
+    keywords: ["full stack developer", "react", "javascript", "portfolio", "web developer", "mert acar"]
   },
   
   seo: {
     titleTemplate: "%s | Mert Açar",
-    defaultTitle: "Mert Açar - Software Developer",
-    defaultDescription: "Tutkulu yazılım geliştiricisi. React, JavaScript ve modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.",
-    canonical: "https://mertacar.github.io",
+    defaultTitle: "Mert Açar - Full Stack Developer",
+    defaultDescription: "Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer",
+    canonical: "https://mertacar-git.github.io/portfolio",
     openGraph: {
       type: "website",
       locale: "tr_TR",
-      url: "https://mertacar.github.io",
-      title: "Mert Açar - Software Developer",
-      description: "Tutkulu yazılım geliştiricisi. React, JavaScript ve modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.",
+      url: "https://mertacar-git.github.io/portfolio",
+      title: "Mert Açar - Full Stack Developer",
+      description: "Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer",
       siteName: "Mert Açar Portfolio"
     },
     twitter: {
@@ -29,9 +29,17 @@ export const siteConfig = {
     }
   },
   
+  navigation: [
+    { name: "Ana Sayfa", href: "/", icon: "Home" },
+    { name: "Hakkımda", href: "/about", icon: "User" },
+    { name: "Portfolio", href: "/portfolio", icon: "Briefcase" },
+    { name: "Blog", href: "/blog", icon: "FileText" },
+    { name: "İletişim", href: "/contact", icon: "Mail" }
+  ],
+  
   socialLinks: {
     github: {
-      url: "https://github.com/mertacar",
+      url: "https://github.com/mertacar-git",
       label: "GitHub"
     },
     linkedin: {
@@ -53,7 +61,7 @@ export const siteConfig = {
     phone: "+90 553 751 8433",
     address: "İstanbul, Türkiye",
     socialMedia: {
-      github: "https://github.com/mertacar",
+      github: "https://github.com/mertacar-git",
       linkedin: "https://linkedin.com/in/mertacar",
       twitter: "https://twitter.com/mertacar",
       instagram: "https://instagram.com/mertacar"

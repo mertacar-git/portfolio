@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 
 // Components
@@ -10,14 +10,9 @@ import RouteRenderer from './components/RouteRenderer';
 import ThemeProvider from './contexts/ThemeContext';
 import ToastProvider from './contexts/ToastContext';
 
-// Utils
-import { analytics } from './utils/dataManager';
-
 // Force dark theme immediately when App loads
 (function() {
   try {
-    console.log('App.jsx: Force dark theme starting...');
-    
     // Force dark theme on document
     document.documentElement.classList.add('dark');
     document.documentElement.classList.remove('light');
@@ -27,99 +22,12 @@ import { analytics } from './utils/dataManager';
     // Force localStorage
     localStorage.setItem('theme', 'dark');
     localStorage.removeItem('light');
-    
-    console.log('App.jsx: Force dark theme completed');
   } catch (error) {
-    console.error('App.jsx: Dark theme enforcement error:', error);
+    console.error('Dark theme enforcement error:', error);
   }
 })();
 
 function App() {
-  const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [debugInfo, setDebugInfo] = useState('');
-
-  useEffect(() => {
-    console.log('App.jsx: useEffect starting...');
-    
-    // Initialize app
-    const initializeApp = async () => {
-      try {
-        console.log('App.jsx: initializeApp starting...');
-        
-        // Track page view
-        try {
-          analytics.incrementPageView('app');
-          console.log('App.jsx: Analytics tracked');
-        } catch (error) {
-          console.error('App.jsx: Analytics error:', error);
-        }
-        
-        // Simulate some loading time
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        console.log('App.jsx: App initialization completed');
-        setIsLoading(false);
-        setDebugInfo('App loaded successfully');
-        
-      } catch (error) {
-        console.error('App.jsx: App initialization error:', error);
-        setHasError(true);
-        setDebugInfo(`Error: ${error.message}`);
-      }
-    };
-
-    initializeApp();
-  }, []);
-
-  console.log('App.jsx: Rendering, isLoading:', isLoading, 'hasError:', hasError);
-
-  // Error state
-  if (hasError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-            <span className="text-2xl">⚠️</span>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-300 mb-4">
-            Uygulama Başlatılamadı
-          </h2>
-          <p className="text-gray-400 mb-4">
-            Uygulama başlatılırken bir hata oluştu. Lütfen sayfayı yenilemeyi deneyin.
-          </p>
-          <p className="text-red-400 mb-4 text-sm">
-            Debug: {debugInfo}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="btn-primary"
-          >
-            Sayfayı Yenile
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <div className="spinner mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-300">
-            Yükleniyor...
-          </h2>
-          <p className="text-gray-400 mt-2">
-            React uygulaması başlatılıyor...
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  // Main app
   return (
     <ErrorBoundary>
       <ThemeProvider>

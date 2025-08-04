@@ -1,10 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ROUTES, getPublicRoutes, getAdminRoutes } from '../config/routes';
+import { getPublicRoutes, getAdminRoutes } from '../config/routes';
 import { ProtectedRoute } from '../utils/auth';
-import LoadingSkeleton from './LoadingSkeleton';
-
-console.log('RouteRenderer: Component starting...');
 
 // Lazy loading için component mapping
 const componentMap = {
@@ -32,8 +29,6 @@ const componentMap = {
   'NotFound': lazy(() => import('../components/NotFound'))
 };
 
-console.log('RouteRenderer: Component map created');
-
 // Error fallback component
 const ErrorFallback = ({ componentName }) => (
   <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
@@ -59,130 +54,56 @@ const ErrorFallback = ({ componentName }) => (
 
 // Component yükleyici with error handling
 const loadComponent = (componentName) => {
-  console.log(`RouteRenderer: Loading component: ${componentName}`);
-  
   const Component = componentMap[componentName];
   if (!Component) {
-    console.error(`RouteRenderer: Component not found: ${componentName}`);
     return () => <ErrorFallback componentName={componentName} />;
   }
   
   // Wrap component with error boundary
-  const WrappedComponent = (props) => {
-    console.log(`RouteRenderer: Rendering component: ${componentName}`);
-    
-    return (
-      <React.Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-          <div className="text-center">
-            <div className="spinner mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold text-gray-300">
-              {componentName} yükleniyor...
-            </h2>
-          </div>
+  const WrappedComponent = (props) => (
+    <React.Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <div className="spinner mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-gray-300">
+            {componentName} yükleniyor...
+          </h2>
         </div>
-      }>
-        <ErrorBoundary>
-          <Component {...props} />
-        </ErrorBoundary>
-      </React.Suspense>
-    );
-  };
+      </div>
+    }>
+      <Component {...props} />
+    </React.Suspense>
+  );
   
   return WrappedComponent;
 };
 
-// Simple Error Boundary for individual components
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('RouteRenderer: Component error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-          <div className="text-center">
-            <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-              <span className="text-2xl">⚠️</span>
-            </div>
-            <h1 className="text-xl font-bold text-white mb-2">
-              Bileşen Hatası
-            </h1>
-            <p className="text-gray-400 mb-4">
-              Bir bileşen yüklenirken hata oluştu.
-            </p>
-            <p className="text-red-400 mb-4 text-sm">
-              {this.state.error?.message}
-            </p>
-            <button
-              onClick={() => window.location.reload()}
-              className="btn-primary"
-            >
-              Sayfayı Yenile
-            </button>
-          </div>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
-
 // Rota renderer
 const RouteRenderer = () => {
-  console.log('RouteRenderer: RouteRenderer component starting...');
-  
   try {
     // Public rotaları al
     const publicRoutes = getPublicRoutes();
-    console.log('RouteRenderer: Public routes:', publicRoutes);
     
     // Admin rotalarını al
     const adminRoutes = getAdminRoutes();
-    console.log('RouteRenderer: Admin routes:', adminRoutes);
 
     return (
       <Routes>
         {/* Public Routes */}
         {publicRoutes.map((route) => {
-          console.log(`RouteRenderer: Setting up public route: ${route.path}`);
           const Component = loadComponent(route.component);
           
           return (
             <Route
               key={route.path}
               path={route.path}
-              element={
-                <Suspense fallback={
-                  <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-                    <div className="text-center">
-                      <div className="spinner mx-auto mb-4"></div>
-                      <h2 className="text-xl font-semibold text-gray-300">
-                        {route.component} yükleniyor...
-                      </h2>
-                    </div>
-                  </div>
-                }>
-                  <Component />
-                </Suspense>
-              }
+              element={<Component />}
             />
           );
         })}
         
         {/* Admin Routes */}
         {adminRoutes.map((route) => {
-          console.log(`RouteRenderer: Setting up admin route: ${route.path}`);
           const Component = loadComponent(route.component);
           
           return (
@@ -191,18 +112,7 @@ const RouteRenderer = () => {
               path={route.path}
               element={
                 <ProtectedRoute>
-                  <Suspense fallback={
-                    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-                      <div className="text-center">
-                        <div className="spinner mx-auto mb-4"></div>
-                        <h2 className="text-xl font-semibold text-gray-300">
-                          {route.component} yükleniyor...
-                        </h2>
-                      </div>
-                    </div>
-                  }>
-                    <Component />
-                  </Suspense>
+                  <Component />
                 </ProtectedRoute>
               }
             />
@@ -212,25 +122,11 @@ const RouteRenderer = () => {
         {/* 404 Route */}
         <Route
           path="*"
-          element={
-            <Suspense fallback={
-              <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-                <div className="text-center">
-                  <div className="spinner mx-auto mb-4"></div>
-                  <h2 className="text-xl font-semibold text-gray-300">
-                    404 sayfası yükleniyor...
-                  </h2>
-                </div>
-              </div>
-            }>
-              <NotFound />
-            </Suspense>
-          }
+          element={<NotFound />}
         />
       </Routes>
     );
   } catch (error) {
-    console.error('RouteRenderer: Error in RouteRenderer:', error);
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
         <div className="text-center">
@@ -242,9 +138,6 @@ const RouteRenderer = () => {
           </h1>
           <p className="text-gray-400 mb-4">
             Rotalar yüklenirken bir hata oluştu.
-          </p>
-          <p className="text-red-400 mb-4 text-sm">
-            {error.message}
           </p>
           <button
             onClick={() => window.location.reload()}
@@ -280,7 +173,5 @@ const NotFound = () => {
     </div>
   );
 };
-
-console.log('RouteRenderer: Component exported');
 
 export default RouteRenderer; 
