@@ -149,12 +149,20 @@ function App() {
         <ToastProvider>
           <Router>
             <div className="min-h-screen bg-gray-900">
-              <Header />
+              <ErrorBoundary>
+                <Header />
+              </ErrorBoundary>
               <main className="pt-16">
-                <RouteRenderer />
+                <ErrorBoundary>
+                  <RouteRenderer />
+                </ErrorBoundary>
               </main>
-              <Footer />
-              <ScrollProgress />
+              <ErrorBoundary>
+                <Footer />
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <ScrollProgress />
+              </ErrorBoundary>
             </div>
           </Router>
         </ToastProvider>

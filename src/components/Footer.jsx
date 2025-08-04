@@ -24,6 +24,13 @@ const Footer = () => {
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { showToast } = useToast();
 
+  // Safe access to siteConfig
+  const safeSiteConfig = siteConfig || {};
+  const safeSocialLinks = safeSiteConfig.socialLinks || {};
+  const safeNavigation = safeSiteConfig.navigation || [];
+  const safeContact = safeSiteConfig.contact || {};
+  const safeSite = safeSiteConfig.site || {};
+
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
@@ -78,21 +85,21 @@ const Footer = () => {
                   <span className="text-white font-bold text-sm">M</span>
                 </div>
                 <span className="text-xl font-bold">
-                  {siteConfig.site.title.split(' - ')[0]}
+                  {safeSite.title ? safeSite.title.split(' - ')[0] : 'Mert'}
                 </span>
               </div>
               <p className="text-gray-400 leading-relaxed">
-                {siteConfig.site.description}
+                {safeSite.description || 'Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer'}
               </p>
               <div className="flex space-x-4">
-                {siteConfig.socialLinks && Object.entries(siteConfig.socialLinks).map(([key, social], index) => (
+                {Object.entries(safeSocialLinks).map(([key, social], index) => (
                   <motion.a
                     key={key}
-                    href={social.url}
+                    href={social?.url || '#'}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors duration-200"
-                    aria-label={social.label}
+                    aria-label={social?.label || key}
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -116,20 +123,20 @@ const Footer = () => {
             >
               <h3 className="text-lg font-semibold">Hızlı Linkler</h3>
               <ul className="space-y-2">
-                {siteConfig.navigation.map((item, index) => (
+                {safeNavigation.map((item, index) => (
                   <motion.li 
-                    key={item.name}
+                    key={item?.name || index}
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
                     viewport={{ once: true }}
                   >
                     <Link
-                      to={item.href}
+                      to={item?.href || '/'}
                       className="text-gray-400 hover:text-white transition-colors duration-200 flex items-center space-x-2 group"
                     >
                       <span className="w-1 h-1 bg-primary-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
-                      <span>{item.name}</span>
+                      <span>{item?.name || 'Link'}</span>
                     </Link>
                   </motion.li>
                 ))}
@@ -153,10 +160,10 @@ const Footer = () => {
                 >
                   <Mail className="w-5 h-5 text-primary-400" />
                   <a
-                    href={`mailto:${siteConfig.contact.email}`}
+                    href={`mailto:${safeContact.email || 'contact@example.com'}`}
                     className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
-                    {siteConfig.contact.email}
+                    {safeContact.email || 'contact@example.com'}
                   </a>
                 </motion.div>
                 <motion.div 
@@ -166,10 +173,10 @@ const Footer = () => {
                 >
                   <Phone className="w-5 h-5 text-primary-400" />
                   <a
-                    href={`tel:${siteConfig.contact.phone}`}
+                    href={`tel:${safeContact.phone || '+90 555 123 4567'}`}
                     className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
-                    {siteConfig.contact.phone}
+                    {safeContact.phone || '+90 555 123 4567'}
                   </a>
                 </motion.div>
                 <motion.div 
@@ -179,7 +186,7 @@ const Footer = () => {
                 >
                   <MapPin className="w-5 h-5 text-primary-400" />
                   <span className="text-gray-400">
-                    {siteConfig.contact.address}
+                    {safeContact.address || 'İstanbul, Türkiye'}
                   </span>
                 </motion.div>
               </div>
@@ -236,7 +243,7 @@ const Footer = () => {
           >
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
               <p className="text-gray-400 text-sm">
-                © {currentYear} {siteConfig.site.title}. Tüm hakları saklıdır.
+                © {currentYear} {safeSite.title || 'Mert'}. Tüm hakları saklıdır.
               </p>
               <div className="flex items-center space-x-4 text-sm text-gray-400">
                 <Link
