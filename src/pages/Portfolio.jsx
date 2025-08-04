@@ -99,202 +99,209 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container-max text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              Portföy
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Geliştirdiğim projeler ve çalışmalarım
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-aggressive-black text-aggressive-white py-8">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold text-aggressive-white mb-4">
+            Portfolio
+          </h1>
+          <p className="text-xl text-aggressive-gray font-bold max-w-2xl mx-auto">
+            Geliştirdiğim projeler ve çalışmalarım
+          </p>
+        </motion.div>
 
-      {/* Filters Section */}
-      <section className="section-padding bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="container-max">
-          <div className="space-y-6">
+        {/* Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="card mb-8"
+        >
+          <div className="flex flex-col lg:flex-row gap-6">
             {/* Search */}
-            <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Proje ara..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
-              />
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-aggressive-gray" />
+                <input
+                  type="text"
+                  placeholder="Proje ara..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="input-primary w-full pl-10"
+                />
+              </div>
             </div>
 
             {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-2">
-              {categories.map(category => (
+            <div className="flex flex-wrap gap-2">
+              {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  className={`px-4 py-2 rounded-lg font-bold transition-all duration-200 hover-aggressive ${
                     selectedCategory === category
-                      ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      ? 'bg-aggressive-white text-aggressive-black'
+                      : 'bg-aggressive-black text-aggressive-white border-2 border-aggressive-white hover:bg-aggressive-white hover:text-aggressive-black'
                   }`}
                 >
-                  {category === 'all' ? 'Tümü' : getCategoryName(category)}
+                  {getCategoryName(category)}
                 </button>
               ))}
             </div>
-
-            {/* Technology Filter */}
-            {allTechnologies.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white text-center">
-                  Teknoloji Filtresi
-                </h3>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {allTechnologies.map(technology => (
-                    <button
-                      key={technology}
-                      onClick={() => handleTechnologyToggle(technology)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 ${
-                        selectedTechnologies.includes(technology)
-                          ? 'bg-secondary-600 text-white'
-                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                      }`}
-                    >
-                      {technology}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Clear Filters */}
-            {(searchTerm || selectedCategory !== 'all' || selectedTechnologies.length > 0) && (
-              <div className="text-center">
-                <button
-                  onClick={clearFilters}
-                  className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-                >
-                  Filtreleri Temizle
-                </button>
-              </div>
-            )}
           </div>
-        </div>
-      </section>
 
-      {/* Projects Grid */}
-      <section className="section-padding bg-white dark:bg-gray-900">
-        <div className="container-max">
-          {filteredProjects.length === 0 ? (
-            <div className="text-center py-12">
-              <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Proje Bulunamadı
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Arama kriterlerinize uygun proje bulunamadı.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                >
-                  {/* Project Image */}
-                  <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-4xl font-bold text-gray-400">
-                          {project.title.charAt(0)}
-                        </span>
-                      </div>
-                    )}
-                    <div className="absolute top-3 right-3">
-                      <span className="px-2 py-1 bg-primary-600 text-white text-xs font-medium rounded">
-                        {getCategoryName(project.category)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Project Content */}
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                      {project.description}
-                    </p>
-
-                    {/* Technologies */}
-                    {project.technologies && project.technologies.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.slice(0, 3).map(tech => (
-                          <span
-                            key={tech}
-                            className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Project Links */}
-                    <div className="flex space-x-3">
-                      {project.liveUrl && (
-                        <a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-primary flex-1 inline-flex items-center justify-center space-x-2"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          <span>Demo</span>
-                        </a>
-                      )}
-                      {project.githubUrl && (
-                        <a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-secondary flex-1 inline-flex items-center justify-center space-x-2"
-                        >
-                          <Github className="w-4 h-4" />
-                          <span>Kod</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
+          {/* Technology Filter */}
+          {allTechnologies.length > 0 && (
+            <div className="mt-6">
+              <div className="flex items-center gap-2 mb-3">
+                <Filter className="w-5 h-5 text-aggressive-white" />
+                <span className="text-aggressive-white font-bold">Teknolojiler:</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {allTechnologies.map((technology) => (
+                  <button
+                    key={technology}
+                    onClick={() => handleTechnologyToggle(technology)}
+                    className={`px-3 py-1 rounded-full text-sm font-bold transition-all duration-200 hover-aggressive ${
+                      selectedTechnologies.includes(technology)
+                        ? 'bg-aggressive-white text-aggressive-black'
+                        : 'bg-aggressive-black text-aggressive-white border border-aggressive-white hover:bg-aggressive-white hover:text-aggressive-black'
+                    }`}
+                  >
+                    {technology}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
-        </div>
-      </section>
+
+          {/* Clear Filters */}
+          {(searchTerm || selectedCategory !== 'all' || selectedTechnologies.length > 0) && (
+            <div className="mt-4">
+              <button
+                onClick={clearFilters}
+                className="text-aggressive-gray hover:text-aggressive-white font-bold transition-colors duration-200"
+              >
+                Filtreleri Temizle
+              </button>
+            </div>
+          )}
+        </motion.div>
+
+        {/* Projects Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {filteredProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="card hover-aggressive group"
+            >
+              {/* Project Image */}
+              {project.image && (
+                <div className="relative overflow-hidden rounded-lg mb-4">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {project.featured && (
+                    <div className="absolute top-2 right-2 bg-aggressive-white text-aggressive-black px-2 py-1 rounded text-sm font-bold">
+                      Öne Çıkan
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Project Info */}
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-aggressive-white mb-2">
+                  {project.title}
+                </h3>
+                <p className="text-aggressive-gray mb-4 font-bold">
+                  {project.description}
+                </p>
+
+                {/* Technologies */}
+                {project.technologies && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.slice(0, 3).map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-2 py-1 bg-aggressive-black text-aggressive-white text-xs rounded border border-aggressive-white font-bold"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                    {project.technologies.length > 3 && (
+                      <span className="px-2 py-1 bg-aggressive-black text-aggressive-white text-xs rounded border border-aggressive-white font-bold">
+                        +{project.technologies.length - 3}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Project Links */}
+                <div className="flex gap-2">
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary text-sm py-2 px-3 inline-flex items-center space-x-1"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      <span>Demo</span>
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-secondary text-sm py-2 px-3 inline-flex items-center space-x-1"
+                    >
+                      <Github className="w-4 h-4" />
+                      <span>Kod</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* No Results */}
+        {filteredProjects.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-12"
+          >
+            <p className="text-aggressive-gray text-lg font-bold">
+              Seçilen kriterlere uygun proje bulunamadı.
+            </p>
+            <button
+              onClick={clearFilters}
+              className="btn-primary mt-4"
+            >
+              Tüm Projeleri Göster
+            </button>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };

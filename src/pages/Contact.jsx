@@ -69,72 +69,71 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="section-padding bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="container-max text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              İletişim
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Benimle iletişime geçin. Projeleriniz için birlikte çalışalım.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-aggressive-black text-aggressive-white py-8">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold text-aggressive-white mb-6">
+            İletişim
+          </h1>
+          <p className="text-xl text-aggressive-gray font-bold max-w-3xl mx-auto">
+            Benimle iletişime geçin. Projeleriniz için birlikte çalışalım.
+          </p>
+        </motion.div>
 
-      {/* Contact Content */}
-      <section className="section-padding bg-white dark:bg-gray-800">
-        <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-                Mesaj Gönderin
+        {/* Contact Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="card">
+              <h2 className="text-2xl font-bold text-aggressive-white mb-6">
+                Mesaj Gönder
               </h2>
+              
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Ad Soyad
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="input-field"
-                      required
-                    />
-                  </div>
-                </div>
-                
                 <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="name" className="block text-aggressive-white font-bold mb-2">
+                    Ad Soyad
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    className="input-primary w-full"
+                    placeholder="Adınız ve soyadınız"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-aggressive-white font-bold mb-2">
+                    E-posta
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    className="input-primary w-full"
+                    placeholder="ornek@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="subject" className="block text-aggressive-white font-bold mb-2">
                     Konu
                   </label>
                   <input
@@ -143,13 +142,14 @@ const Contact = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="input-field"
                     required
+                    className="input-primary w-full"
+                    placeholder="Mesajınızın konusu"
                   />
                 </div>
-                
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label htmlFor="message" className="block text-aggressive-white font-bold mb-2">
                     Mesaj
                   </label>
                   <textarea
@@ -157,20 +157,21 @@ const Contact = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
-                    rows={6}
-                    className="input-field"
                     required
+                    rows={6}
+                    className="input-primary w-full resize-none"
+                    placeholder="Mesajınızı buraya yazın..."
                   />
                 </div>
-                
+
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-primary btn-full inline-flex items-center justify-center space-x-2"
+                  className="btn-primary w-full hover-aggressive disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center space-x-2"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="spinner"></div>
+                      <div className="w-5 h-5 border-2 border-aggressive-black border-t-transparent rounded-full animate-aggressive-spin"></div>
                       <span>Gönderiliyor...</span>
                     </>
                   ) : (
@@ -181,92 +182,117 @@ const Contact = () => {
                   )}
                 </button>
               </form>
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="space-y-8"
+          >
+            {/* Contact Information */}
+            <div className="card">
+              <h2 className="text-2xl font-bold text-aggressive-white mb-6">
                 İletişim Bilgileri
               </h2>
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                  <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                    <Mail className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      Email
+                    <h3 className="text-lg font-bold text-aggressive-white mb-1">
+                      E-posta
                     </h3>
-                    <a
-                      href={`mailto:${personalInfo.email}`}
-                      className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
-                    >
-                      {personalInfo.email}
-                    </a>
+                    <p className="text-aggressive-gray font-bold">
+                      {personalInfo.email || 'mert@example.com'}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-secondary-100 dark:bg-secondary-900/20 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+                  <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                    <Phone className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-lg font-bold text-aggressive-white mb-1">
                       Telefon
                     </h3>
-                    <a
-                      href={`tel:${personalInfo.phone}`}
-                      className="text-gray-600 dark:text-gray-300 hover:text-secondary-600 dark:hover:text-secondary-400 transition-colors duration-200"
-                    >
-                      {personalInfo.phone}
-                    </a>
+                    <p className="text-aggressive-gray font-bold">
+                      {personalInfo.phone || '+90 555 123 4567'}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-accent-100 dark:bg-accent-900/20 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-accent-600 dark:text-accent-400" />
+                  <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                    <MapPin className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-lg font-bold text-aggressive-white mb-1">
                       Konum
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {personalInfo.location}
+                    <p className="text-aggressive-gray font-bold">
+                      {personalInfo.location || 'İstanbul, Türkiye'}
                     </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Social Links */}
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            {/* Social Links */}
+            {personalInfo.socialLinks && (
+              <div className="card">
+                <h2 className="text-2xl font-bold text-aggressive-white mb-6">
                   Sosyal Medya
-                </h3>
-                <div className="flex space-x-4">
-                  {personalInfo.socialLinks && Object.entries(personalInfo.socialLinks).map(([platform, url]) => (
+                </h2>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {Object.entries(personalInfo.socialLinks).map(([platform, url]) => (
                     <a
                       key={platform}
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200"
-                      aria-label={`${platform} profilim`}
+                      className="flex items-center space-x-3 p-4 bg-aggressive-black border-2 border-aggressive-white rounded-lg hover:bg-aggressive-white hover:text-aggressive-black transition-all duration-200 hover-aggressive font-bold"
                     >
                       {getSocialIcon(platform)}
+                      <span className="capitalize">{platform}</span>
                     </a>
                   ))}
                 </div>
               </div>
-            </motion.div>
-          </div>
+            )}
+
+            {/* Quick Info */}
+            <div className="card">
+              <h2 className="text-2xl font-bold text-aggressive-white mb-6">
+                Hızlı Bilgi
+              </h2>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-aggressive-black border border-aggressive-white rounded-lg">
+                  <span className="text-aggressive-white font-bold">Müsaitlik:</span>
+                  <span className="text-aggressive-gray font-bold">Açık</span>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 bg-aggressive-black border border-aggressive-white rounded-lg">
+                  <span className="text-aggressive-white font-bold">Yanıt Süresi:</span>
+                  <span className="text-aggressive-gray font-bold">24 saat</span>
+                </div>
+                
+                <div className="flex justify-between items-center p-4 bg-aggressive-black border border-aggressive-white rounded-lg">
+                  <span className="text-aggressive-white font-bold">Çalışma Saatleri:</span>
+                  <span className="text-aggressive-gray font-bold">9:00 - 18:00</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

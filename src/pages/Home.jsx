@@ -122,9 +122,9 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-aggressive-black text-aggressive-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-green-50 dark:from-gray-900 dark:to-gray-800">
+      <section className="relative min-h-screen flex items-center justify-center bg-aggressive-black">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -139,7 +139,7 @@ const Home = () => {
               className="mb-8"
             >
               <div className="relative inline-block">
-                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-2xl mx-auto">
+                <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-aggressive-white shadow-aggressive-xl mx-auto">
                   <img
                     src={getImageUrl()}
                     alt="Mert Acar"
@@ -147,17 +147,17 @@ const Home = () => {
                     style={getImageStyle()}
                   />
                 </div>
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-white dark:border-gray-700"></div>
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-aggressive-white rounded-full border-4 border-aggressive-black"></div>
               </div>
             </motion.div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-aggressive-white mb-6">
               {personalInfo?.name || 'Mert Acar'}
             </h1>
-            <h2 className="text-xl md:text-2xl text-blue-600 dark:text-blue-400 font-semibold mb-6">
+            <h2 className="text-xl md:text-2xl text-aggressive-white font-bold mb-6">
               {personalInfo?.title || 'Full Stack Developer'}
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-aggressive-gray mb-8 max-w-3xl mx-auto font-bold">
               {personalInfo?.subtitle || 'Modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.'}
             </p>
 
@@ -165,14 +165,14 @@ const Home = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link
                 to="/portfolio"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
+                className="btn-primary hover-aggressive inline-flex items-center space-x-2"
               >
                 <span>Projelerimi Gör</span>
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 to="/contact"
-                className="bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
+                className="btn-secondary hover-aggressive inline-flex items-center space-x-2"
               >
                 <Mail className="w-5 h-5" />
                 <span>İletişime Geç</span>
@@ -187,7 +187,7 @@ const Home = () => {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-colors duration-200"
+                  className="p-3 bg-aggressive-white/10 backdrop-blur-sm rounded-lg hover:bg-aggressive-white hover:text-aggressive-black transition-all duration-200 hover-aggressive"
                   aria-label={`${platform} profilim`}
                 >
                   {getSocialIcon(platform)}
@@ -204,9 +204,9 @@ const Home = () => {
             >
               <button
                 onClick={() => scrollToSection('about')}
-                className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                className="p-2 text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white rounded-lg transition-all duration-200 hover-aggressive"
               >
-                <ChevronDown className="w-6 h-6 animate-bounce" />
+                <ChevronDown className="w-6 h-6 animate-aggressive-bounce" />
               </button>
             </motion.div>
           </motion.div>
@@ -214,7 +214,7 @@ const Home = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 px-4 bg-white dark:bg-gray-800">
+      <section id="about" className="py-16 px-4 bg-aggressive-gray">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -223,18 +223,18 @@ const Home = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-aggressive-white mb-6">
                 Hakkımda
               </h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <div className="prose prose-lg max-w-none">
+                <p className="text-aggressive-gray leading-relaxed font-bold">
                   {personalInfo.about}
                 </p>
               </div>
               <div className="mt-8">
                 <Link
                   to="/about"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center space-x-2"
+                  className="btn-primary hover-aggressive inline-flex items-center space-x-2"
                 >
                   <span>Daha Fazla Bilgi</span>
                   <ArrowRight className="w-5 h-5" />
@@ -249,8 +249,8 @@ const Home = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="bg-gradient-to-br from-blue-100 to-green-100 dark:from-blue-900/20 dark:to-green-900/20 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+              <div className="card">
+                <h3 className="text-xl font-bold text-aggressive-white mb-6">
                   Teknolojiler
                 </h3>
                 <div className="grid grid-cols-2 gap-4">
@@ -258,10 +258,10 @@ const Home = () => {
                     personalInfo.technologies.slice(0, 8).map((tech, index) => (
                       <div
                         key={index}
-                        className="flex items-center space-x-3 p-3 bg-white/50 dark:bg-gray-700/50 rounded-lg"
+                        className="flex items-center space-x-3 p-3 bg-aggressive-black/50 rounded-lg border border-aggressive-white"
                       >
-                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">
+                        <div className="w-2 h-2 bg-aggressive-white rounded-full"></div>
+                        <span className="text-aggressive-white font-bold">
                           {tech}
                         </span>
                       </div>
@@ -275,7 +275,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-blue-600 to-green-600">
+      <section className="py-16 px-4 bg-aggressive-black border-t-2 border-aggressive-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -284,10 +284,10 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-aggressive-white mb-4">
               Başarılarım
             </h2>
-            <p className="text-xl text-blue-100">
+            <p className="text-xl text-aggressive-gray font-bold">
               Kariyerim boyunca elde ettiğim başarılar
             </p>
           </motion.div>
@@ -303,7 +303,7 @@ const Home = () => {
                 className="text-center"
               >
                 <motion.div
-                  className="text-3xl md:text-4xl font-bold text-white mb-2 flex items-center justify-center"
+                  className="text-3xl md:text-4xl font-bold text-aggressive-white mb-2 flex items-center justify-center"
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
@@ -312,7 +312,7 @@ const Home = () => {
                   {key === 'totalViews' && <Eye className="w-6 h-6 mr-2" />}
                   {value}+
                 </motion.div>
-                <div className="text-blue-100 text-sm capitalize">
+                <div className="text-aggressive-gray text-sm capitalize font-bold">
                   {key === 'totalViews' && 'Toplam Görüntülenme'}
                   {key === 'uniqueVisitors' && 'Benzersiz Ziyaretçi'}
                   {key === 'completedProjects' && 'Tamamlanan Proje'}
@@ -332,9 +332,9 @@ const Home = () => {
 // Social icon helper
 const getSocialIcon = (platform) => {
   const icons = {
-    github: <Github className="w-5 h-5 text-gray-700 dark:text-gray-300" />,
-    linkedin: <Linkedin className="w-5 h-5 text-blue-600" />,
-    twitter: <Twitter className="w-5 h-5 text-blue-400" />
+    github: <Github className="w-5 h-5" />,
+    linkedin: <Linkedin className="w-5 h-5" />,
+    twitter: <Twitter className="w-5 h-5" />
   };
   return icons[platform] || null;
 };
