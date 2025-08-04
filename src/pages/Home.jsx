@@ -21,7 +21,7 @@ const Home = () => {
     totalViews: 0,
     uniqueVisitors: 0
   });
-  const { getImageStyle, getImageUrl, handleImageError } = useProfileImage();
+  const { getImageStyle, getImageUrl, handleImageError, handleImageLoad, imageLoaded, imageError } = useProfileImage();
 
   useEffect(() => {
     // Analytics tracking
@@ -104,14 +104,30 @@ const Home = () => {
             transition={{ duration: 0.8 }}
           >
             <div className="relative inline-block">
-              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-aggressive-white shadow-aggressive-xl mx-auto">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-aggressive-white shadow-aggressive-xl mx-auto bg-aggressive-black">
+                {!imageLoaded && !imageError && (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="spinner"></div>
+                  </div>
+                )}
                 <img
                   src={getImageUrl()}
                   alt="Mert Acar"
                   className="w-full h-full object-cover"
                   style={getImageStyle()}
                   onError={handleImageError}
+                  onLoad={handleImageLoad}
                 />
+                {imageError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-aggressive-black">
+                    <div className="text-aggressive-white text-center">
+                      <div className="w-16 h-16 bg-aggressive-white rounded-full flex items-center justify-center mx-auto mb-2">
+                        <span className="text-aggressive-black text-2xl font-bold">MA</span>
+                      </div>
+                      <p className="text-sm font-bold">Profil Resmi</p>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-aggressive-white rounded-full border-4 border-aggressive-black"></div>
             </div>

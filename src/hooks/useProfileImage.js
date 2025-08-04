@@ -12,6 +12,7 @@ const useProfileImage = () => {
   });
   const [imageUrl, setImageUrl] = useState('/images/profile.jpg');
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     loadSettings();
@@ -32,11 +33,18 @@ const useProfileImage = () => {
   const loadImageUrl = () => {
     try {
       const savedImageUrl = storageService.getData('profileImageUrl');
-      if (savedImageUrl) {
+      if (savedImageUrl && savedImageUrl !== '/images/profile.jpg') {
         setImageUrl(savedImageUrl);
+        setImageError(false);
+      } else {
+        // Default image
+        setImageUrl('/images/profile.jpg');
+        setImageError(false);
       }
     } catch (error) {
       console.error('Profil resmi URL yüklenemedi:', error);
+      setImageUrl('/images/profile.jpg');
+      setImageError(false);
     }
   };
 
@@ -44,7 +52,9 @@ const useProfileImage = () => {
     return {
       transform: `scale(${settings.zoom}) rotate(${settings.rotation}deg)`,
       filter: `brightness(${settings.brightness}%) contrast(${settings.contrast}%) saturate(${settings.saturation}%)`,
-      objectPosition: `${settings.crop.x}% ${settings.crop.y}%`
+      objectPosition: `${settings.crop.x}% ${settings.crop.y}%`,
+      opacity: imageLoaded ? 1 : 0,
+      transition: 'opacity 0.3s ease-in-out'
     };
   };
 
@@ -54,6 +64,8 @@ const useProfileImage = () => {
 
   const updateImageUrl = (newUrl) => {
     setImageUrl(newUrl);
+    setImageError(false);
+    setImageLoaded(false);
     try {
       storageService.saveData('profileImageUrl', newUrl);
     } catch (error) {
@@ -62,19 +74,45 @@ const useProfileImage = () => {
   };
 
   const handleImageError = () => {
+    console.error('Profil resmi yüklenemedi:', imageUrl);
     setImageError(true);
+    setImageLoaded(false);
     // Fallback to default image
     setImageUrl('/images/profile.jpg');
+    try {
+      storageService.saveData('profileImageUrl', '/images/profile.jpg');
+    } catch (error) {
+      console.error('Fallback resmi kaydedilemedi:', error);
+    }
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
+
+  const resetImage = () => {
+    setImageUrl('/images/profile.jpg');
+    setImageError(false);
+    setImageLoaded(false);
+    try {
+      storageService.removeData('profileImageUrl');
+    } catch (error) {
+      console.error('Profil resmi sıfırlanamadı:', error);
+    }
   };
 
   return {
     settings,
     imageUrl,
     imageError,
+    imageLoaded,
     getImageStyle,
     getImageUrl,
     updateImageUrl,
     handleImageError,
+    handleImageLoad,
+    resetImage,
     loadSettings
   };
 };
