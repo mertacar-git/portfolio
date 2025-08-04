@@ -78,10 +78,30 @@
     </div>
 
     <script>
-        // Basit yönlendirme - 3 saniye sonra ana sayfaya git
-        setTimeout(function() {
-            window.location.href = '/';
-        }, 3000);
+        // GitHub Pages HashRouter fix
+        (function() {
+            // Get the current path
+            var path = window.location.pathname;
+            
+            // Remove the base path if it exists
+            var basePath = '/portfolio';
+            if (path.startsWith(basePath)) {
+                path = path.substring(basePath.length);
+            }
+            
+            // If path is empty or just '/', go to home
+            if (!path || path === '/') {
+                window.location.href = basePath + '/';
+            } else {
+                // Otherwise, redirect to the React app with hash routing
+                window.location.href = basePath + '/#' + path;
+            }
+            
+            // Fallback: redirect to home after 3 seconds
+            setTimeout(function() {
+                window.location.href = '/portfolio/';
+            }, 3000);
+        })();
     </script>
 </body>
 </html> 

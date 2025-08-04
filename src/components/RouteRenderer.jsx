@@ -1,97 +1,28 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { getPublicRoutes, getAdminRoutes } from '../config/routes';
 import { ProtectedRoute } from '../utils/auth';
 
-// Lazy loading için component mapping
-const componentMap = {
-  // Ana sayfalar
-  'Home': lazy(() => import('../pages/Home')),
-  'About': lazy(() => import('../pages/About')),
-  'Portfolio': lazy(() => import('../pages/Portfolio')),
-  'Blog': lazy(() => import('../pages/Blog')),
-  'BlogPost': lazy(() => import('../pages/BlogPost')),
-  'Contact': lazy(() => import('../pages/Contact')),
-  
-  // Admin sayfaları
-  'AdminLogin': lazy(() => import('../pages/admin/AdminLogin')),
-  'AdminDashboard': lazy(() => import('../pages/admin/AdminDashboard')),
-  'AdminProjects': lazy(() => import('../pages/admin/AdminProjects')),
-  'AdminBlog': lazy(() => import('../pages/admin/AdminBlog')),
-  'AdminSettings': lazy(() => import('../pages/admin/AdminSettings')),
-  'AdminSkills': lazy(() => import('../pages/admin/AdminSkills')),
-  'AdminAchievements': lazy(() => import('../pages/admin/AdminAchievements')),
-  'AdminHomepage': lazy(() => import('../pages/admin/AdminHomepage')),
-  'AdminAnalytics': lazy(() => import('../pages/admin/AdminAnalytics')),
-  'AdminProfile': lazy(() => import('../pages/admin/AdminProfile')),
-  
-  // 404 sayfası
-  'NotFound': lazy(() => import('../components/NotFound'))
-};
+// Direct imports for all components
+import Home from '../pages/Home';
+import About from '../pages/About';
+import Portfolio from '../pages/Portfolio';
+import Blog from '../pages/Blog';
+import BlogPost from '../pages/BlogPost';
+import Contact from '../pages/Contact';
 
-// Component yükleyici
-const loadComponent = (componentName) => {
-  const Component = componentMap[componentName];
-  if (!Component) {
-    return () => <NotFound />;
-  }
-  return Component;
-};
+// Admin components
+import AdminLogin from '../pages/admin/AdminLogin';
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import AdminProjects from '../pages/admin/AdminProjects';
+import AdminBlog from '../pages/admin/AdminBlog';
+import AdminSettings from '../pages/admin/AdminSettings';
+import AdminSkills from '../pages/admin/AdminSkills';
+import AdminAchievements from '../pages/admin/AdminAchievements';
+import AdminHomepage from '../pages/admin/AdminHomepage';
+import AdminAnalytics from '../pages/admin/AdminAnalytics';
+import AdminProfile from '../pages/admin/AdminProfile';
 
-// Rota renderer
-const RouteRenderer = () => {
-  try {
-    // Public rotaları al
-    const publicRoutes = getPublicRoutes();
-    
-    // Admin rotalarını al
-    const adminRoutes = getAdminRoutes();
-
-    return (
-      <Routes>
-        {/* Public Routes */}
-        {publicRoutes.map((route) => {
-          const Component = loadComponent(route.component);
-          
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<Component />}
-            />
-          );
-        })}
-        
-        {/* Admin Routes */}
-        {adminRoutes.map((route) => {
-          const Component = loadComponent(route.component);
-          
-          return (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={
-                <ProtectedRoute>
-                  <Component />
-                </ProtectedRoute>
-              }
-            />
-          );
-        })}
-        
-        {/* 404 Route */}
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-      </Routes>
-    );
-  } catch (error) {
-    return <NotFound />;
-  }
-};
-
-// 404 sayfası component'i
+// 404 component
 const NotFound = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
@@ -111,6 +42,37 @@ const NotFound = () => {
         </a>
       </div>
     </div>
+  );
+};
+
+// Simple RouteRenderer
+const RouteRenderer = () => {
+  return (
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:id" element={<BlogPost />} />
+      <Route path="/contact" element={<Contact />} />
+      
+      {/* Admin Routes */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+      <Route path="/admin/projects" element={<ProtectedRoute><AdminProjects /></ProtectedRoute>} />
+      <Route path="/admin/blog" element={<ProtectedRoute><AdminBlog /></ProtectedRoute>} />
+      <Route path="/admin/settings" element={<ProtectedRoute><AdminSettings /></ProtectedRoute>} />
+      <Route path="/admin/skills" element={<ProtectedRoute><AdminSkills /></ProtectedRoute>} />
+      <Route path="/admin/achievements" element={<ProtectedRoute><AdminAchievements /></ProtectedRoute>} />
+      <Route path="/admin/homepage" element={<ProtectedRoute><AdminHomepage /></ProtectedRoute>} />
+      <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalytics /></ProtectedRoute>} />
+      <Route path="/admin/profile" element={<ProtectedRoute><AdminProfile /></ProtectedRoute>} />
+      
+      {/* 404 Route */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
 
