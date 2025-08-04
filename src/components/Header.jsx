@@ -15,7 +15,6 @@ import { useTheme } from '../contexts/ThemeContext';
 import { siteConfig } from '../data/siteConfig';
 import { storageService } from '../services/storageService';
 import { personalInfo as defaultPersonalInfo } from '../data/personalInfo';
-import useProfileImage from '../hooks/useProfileImage';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,7 +27,6 @@ const Header = () => {
   const [personalInfo, setPersonalInfo] = useState(defaultPersonalInfo);
   const { theme, toggleTheme } = useTheme();
   const [isThemeLoading, setIsThemeLoading] = useState(false);
-  const { getImageStyle, getImageUrl } = useProfileImage();
   const location = useLocation();
 
   useEffect(() => {
@@ -175,20 +173,6 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group hover-aggressive">
-            <div className="relative">
-              {getImageUrl() ? (
-                <img
-                  src={getImageUrl()}
-                  alt="Mert Açar"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-aggressive-white group-hover:border-aggressive-white transition-colors duration-200"
-                  style={getImageStyle()}
-                />
-              ) : (
-                <div className="w-10 h-10 bg-aggressive-white text-aggressive-black rounded-full flex items-center justify-center text-white font-bold text-lg group-hover:bg-aggressive-white transition-colors duration-200">
-                  M
-                </div>
-              )}
-            </div>
             <span className="text-xl font-bold text-aggressive-white group-hover:text-aggressive-white transition-colors duration-200">
               {siteConfig.site.title.split(' - ')[0]}
             </span>
