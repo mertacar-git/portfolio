@@ -10,13 +10,11 @@ const useProfileImage = () => {
     contrast: 100,
     saturation: 100
   });
-  const [imageUrl, setImageUrl] = useState('/images/profile.jpg');
-  const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     loadSettings();
-    loadImageUrl();
   }, []);
 
   const loadSettings = () => {
@@ -27,24 +25,6 @@ const useProfileImage = () => {
       }
     } catch (error) {
       console.error('Profil ayarları yüklenemedi:', error);
-    }
-  };
-
-  const loadImageUrl = () => {
-    try {
-      const savedImageUrl = storageService.getData('profileImageUrl');
-      if (savedImageUrl && savedImageUrl !== '/images/profile.jpg') {
-        setImageUrl(savedImageUrl);
-        setImageError(false);
-      } else {
-        // Default image
-        setImageUrl('/images/profile.jpg');
-        setImageError(false);
-      }
-    } catch (error) {
-      console.error('Profil resmi URL yüklenemedi:', error);
-      setImageUrl('/images/profile.jpg');
-      setImageError(false);
     }
   };
 
@@ -59,31 +39,13 @@ const useProfileImage = () => {
   };
 
   const getImageUrl = () => {
-    return imageUrl;
-  };
-
-  const updateImageUrl = (newUrl) => {
-    setImageUrl(newUrl);
-    setImageError(false);
-    setImageLoaded(false);
-    try {
-      storageService.saveData('profileImageUrl', newUrl);
-    } catch (error) {
-      console.error('Profil resmi URL kaydedilemedi:', error);
-    }
+    return '/images/profile.jpg';
   };
 
   const handleImageError = () => {
-    console.error('Profil resmi yüklenemedi:', imageUrl);
+    console.error('Profil resmi yüklenemedi: /images/profile.jpg');
     setImageError(true);
     setImageLoaded(false);
-    // Fallback to default image
-    setImageUrl('/images/profile.jpg');
-    try {
-      storageService.saveData('profileImageUrl', '/images/profile.jpg');
-    } catch (error) {
-      console.error('Fallback resmi kaydedilemedi:', error);
-    }
   };
 
   const handleImageLoad = () => {
@@ -91,28 +53,14 @@ const useProfileImage = () => {
     setImageError(false);
   };
 
-  const resetImage = () => {
-    setImageUrl('/images/profile.jpg');
-    setImageError(false);
-    setImageLoaded(false);
-    try {
-      storageService.removeData('profileImageUrl');
-    } catch (error) {
-      console.error('Profil resmi sıfırlanamadı:', error);
-    }
-  };
-
   return {
     settings,
-    imageUrl,
-    imageError,
     imageLoaded,
+    imageError,
     getImageStyle,
     getImageUrl,
-    updateImageUrl,
     handleImageError,
     handleImageLoad,
-    resetImage,
     loadSettings
   };
 };
