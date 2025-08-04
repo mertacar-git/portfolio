@@ -1,55 +1,3 @@
-/* ===== DARK THEME ENFORCEMENT ===== */
-/* This CSS enforces dark theme without breaking layout */
-
-/* Force dark theme on main containers only */
-html, body, #root {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Override any and all light backgrounds on main containers */
-html, body, #root, main, header, footer {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Override all Tailwind light classes */
-.bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400,
-.bg-blue-50, .bg-blue-100, .bg-green-50, .bg-green-100, .bg-yellow-50, .bg-yellow-100,
-.bg-red-50, .bg-red-100, .bg-purple-50, .bg-purple-100, .bg-pink-50, .bg-pink-100 {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Override any light text */
-.text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-black {
-  color: #f9fafb !important;
-}
-
-/* Force dark theme even for light theme classes */
-html.light, html.light body, html.light #root,
-body.light, #root.light {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Ensure dark theme is always applied */
-html.dark, html.dark body, html.dark #root,
-body.dark, #root.dark {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
-/* Override any inline styles */
-[style*="background-color: white"],
-[style*="background-color: #fff"],
-[style*="background-color: #ffffff"],
-[style*="background-color: rgb(255, 255, 255)"],
-[style*="background-color: rgb(255,255,255)"] {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
-}
-
 /* ===== TAILWIND CSS ===== */
 @tailwind base;
 @tailwind components;
@@ -59,40 +7,17 @@ body.dark, #root.dark {
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #111827 !important;
-    color: #f9fafb !important;
   }
   
   body {
     font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
-    color: #f9fafb !important;
-    background-color: #111827 !important;
     margin: 0;
     padding: 0;
   }
   
   * {
     box-sizing: border-box;
-  }
-  
-  /* Override all possible light backgrounds */
-  .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400,
-  .bg-blue-50, .bg-blue-100, .bg-green-50, .bg-green-100, .bg-yellow-50, .bg-yellow-100,
-  .bg-red-50, .bg-red-100, .bg-purple-50, .bg-purple-100, .bg-pink-50, .bg-pink-100 {
-    background-color: #111827 !important;
-    color: #f9fafb !important;
-  }
-  
-  /* Override all possible light text */
-  .text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-black {
-    color: #f9fafb !important;
-  }
-  
-  /* Force dark theme on all containers */
-  .min-h-screen, .container, .wrapper, .main, .content {
-    background-color: #111827 !important;
-    color: #f9fafb !important;
   }
 }
 
@@ -256,6 +181,7 @@ body.dark, #root.dark {
 
 .dark body {
   background-color: #111827;
+  color: #f9fafb;
 }
 
 .dark .animate-shimmer {

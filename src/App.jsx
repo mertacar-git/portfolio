@@ -24,32 +24,9 @@ import { analytics } from './utils/dataManager';
     document.body.classList.add('dark');
     document.body.classList.remove('light');
     
-    // Force dark theme styles
-    document.documentElement.style.backgroundColor = '#111827';
-    document.documentElement.style.color = '#f9fafb';
-    document.body.style.backgroundColor = '#111827';
-    document.body.style.color = '#f9fafb';
-    
     // Force localStorage
     localStorage.setItem('theme', 'dark');
     localStorage.removeItem('light');
-    
-    // Override any existing styles
-    const style = document.createElement('style');
-    style.textContent = `
-      * {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      html, body, #root {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200 {
-        background-color: #111827 !important;
-      }
-    `;
-    document.head.appendChild(style);
     
     console.log('App.jsx: Force dark theme completed');
   } catch (error) {

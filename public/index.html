@@ -37,66 +37,30 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Critical CSS - Flash'i önlemek için -->
+    <!-- Critical CSS - Minimal dark theme -->
     <style>
-      /* Sayfa yüklenmeden önce uygulanacak kritik CSS */
-      html, body, #root, *, div, section, main, header, footer, nav, aside, article {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        font-family: 'Inter', system-ui, sans-serif !important;
+      /* Basic dark theme setup */
+      html, body, #root {
+        background-color: #111827;
+        color: #f9fafb;
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', system-ui, sans-serif;
       }
       
-      /* Loading state için */
+      /* Loading state */
       #root {
-        background-color: #111827 !important;
-        min-height: 100vh !important;
+        min-height: 100vh;
       }
       
-      /* Tüm elementler için dark tema */
-      * {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      
-      /* Override any light theme classes */
-      .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .bg-gray-300, .bg-gray-400,
-      .bg-blue-50, .bg-blue-100, .bg-green-50, .bg-green-100, .bg-yellow-50, .bg-yellow-100,
-      .bg-red-50, .bg-red-100, .bg-purple-50, .bg-purple-100, .bg-pink-50, .bg-pink-100 {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      
-      /* Override any light text */
-      .text-gray-900, .text-gray-800, .text-gray-700, .text-gray-600, .text-black {
-        color: #f9fafb !important;
-      }
-      
-      /* Override any inline styles */
-      [style*="background-color: white"],
-      [style*="background-color: #fff"],
-      [style*="background-color: #ffffff"],
-      [style*="background-color: rgb(255, 255, 255)"],
-      [style*="background-color: rgb(255,255,255)"] {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      
-      /* Force dark theme on all possible elements */
-      html, body, #root, div, section, main, header, footer, nav, aside, article, p, h1, h2, h3, h4, h5, h6, span, a, button, input, textarea, select, option, table, tr, td, th, ul, ol, li {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
-      }
-      
-      /* Spinner için */
+      /* Spinner */
       .spinner {
-        border: 2px solid #374151 !important;
-        border-top: 2px solid #3b82f6 !important;
-        border-radius: 50% !important;
-        width: 20px !important;
-        height: 20px !important;
-        animation: spin 1s linear infinite !important;
+        border: 2px solid #374151;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        animation: spin 1s linear infinite;
       }
       
       @keyframes spin {
@@ -144,131 +108,32 @@
           document.body.classList.add('dark');
           document.body.classList.remove('light');
           
-          // Tüm elementlere dark tema uygula
-          document.documentElement.style.backgroundColor = '#111827';
-          document.documentElement.style.color = '#f9fafb';
-          document.body.style.backgroundColor = '#111827';
-          document.body.style.color = '#f9fafb';
-          
-          // Root element'e de uygula
-          const root = document.getElementById('root');
-          if (root) {
-            root.style.backgroundColor = '#111827';
-            root.style.color = '#f9fafb';
-          }
-          
-          // Tüm div elementlerini kontrol et ve dark tema uygula
-          const allElements = document.querySelectorAll('*');
-          allElements.forEach(element => {
-            if (element.style.backgroundColor === 'white' || 
-                element.style.backgroundColor === 'rgb(255, 255, 255)' ||
-                element.style.backgroundColor === '#fff' ||
-                element.style.backgroundColor === '#ffffff' ||
-                element.classList.contains('bg-white') ||
-                element.classList.contains('bg-gray-50') ||
-                element.classList.contains('bg-gray-100') ||
-                element.classList.contains('bg-gray-200') ||
-                element.classList.contains('bg-gray-300') ||
-                element.classList.contains('bg-gray-400')) {
-              element.style.backgroundColor = '#111827';
-              element.style.color = '#f9fafb';
-            }
-          });
-          
         } catch (error) {
           // Hata durumunda da dark tema kullan
           document.documentElement.classList.add('dark');
           document.body.classList.add('dark');
         }
       })();
-      
-      // Sürekli kontrol et - daha sık
-      setInterval(function() {
-        try {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-          document.body.classList.add('dark');
-          document.body.classList.remove('light');
-          
-          document.documentElement.style.backgroundColor = '#111827';
-          document.body.style.backgroundColor = '#111827';
-          
-          // Tüm elementleri sürekli kontrol et
-          const allElements = document.querySelectorAll('*');
-          allElements.forEach(element => {
-            const bgColor = element.style.backgroundColor;
-            if (bgColor && (bgColor === 'white' || 
-                bgColor === 'rgb(255, 255, 255)' ||
-                bgColor === '#fff' ||
-                bgColor === '#ffffff')) {
-              element.style.backgroundColor = '#111827';
-              element.style.color = '#f9fafb';
-            }
-          });
-        } catch (error) {
-          // Hata durumunda sessizce devam et
-        }
-      }, 25); // 25ms'de bir kontrol et - daha agresif
-      
-      // MutationObserver ile DOM değişikliklerini izle
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.type === 'childList') {
-            mutation.addedNodes.forEach(function(node) {
-              if (node.nodeType === 1) { // Element node
-                node.style.backgroundColor = '#111827';
-                node.style.color = '#f9fafb';
-                
-                // Alt elementleri de kontrol et
-                const childElements = node.querySelectorAll('*');
-                childElements.forEach(element => {
-                  element.style.backgroundColor = '#111827';
-                  element.style.color = '#f9fafb';
-                });
-              }
-            });
-          }
-        });
-      });
-      
-      // Observer'ı başlat
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
-      });
-      
-      // Cache temizleme
-      if ('caches' in window) {
-        caches.keys().then(function(names) {
-          for (let name of names) {
-            caches.delete(name);
-          }
-        });
-      }
     </script>
     
     <!-- GitHub Pages SPA Routing -->
-    <script type="text/javascript">
+    <script>
       // Single Page Apps for GitHub Pages
       // MIT License
       // https://github.com/rafgraph/spa-github-pages
-      // This script checks to see if a redirect is present in the query string,
-      // converts it back into the correct url and adds it to the
-      // browser's history using window.history.replaceState(...),
-      // which won't cause the browser to attempt to load the new url.
-      // When the single page app is loaded further down in this file,
-      // the correct url will be waiting in the browser's history for
-      // the single page app to route accordingly.
-      (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&')
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + '#' + decoded + l.hash
-          );
-        }
-      }(window.location))
+      // This script takes the current url and converts the path and query
+      // string into just a query string, and then redirects the browser
+      // to the new url with only a query string and hash fragment.
+      var pathSegmentsToKeep = 1;
+
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </body>
 </html> 
