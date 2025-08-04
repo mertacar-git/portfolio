@@ -3,6 +3,7 @@ import { HashRouter as Router } from 'react-router-dom';
 
 // Components
 import Header from './components/Header';
+import Footer from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
 import ErrorBoundary from './components/ErrorBoundary';
 import RouteRenderer from './components/RouteRenderer';
@@ -37,6 +38,7 @@ function App() {
               <main className="pt-16">
                 <RouteRenderer />
               </main>
+              <Footer />
               <ScrollProgress />
             </div>
           </Router>
