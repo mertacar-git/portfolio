@@ -34,20 +34,12 @@ function App() {
         <ToastProvider>
           <Router>
             <div className="min-h-screen bg-gray-900">
-              <ErrorBoundary>
-                <Header />
-              </ErrorBoundary>
+              <Header />
               <main className="pt-16">
-                <ErrorBoundary>
-                  <RouteRenderer />
-                </ErrorBoundary>
+                <RouteRenderer />
               </main>
-              <ErrorBoundary>
-                <Footer />
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <ScrollProgress />
-              </ErrorBoundary>
+              <Footer />
+              <ScrollProgress />
             </div>
           </Router>
         </ToastProvider>

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { getPublicRoutes, getAdminRoutes } from '../config/routes';
 import { ProtectedRoute } from '../utils/auth';
@@ -29,53 +29,13 @@ const componentMap = {
   'NotFound': lazy(() => import('../components/NotFound'))
 };
 
-// Error fallback component
-const ErrorFallback = ({ componentName }) => (
-  <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-    <div className="text-center">
-      <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-        <span className="text-2xl">⚠️</span>
-      </div>
-      <h1 className="text-xl font-bold text-white mb-2">
-        Sayfa Yüklenemedi
-      </h1>
-      <p className="text-gray-400 mb-4">
-        {componentName} bileşeni yüklenirken bir hata oluştu.
-      </p>
-      <button
-        onClick={() => window.location.reload()}
-        className="btn-primary"
-      >
-        Sayfayı Yenile
-      </button>
-    </div>
-  </div>
-);
-
-// Component yükleyici with error handling
+// Component yükleyici
 const loadComponent = (componentName) => {
   const Component = componentMap[componentName];
   if (!Component) {
-    return () => <ErrorFallback componentName={componentName} />;
+    return () => <NotFound />;
   }
-  
-  // Wrap component with error boundary
-  const WrappedComponent = (props) => (
-    <React.Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <div className="spinner mx-auto mb-4"></div>
-          <h2 className="text-xl font-semibold text-gray-300">
-            {componentName} yükleniyor...
-          </h2>
-        </div>
-      </div>
-    }>
-      <Component {...props} />
-    </React.Suspense>
-  );
-  
-  return WrappedComponent;
+  return Component;
 };
 
 // Rota renderer
@@ -127,27 +87,7 @@ const RouteRenderer = () => {
       </Routes>
     );
   } catch (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
-            <span className="text-2xl">⚠️</span>
-          </div>
-          <h1 className="text-xl font-bold text-white mb-2">
-            Rota Hatası
-          </h1>
-          <p className="text-gray-400 mb-4">
-            Rotalar yüklenirken bir hata oluştu.
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="btn-primary"
-          >
-            Sayfayı Yenile
-          </button>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 };
 
