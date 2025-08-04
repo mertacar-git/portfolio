@@ -122,7 +122,7 @@ const Home = () => {
                   <div className="absolute inset-0 flex items-center justify-center bg-aggressive-black">
                     <div className="text-aggressive-white text-center">
                       <div className="w-16 h-16 bg-aggressive-white rounded-full flex items-center justify-center mx-auto mb-2">
-                        <span className="text-aggressive-black text-2xl font-bold">MA</span>
+                        <span className="text-aggressive-black text-2xl font-bold">A</span>
                       </div>
                       <p className="text-sm font-bold">Profil Resmi</p>
                     </div>
