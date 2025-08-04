@@ -41,10 +41,10 @@ const BlogPost = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-aggressive-black text-aggressive-white">
         <div className="text-center">
           <div className="spinner mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Blog yazısı yükleniyor...</p>
+          <p className="text-aggressive-gray font-bold">Blog yazısı yükleniyor...</p>
         </div>
       </div>
     );
@@ -52,9 +52,9 @@ const BlogPost = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-aggressive-black text-aggressive-white">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-2xl font-bold text-aggressive-white mb-4">
             Blog yazısı bulunamadı
           </h1>
           <Link to="/blog" className="btn-primary">
@@ -66,66 +66,73 @@ const BlogPost = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Back Button */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="container-max py-4">
+    <div className="min-h-screen bg-aggressive-black text-aggressive-white py-8">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Back Button */}
+        <div className="mb-8">
           <Link
             to="/blog"
-            className="inline-flex items-center space-x-2 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+            className="inline-flex items-center space-x-2 text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white px-4 py-2 rounded-lg transition-all duration-200 hover-aggressive font-bold"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Blog'a Dön</span>
           </Link>
         </div>
-      </div>
 
-      {/* Blog Content */}
-      <div className="container-max py-8">
+        {/* Blog Content */}
         <motion.article
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto"
+          className="card"
         >
           {/* Header */}
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-aggressive-white mb-4">
               {post.title}
             </h1>
             
-            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-aggressive-gray font-bold mb-6">
               <span className="flex items-center">
                 <Calendar className="w-4 h-4 mr-2" />
                 {post.publishDate}
               </span>
               <span className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
-                {post.readTime}
+                {post.readTime} dk okuma
               </span>
               <span className="flex items-center">
                 <Eye className="w-4 h-4 mr-2" />
-                {post.views} görüntüleme
+                {post.views || 0} görüntülenme
               </span>
             </div>
 
             {/* Tags */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-secondary-100 text-secondary-700 dark:bg-secondary-900/20 dark:text-secondary-300 text-sm rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 bg-aggressive-black text-aggressive-white text-sm rounded-full border border-aggressive-white font-bold"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
 
-            {/* Share Button */}
-            <button className="inline-flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200">
-              <Share2 className="w-4 h-4" />
-              <span>Paylaş</span>
-            </button>
+            {/* Author */}
+            <div className="flex items-center space-x-4 p-4 bg-aggressive-black border border-aggressive-white rounded-lg">
+              <div className="w-12 h-12 bg-aggressive-white rounded-full flex items-center justify-center">
+                <span className="text-aggressive-black font-bold text-lg">
+                  {post.author?.charAt(0) || 'M'}
+                </span>
+              </div>
+              <div>
+                <p className="text-aggressive-white font-bold">{post.author}</p>
+                <p className="text-aggressive-gray text-sm font-bold">{post.authorTitle}</p>
+              </div>
+            </div>
           </header>
 
           {/* Featured Image */}
@@ -140,73 +147,23 @@ const BlogPost = () => {
           )}
 
           {/* Content */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="markdown">
-              {post.content.split('\n').map((paragraph, index) => {
-                if (paragraph.trim() === '') return <br key={index} />;
-                
-                if (paragraph.startsWith('## ')) {
-                  return (
-                    <h2 key={index} className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 mt-8">
-                      {paragraph.replace('## ', '')}
-                    </h2>
-                  );
-                }
-                
-                if (paragraph.startsWith('### ')) {
-                  return (
-                    <h3 key={index} className="text-xl font-medium text-gray-900 dark:text-white mb-3 mt-6">
-                      {paragraph.replace('### ', '')}
-                    </h3>
-                  );
-                }
-                
-                if (paragraph.startsWith('```')) {
-                  return (
-                    <pre key={index} className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4">
-                      <code>{paragraph.replace('```', '')}</code>
-                    </pre>
-                  );
-                }
-                
-                if (paragraph.startsWith('- ')) {
-                  return (
-                    <ul key={index} className="list-disc list-inside mb-4 space-y-2">
-                      <li className="text-gray-700 dark:text-gray-300">
-                        {paragraph.replace('- ', '')}
-                      </li>
-                    </ul>
-                  );
-                }
-                
-                return (
-                  <p key={index} className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                    {paragraph}
-                  </p>
-                );
-              })}
+          <div className="prose prose-lg max-w-none">
+            <div className="text-aggressive-white font-bold leading-relaxed">
+              {post.content}
             </div>
           </div>
 
-          {/* Footer */}
-          <footer className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Bu yazıyı beğendiniz mi?
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Daha fazla içerik için blog sayfamızı takip edin.
-                </p>
+          {/* Share Section */}
+          <div className="mt-8 pt-8 border-t border-aggressive-white">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-aggressive-white">Bu yazıyı paylaş:</h3>
+              <div className="flex space-x-2">
+                <button className="p-2 bg-aggressive-black border border-aggressive-white rounded-lg hover:bg-aggressive-white hover:text-aggressive-black transition-all duration-200 hover-aggressive">
+                  <Share2 className="w-5 h-5" />
+                </button>
               </div>
-              <Link
-                to="/blog"
-                className="btn-primary inline-flex items-center space-x-2"
-              >
-                <span>Tüm Yazıları Gör</span>
-              </Link>
             </div>
-          </footer>
+          </div>
         </motion.article>
       </div>
     </div>
