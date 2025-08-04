@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Mert Açar - Software Developer Kişisel Web Sitesi" />
+    <meta name="theme-color" content="#111827" />
+    <meta name="description" content="Mert Açar - Full Stack Developer" />
     <title>Mert Açar - Portfolio</title>
     <style>
         body {
@@ -16,7 +16,8 @@
             -moz-osx-font-smoothing: grayscale;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #111827;
+            color: #f9fafb;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -24,7 +25,6 @@
         }
         .container {
             text-align: center;
-            color: white;
             max-width: 600px;
             padding: 2rem;
         }
@@ -32,34 +32,36 @@
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 1rem;
+            color: #3b82f6;
         }
         .title {
             font-size: 2rem;
             margin-bottom: 1rem;
+            color: #f9fafb;
         }
         .message {
             font-size: 1.1rem;
             margin-bottom: 2rem;
-            opacity: 0.9;
+            color: #d1d5db;
         }
         .button {
             display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
+            background: #3b82f6;
             color: white;
             padding: 12px 24px;
             text-decoration: none;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: none;
             transition: all 0.3s ease;
         }
         .button:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: #2563eb;
             transform: translateY(-2px);
         }
         .loading {
             margin-top: 2rem;
             font-size: 0.9rem;
-            opacity: 0.7;
+            color: #9ca3af;
         }
     </style>
 </head>
@@ -76,27 +78,10 @@
     </div>
 
     <script>
-        // GitHub Pages için routing düzeltmesi
-        (function() {
-            // Mevcut path'i al
-            var path = window.location.pathname;
-            
-            // Eğer bu bir GitHub Pages 404 sayfasıysa
-            if (path !== '/') {
-                // Hash router'a yönlendir
-                var hash = path.replace(/^\//, '');
-                if (hash) {
-                    window.location.href = '/#' + hash;
-                } else {
-                    window.location.href = '/';
-                }
-            }
-            
-            // 3 saniye sonra otomatik yönlendir
-            setTimeout(function() {
-                window.location.href = '/';
-            }, 3000);
-        })();
+        // Basit yönlendirme - 3 saniye sonra ana sayfaya git
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 3000);
     </script>
 </body>
 </html> 
