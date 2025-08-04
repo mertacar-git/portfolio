@@ -39,172 +39,178 @@ const AdminDashboard = () => {
       description: 'Ana sayfa içeriklerini düzenle',
       icon: <Home className="w-6 h-6" />,
       onClick: goToAdminHomepage,
-      color: 'bg-blue-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Profil Resmi',
       description: 'Profil resmini yükle ve düzenle',
       icon: <Image className="w-6 h-6" />,
       onClick: goToAdminProfile,
-      color: 'bg-pink-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Projeler',
       description: 'Proje portföyünü yönet',
       icon: <Briefcase className="w-6 h-6" />,
       onClick: goToAdminProjects,
-      color: 'bg-green-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Blog Yazıları',
       description: 'Blog içeriklerini düzenle',
       icon: <FileText className="w-6 h-6" />,
       onClick: goToAdminBlog,
-      color: 'bg-purple-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Yetenekler',
       description: 'Teknik yetenekleri güncelle',
       icon: <User className="w-6 h-6" />,
       onClick: goToAdminSkills,
-      color: 'bg-orange-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Başarılar',
       description: 'Başarı ve istatistikleri yönet',
       icon: <Award className="w-6 h-6" />,
       onClick: goToAdminAchievements,
-      color: 'bg-red-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Analitik',
       description: 'Site istatistiklerini görüntüle',
       icon: <BarChart3 className="w-6 h-6" />,
       onClick: goToAdminAnalytics,
-      color: 'bg-indigo-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     },
     {
       title: 'Ayarlar',
       description: 'Sistem ayarlarını yapılandır',
       icon: <Settings className="w-6 h-6" />,
       onClick: goToAdminSettings,
-      color: 'bg-gray-500'
+      color: 'bg-aggressive-white text-aggressive-black'
     }
   ];
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-aggressive-black">
+        <div className="spinner"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="container-max py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-aggressive-black text-aggressive-white">
+      {/* Header */}
+      <div className="bg-aggressive-black border-b-2 border-aggressive-white">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                Admin Panel
+              <h1 className="text-3xl font-bold text-aggressive-white">
+                Admin Dashboard
               </h1>
-              <p className="text-gray-600 dark:text-gray-300">
-                Hoş geldin, {user.username}! Site içeriklerini yönetebilirsin.
+              <p className="text-aggressive-gray font-bold">
+                Hoş geldin, {user.username}!
               </p>
             </div>
             <button
               onClick={handleLogout}
-              className="btn-secondary flex items-center space-x-2"
+              className="btn-danger hover-aggressive inline-flex items-center space-x-2"
             >
-              <LogOut className="w-4 h-4" />
+              <LogOut className="w-5 h-5" />
               <span>Çıkış Yap</span>
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12"
+        >
+          <div className="card hover-aggressive">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-aggressive-gray font-bold">Toplam Görüntülenme</p>
+                <p className="text-3xl font-bold text-aggressive-white">1,234</p>
+              </div>
+              <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+          <div className="card hover-aggressive">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-aggressive-gray font-bold">Projeler</p>
+                <p className="text-3xl font-bold text-aggressive-white">12</p>
+              </div>
+              <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                <Briefcase className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+          <div className="card hover-aggressive">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-aggressive-gray font-bold">Blog Yazıları</p>
+                <p className="text-3xl font-bold text-aggressive-white">8</p>
+              </div>
+              <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                <FileText className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+
+          <div className="card hover-aggressive">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-aggressive-gray font-bold">Yetenekler</p>
+                <p className="text-3xl font-bold text-aggressive-white">15</p>
+              </div>
+              <div className="p-3 bg-aggressive-white text-aggressive-black rounded-lg">
+                <User className="w-6 h-6" />
+              </div>
+            </div>
           </div>
         </motion.div>
 
         {/* Menu Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {menuItems.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <button
-                onClick={item.onClick}
-                className="w-full p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-200 group"
-              >
-                <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-lg ${item.color} text-white group-hover:scale-110 transition-transform duration-200`}>
-                    {item.icon}
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </button>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Quick Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-6"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
         >
-          <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100">Toplam Görüntülenme</p>
-                <p className="text-2xl font-bold">1,234</p>
+          {menuItems.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+              onClick={item.onClick}
+              className="card hover-aggressive cursor-pointer group"
+            >
+              <div className="text-center">
+                <div className={`p-4 rounded-lg mb-4 mx-auto w-16 h-16 flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform duration-200`}>
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-bold text-aggressive-white mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-aggressive-gray font-bold">
+                  {item.description}
+                </p>
               </div>
-              <TrendingUp className="w-8 h-8 text-blue-200" />
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100">Projeler</p>
-                <p className="text-2xl font-bold">12</p>
-              </div>
-              <Briefcase className="w-8 h-8 text-green-200" />
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100">Blog Yazıları</p>
-                <p className="text-2xl font-bold">8</p>
-              </div>
-              <FileText className="w-8 h-8 text-purple-200" />
-            </div>
-          </div>
-          
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg p-6 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100">Yetenekler</p>
-                <p className="text-2xl font-bold">15</p>
-              </div>
-              <User className="w-8 h-8 text-orange-200" />
-            </div>
-          </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </div>

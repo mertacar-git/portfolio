@@ -1,42 +1,45 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
-// Force dark theme immediately when context loads
+// Force aggressive theme immediately when context loads
 (function() {
   try {
-    // Force dark theme on document
+    // Force aggressive theme on document
     document.documentElement.classList.add('dark');
     document.documentElement.classList.remove('light');
     document.body.classList.add('dark');
     document.body.classList.remove('light');
     
-    // Force dark theme styles
-    document.documentElement.style.backgroundColor = '#111827';
-    document.documentElement.style.color = '#f9fafb';
-    document.body.style.backgroundColor = '#111827';
-    document.body.style.color = '#f9fafb';
+    // Force aggressive theme styles
+    document.documentElement.style.backgroundColor = '#000000';
+    document.documentElement.style.color = '#ffffff';
+    document.body.style.backgroundColor = '#000000';
+    document.body.style.color = '#ffffff';
     
     // Force localStorage
     localStorage.setItem('theme', 'dark');
     localStorage.removeItem('light');
     
-    // Override any existing styles
+    // Override any existing styles with aggressive theme
     const style = document.createElement('style');
     style.textContent = `
       * {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
+        background-color: #000000 !important;
+        color: #ffffff !important;
       }
       html, body, #root {
-        background-color: #111827 !important;
-        color: #f9fafb !important;
+        background-color: #000000 !important;
+        color: #ffffff !important;
       }
       .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200 {
-        background-color: #111827 !important;
+        background-color: #000000 !important;
+      }
+      .text-gray-900, .text-gray-800, .text-gray-700 {
+        color: #ffffff !important;
       }
     `;
     document.head.appendChild(style);
   } catch (error) {
-    console.error('Dark theme enforcement error:', error);
+    console.error('Aggressive theme enforcement error:', error);
   }
 })();
 
@@ -58,37 +61,86 @@ export const ThemeProvider = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState('dark');
   const [isReady, setIsReady] = useState(false);
 
-  // Tema değiştirme fonksiyonu - sadece dark'a izin ver
-  const switchTheme = useCallback(() => {
-    // Sadece dark tema kullan
-    setCurrentTheme('dark');
+  // Tema değiştirme fonksiyonu - dark ve light arasında geçiş
+  const toggleTheme = useCallback(() => {
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    setCurrentTheme(newTheme);
     
     // DOM'a hemen uygula
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      
+      // Aggressive dark theme styles
+      document.documentElement.style.backgroundColor = '#000000';
+      document.documentElement.style.color = '#ffffff';
+      document.body.style.backgroundColor = '#000000';
+      document.body.style.color = '#ffffff';
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+      
+      // Aggressive light theme styles
+      document.documentElement.style.backgroundColor = '#ffffff';
+      document.documentElement.style.color = '#000000';
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
+    }
     
     // localStorage'a kaydet
     try {
-      localStorage.setItem('theme', 'dark');
-      localStorage.removeItem('light');
+      localStorage.setItem('theme', newTheme);
+      if (newTheme === 'dark') {
+        localStorage.removeItem('light');
+      } else {
+        localStorage.removeItem('dark');
+      }
     } catch (error) {
       console.error('Tema kaydedilemedi:', error);
     }
-  }, []);
+  }, [currentTheme]);
 
-  // Belirli temayı ayarlama - sadece dark'a izin ver
+  // Belirli temayı ayarlama
   const setTheme = useCallback((theme) => {
-    // Sadece dark tema kullan
-    setCurrentTheme('dark');
+    setCurrentTheme(theme);
     
     // DOM'a uygula
-    document.documentElement.classList.add('dark');
-    document.documentElement.classList.remove('light');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      
+      // Aggressive dark theme styles
+      document.documentElement.style.backgroundColor = '#000000';
+      document.documentElement.style.color = '#ffffff';
+      document.body.style.backgroundColor = '#000000';
+      document.body.style.color = '#ffffff';
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+      
+      // Aggressive light theme styles
+      document.documentElement.style.backgroundColor = '#ffffff';
+      document.documentElement.style.color = '#000000';
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
+    }
     
     // localStorage'a kaydet
     try {
-      localStorage.setItem('theme', 'dark');
-      localStorage.removeItem('light');
+      localStorage.setItem('theme', theme);
+      if (theme === 'dark') {
+        localStorage.removeItem('light');
+      } else {
+        localStorage.removeItem('dark');
+      }
     } catch (error) {
       console.error('Tema kaydedilemedi:', error);
     }
@@ -97,37 +149,34 @@ export const ThemeProvider = ({ children }) => {
   // İlk yükleme
   useEffect(() => {
     try {
-      // localStorage'ı temizle
-      localStorage.removeItem('light');
+      // localStorage'dan tema al
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      setCurrentTheme(savedTheme);
       
-      // Her zaman dark tema kullan
-      setCurrentTheme('dark');
-      
-      // DOM'a uygula - her zaman dark başla
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-      document.body.classList.add('dark');
-      document.body.classList.remove('light');
-      
-      // localStorage'a dark tema kaydet
-      localStorage.setItem('theme', 'dark');
-      
-      // Sürekli kontrol et
-      const interval = setInterval(() => {
-        try {
-          document.documentElement.classList.add('dark');
-          document.documentElement.classList.remove('light');
-          document.body.classList.add('dark');
-          document.body.classList.remove('light');
-          localStorage.setItem('theme', 'dark');
-          localStorage.removeItem('light');
-        } catch (error) {
-          // Hata durumunda sessizce devam et
-        }
-      }, 100);
-      
-      // Cleanup
-      return () => clearInterval(interval);
+      // DOM'a uygula
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+        document.body.classList.add('dark');
+        document.body.classList.remove('light');
+        
+        // Aggressive dark theme styles
+        document.documentElement.style.backgroundColor = '#000000';
+        document.documentElement.style.color = '#ffffff';
+        document.body.style.backgroundColor = '#000000';
+        document.body.style.color = '#ffffff';
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+        document.body.classList.add('light');
+        document.body.classList.remove('dark');
+        
+        // Aggressive light theme styles
+        document.documentElement.style.backgroundColor = '#ffffff';
+        document.documentElement.style.color = '#000000';
+        document.body.style.backgroundColor = '#ffffff';
+        document.body.style.color = '#000000';
+      }
       
     } catch (error) {
       console.error('Tema yüklenemedi:', error);
@@ -143,7 +192,7 @@ export const ThemeProvider = ({ children }) => {
   // Context değeri
   const contextValue = {
     theme: currentTheme,
-    toggleTheme: switchTheme,
+    toggleTheme,
     setTheme,
     isReady
   };

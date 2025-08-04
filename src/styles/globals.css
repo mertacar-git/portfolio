@@ -1,5 +1,5 @@
-/* ===== AGGRESSIVE BLACK & WHITE THEME ===== */
-/* High contrast, aggressive styling for maximum readability */
+/* ===== ULTRA AGGRESSIVE BLACK & WHITE THEME ===== */
+/* Maximum contrast, ultra aggressive styling for maximum impact */
 
 @tailwind base;
 @tailwind components;
@@ -11,6 +11,8 @@
     scroll-behavior: smooth;
     background-color: #000000;
     color: #ffffff;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   }
   
   body {
@@ -21,6 +23,8 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   }
 
   * {
@@ -48,130 +52,164 @@
     background-color: #ffffff;
     color: #000000;
   }
+
+  /* Ultra aggressive text effects */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.02em;
+  }
+
+  /* Ultra aggressive link effects */
+  a {
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  a:hover {
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
+  }
 }
 
-/* ===== COMPONENT STYLES ===== */
+/* ===== ULTRA AGGRESSIVE COMPONENT STYLES ===== */
 @layer components {
-  /* Button Styles */
+  /* Ultra Aggressive Button Styles */
   .btn-primary {
-    @apply bg-white text-black font-bold py-3 px-6 rounded-lg border-2 border-white hover:bg-black hover:text-white hover:border-white transition-all duration-200 transform hover:scale-105 shadow-lg;
+    @apply bg-white text-black font-black py-4 px-8 rounded-xl border-4 border-white hover:bg-black hover:text-white hover:border-white transition-all duration-300 transform hover:scale-110 hover:rotate-2 shadow-2xl;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
   }
 
   .btn-secondary {
-    @apply bg-black text-white font-bold py-3 px-6 rounded-lg border-2 border-white hover:bg-white hover:text-black transition-all duration-200 transform hover:scale-105 shadow-lg;
+    @apply bg-black text-white font-black py-4 px-8 rounded-xl border-4 border-white hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-110 hover:rotate-2 shadow-2xl;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-secondary:hover {
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
   }
 
   .btn-danger {
-    @apply bg-red-600 text-white font-bold py-3 px-6 rounded-lg border-2 border-red-600 hover:bg-red-700 hover:border-red-700 transition-all duration-200 transform hover:scale-105 shadow-lg;
+    @apply bg-red-600 text-white font-black py-4 px-8 rounded-xl border-4 border-red-600 hover:bg-red-700 hover:border-red-700 transition-all duration-300 transform hover:scale-110 hover:rotate-2 shadow-2xl;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
   }
 
   .btn-success {
-    @apply bg-green-600 text-white font-bold py-3 px-6 rounded-lg border-2 border-green-600 hover:bg-green-700 hover:border-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg;
+    @apply bg-green-600 text-white font-black py-4 px-8 rounded-xl border-4 border-green-600 hover:bg-green-700 hover:border-green-700 transition-all duration-300 transform hover:scale-110 hover:rotate-2 shadow-2xl;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
   }
 
-  /* Card Styles */
+  /* Ultra Aggressive Card Styles */
   .card {
-    @apply bg-black border-2 border-white rounded-lg p-6 shadow-xl;
+    @apply bg-black border-4 border-white rounded-2xl p-8 shadow-2xl;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card:hover {
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.5);
+    transform: translateY(-5px) scale(1.02);
   }
 
   .card-light {
-    @apply bg-white border-2 border-black rounded-lg p-6 shadow-xl;
+    @apply bg-white border-4 border-black rounded-2xl p-8 shadow-2xl;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
   }
 
-  /* Input Styles */
+  /* Ultra Aggressive Input Styles */
   .input-primary {
-    @apply bg-black border-2 border-white text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-white focus:ring-2 focus:ring-white transition-all duration-200;
+    @apply bg-black border-4 border-white text-white placeholder-gray-400 rounded-xl px-6 py-4 focus:outline-none focus:border-white focus:ring-4 focus:ring-white transition-all duration-300 font-bold;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+
+  .input-primary:focus {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+    transform: scale(1.02);
   }
 
   .input-light {
-    @apply bg-white border-2 border-black text-black placeholder-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-black focus:ring-2 focus:ring-black transition-all duration-200;
+    @apply bg-white border-4 border-black text-black placeholder-gray-600 rounded-xl px-6 py-4 focus:outline-none focus:border-black focus:ring-4 focus:ring-black transition-all duration-300 font-bold;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
 
-  /* Navigation Styles */
+  /* Ultra Aggressive Navigation Styles */
   .nav-link {
-    @apply text-white hover:text-black hover:bg-white px-4 py-2 rounded-lg font-bold transition-all duration-200;
+    @apply text-white hover:text-black hover:bg-white px-6 py-3 rounded-xl font-black transition-all duration-300;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
   }
 
-  .nav-link-light {
-    @apply text-black hover:text-white hover:bg-black px-4 py-2 rounded-lg font-bold transition-all duration-200;
+  .nav-link:hover {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    transform: scale(1.05) rotate(1deg);
   }
 
   .nav-link-active {
-    @apply bg-white text-black font-bold px-4 py-2 rounded-lg;
+    @apply bg-white text-black font-black px-6 py-3 rounded-xl;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   }
 
-  .nav-link-active-light {
-    @apply bg-black text-white font-bold px-4 py-2 rounded-lg;
-  }
-
-  /* Table Styles */
+  /* Ultra Aggressive Table Styles */
   .table {
-    @apply w-full border-2 border-white;
+    @apply w-full border-4 border-white rounded-xl overflow-hidden;
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
   }
 
   .table th {
-    @apply bg-black text-white border-2 border-white px-4 py-3 text-left font-bold;
+    @apply bg-black text-white border-4 border-white px-6 py-4 text-left font-black;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   }
 
   .table td {
-    @apply border-2 border-white px-4 py-3 text-white;
+    @apply border-4 border-white px-6 py-4 text-white font-bold;
   }
 
-  .table-light {
-    @apply w-full border-2 border-black;
-  }
-
-  .table-light th {
-    @apply bg-white text-black border-2 border-black px-4 py-3 text-left font-bold;
-  }
-
-  .table-light td {
-    @apply border-2 border-black px-4 py-3 text-black;
-  }
-
-  /* Modal Styles */
+  /* Ultra Aggressive Modal Styles */
   .modal-overlay {
-    @apply fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50;
+    @apply fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50;
+    backdrop-filter: blur(10px);
   }
 
   .modal-content {
-    @apply bg-black border-2 border-white rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl;
+    @apply bg-black border-4 border-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl;
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.5);
   }
 
-  .modal-content-light {
-    @apply bg-white border-2 border-black rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl;
-  }
-
-  /* Badge Styles */
+  /* Ultra Aggressive Badge Styles */
   .badge {
-    @apply bg-white text-black px-3 py-1 rounded-full text-sm font-bold border border-white;
+    @apply bg-white text-black px-4 py-2 rounded-full text-sm font-black border-2 border-white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }
 
-  .badge-light {
-    @apply bg-black text-white px-3 py-1 rounded-full text-sm font-bold border border-black;
-  }
-
-  /* Alert Styles */
+  /* Ultra Aggressive Alert Styles */
   .alert-success {
-    @apply bg-green-600 text-white border-2 border-green-600 rounded-lg p-4 font-bold;
+    @apply bg-green-600 text-white border-4 border-green-600 rounded-xl p-6 font-black;
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   }
 
   .alert-error {
-    @apply bg-red-600 text-white border-2 border-red-600 rounded-lg p-4 font-bold;
-  }
-
-  .alert-warning {
-    @apply bg-yellow-600 text-black border-2 border-yellow-600 rounded-lg p-4 font-bold;
-  }
-
-  .alert-info {
-    @apply bg-blue-600 text-white border-2 border-blue-600 rounded-lg p-4 font-bold;
+    @apply bg-red-600 text-white border-4 border-red-600 rounded-xl p-6 font-black;
+    box-shadow: 0 0 30px rgba(239, 68, 68, 0.5);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   }
 }
 
-/* ===== UTILITY STYLES ===== */
+/* ===== ULTRA AGGRESSIVE UTILITY STYLES ===== */
 @layer utilities {
-  /* Background Colors */
+  /* Ultra Aggressive Background Colors */
   .bg-aggressive-black {
     background-color: #000000;
   }
@@ -188,195 +226,225 @@
     background-color: #f0f0f0;
   }
 
-  /* Text Colors */
+  /* Ultra Aggressive Text Colors */
   .text-aggressive-white {
     color: #ffffff;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
   }
 
   .text-aggressive-black {
     color: #000000;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   }
 
   .text-aggressive-gray {
     color: #cccccc;
+    text-shadow: 0 0 10px rgba(204, 204, 204, 0.3);
   }
 
-  .text-aggressive-gray-dark {
-    color: #333333;
-  }
-
-  /* Border Colors */
+  /* Ultra Aggressive Border Colors */
   .border-aggressive-white {
     border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
   }
 
   .border-aggressive-black {
     border-color: #000000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
   }
 
-  /* Shadow Styles */
+  /* Ultra Aggressive Shadow Styles */
   .shadow-aggressive {
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
   }
 
-  .shadow-aggressive-dark {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  .shadow-aggressive-xl {
+    box-shadow: 0 0 60px rgba(255, 255, 255, 0.6);
   }
 
-  /* Hover Effects */
+  /* Ultra Aggressive Hover Effects */
   .hover-aggressive {
-    @apply transform hover:scale-105 transition-all duration-200;
+    @apply transform hover:scale-110 hover:rotate-2 transition-all duration-300;
   }
 
-  .hover-aggressive-rotate {
-    @apply transform hover:rotate-3 transition-all duration-200;
+  .hover-aggressive:hover {
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
   }
 
-  /* Focus Styles */
+  /* Ultra Aggressive Focus Styles */
   .focus-aggressive {
     @apply focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50;
   }
 
-  .focus-aggressive-dark {
-    @apply focus:outline-none focus:ring-4 focus:ring-black focus:ring-opacity-50;
+  .focus-aggressive:focus {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+    transform: scale(1.05);
   }
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes aggressive-pulse {
+/* ===== ULTRA AGGRESSIVE ANIMATIONS ===== */
+@keyframes ultra-aggressive-pulse {
   0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.7;
+    opacity: 0.8;
+    transform: scale(1.05);
   }
 }
 
-@keyframes aggressive-bounce {
+@keyframes ultra-aggressive-bounce {
   0%, 20%, 53%, 80%, 100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   40%, 43% {
-    transform: translate3d(0, -10px, 0);
+    transform: translate3d(0, -15px, 0) scale(1.1);
   }
   70% {
-    transform: translate3d(0, -5px, 0);
+    transform: translate3d(0, -8px, 0) scale(1.05);
   }
   90% {
-    transform: translate3d(0, -2px, 0);
+    transform: translate3d(0, -3px, 0) scale(1.02);
   }
 }
 
-@keyframes aggressive-spin {
+@keyframes ultra-aggressive-spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg) scale(1);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) scale(1.1);
   }
 }
 
-.animate-aggressive-pulse {
-  animation: aggressive-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+@keyframes ultra-aggressive-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.6);
+  }
 }
 
-.animate-aggressive-bounce {
-  animation: aggressive-bounce 1s infinite;
+.animate-ultra-aggressive-pulse {
+  animation: ultra-aggressive-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.animate-aggressive-spin {
-  animation: aggressive-spin 1s linear infinite;
+.animate-ultra-aggressive-bounce {
+  animation: ultra-aggressive-bounce 1.5s infinite;
 }
 
-/* ===== SCROLLBAR STYLES ===== */
+.animate-ultra-aggressive-spin {
+  animation: ultra-aggressive-spin 1s linear infinite;
+}
+
+.animate-ultra-aggressive-glow {
+  animation: ultra-aggressive-glow 3s ease-in-out infinite;
+}
+
+/* ===== ULTRA AGGRESSIVE SCROLLBAR STYLES ===== */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 16px;
 }
 
 ::-webkit-scrollbar-track {
   background: #000000;
-  border: 2px solid #ffffff;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #ffffff;
-  border-radius: 6px;
+  border-radius: 10px;
+  border: 2px solid #000000;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #cccccc;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
 }
 
 /* Light theme scrollbar */
 html.light ::-webkit-scrollbar-track {
   background: #ffffff;
-  border: 2px solid #000000;
+  border: 3px solid #000000;
 }
 
 html.light ::-webkit-scrollbar-thumb {
   background: #000000;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 html.light ::-webkit-scrollbar-thumb:hover {
   background: #333333;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
-/* ===== SELECTION STYLES ===== */
+/* ===== ULTRA AGGRESSIVE SELECTION STYLES ===== */
 ::selection {
   background-color: #ffffff;
   color: #000000;
+  text-shadow: none;
 }
 
 html.light ::selection {
   background-color: #000000;
   color: #ffffff;
+  text-shadow: none;
 }
 
-/* ===== FOCUS VISIBLE ===== */
+/* ===== ULTRA AGGRESSIVE FOCUS VISIBLE ===== */
 :focus-visible {
-  outline: 3px solid #ffffff;
-  outline-offset: 2px;
+  outline: 4px solid #ffffff;
+  outline-offset: 3px;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
 }
 
 html.light :focus-visible {
-  outline: 3px solid #000000;
-  outline-offset: 2px;
+  outline: 4px solid #000000;
+  outline-offset: 3px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
 }
 
-/* ===== LOADING SPINNER ===== */
+/* ===== ULTRA AGGRESSIVE LOADING SPINNER ===== */
 .spinner {
-  border: 3px solid #ffffff;
-  border-top: 3px solid #000000;
+  border: 4px solid #ffffff;
+  border-top: 4px solid #000000;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: aggressive-spin 1s linear infinite;
+  width: 40px;
+  height: 40px;
+  animation: ultra-aggressive-spin 1s linear infinite;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
 html.light .spinner {
-  border: 3px solid #000000;
-  border-top: 3px solid #ffffff;
+  border: 4px solid #000000;
+  border-top: 4px solid #ffffff;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* ===== RESPONSIVE UTILITIES ===== */
+/* ===== ULTRA AGGRESSIVE RESPONSIVE UTILITIES ===== */
 @media (max-width: 768px) {
   .btn-primary,
   .btn-secondary {
-    @apply py-2 px-4 text-sm;
+    @apply py-3 px-6 text-sm;
   }
 
   .card,
   .card-light {
-    @apply p-4;
+    @apply p-6;
   }
 
   .input-primary,
   .input-light {
-    @apply py-2 px-3;
+    @apply py-3 px-4;
   }
 }
 
-/* ===== PRINT STYLES ===== */
+/* ===== ULTRA AGGRESSIVE PRINT STYLES ===== */
 @media print {
   * {
     background: transparent !important;
@@ -389,6 +457,6 @@ html.light .spinner {
   .btn-secondary,
   .btn-danger,
   .btn-success {
-    @apply border border-black text-black bg-white;
+    @apply border-2 border-black text-black bg-white;
   }
-} 
+}
