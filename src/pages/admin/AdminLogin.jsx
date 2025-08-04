@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Lock, Eye, EyeOff, User } from 'lucide-react';
 import { adminAuth } from '../../utils/auth';
-import useNavigation from '../../hooks/useNavigation';
+import { useNavigate } from 'react-router-dom';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -10,15 +10,14 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { goToAdmin } = useNavigation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Check if user is already logged in
-    const user = adminAuth.getUser();
-    if (user) {
-      goToAdmin();
+    if (adminAuth.isLoggedIn()) {
+      navigate('/admin');
     }
-  }, [goToAdmin]);
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,11 +25,11 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const success = await adminAuth.login(username, password);
-      if (success) {
-        goToAdmin();
+      const result = adminAuth.login(username, password);
+      if (result.success) {
+        navigate('/admin');
       } else {
-        setError('Kullanıcı adı veya şifre hatalı');
+        setError(result.message || 'Kullanıcı adı veya şifre hatalı');
       }
     } catch (err) {
       setError('Giriş yapılırken bir hata oluştu');
@@ -40,7 +39,7 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-900 dark:to-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-aggressive-black text-aggressive-white px-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -48,16 +47,16 @@ const AdminLogin = () => {
         className="w-full max-w-md"
       >
         {/* Login Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+        <div className="card">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Lock className="w-8 h-8 text-primary-600" />
+            <div className="w-16 h-16 bg-aggressive-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-aggressive-xl">
+              <Lock className="w-8 h-8 text-aggressive-black" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-2xl font-bold text-aggressive-white mb-2">
               Admin Girişi
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-aggressive-gray font-bold">
               Yönetici paneline erişmek için giriş yapın
             </p>
           </div>
@@ -66,19 +65,19 @@ const AdminLogin = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Username Field */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="username" className="block text-sm font-bold text-aggressive-white mb-2">
                 Kullanıcı Adı
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-aggressive-gray" />
                 </div>
                 <input
                   id="username"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="input-primary w-full pl-10 pr-4 py-3"
                   placeholder="Kullanıcı adınızı girin"
                   required
                 />
@@ -87,31 +86,31 @@ const AdminLogin = () => {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-bold text-aggressive-white mb-2">
                 Şifre
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-aggressive-gray" />
                 </div>
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="input-primary w-full pl-10 pr-12 py-3"
                   placeholder="Şifrenizi girin"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-aggressive-gray hover:text-aggressive-white transition-colors"
                 >
                   {showPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5" />
                   )}
                 </button>
               </div>
@@ -122,9 +121,9 @@ const AdminLogin = () => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg"
+                className="alert-error"
               >
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm">{error}</p>
               </motion.div>
             )}
 
@@ -132,11 +131,11 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+              className="btn-primary w-full py-3 px-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  <div className="spinner mr-2"></div>
                   Giriş Yapılıyor...
                 </div>
               ) : (
@@ -147,8 +146,8 @@ const AdminLogin = () => {
 
           {/* Footer */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Demo hesap: <span className="font-mono">admin</span> / <span className="font-mono">admin123</span>
+            <p className="text-sm text-aggressive-gray font-bold">
+              Demo hesap: <span className="font-mono text-aggressive-white">admin</span> / <span className="font-mono text-aggressive-white">admin123</span>
             </p>
           </div>
         </div>

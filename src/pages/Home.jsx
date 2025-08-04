@@ -21,7 +21,7 @@ const Home = () => {
     totalViews: 0,
     uniqueVisitors: 0
   });
-  const { getImageStyle, getImageUrl } = useProfileImage();
+  const { getImageStyle, getImageUrl, handleImageError } = useProfileImage();
 
   useEffect(() => {
     // Analytics tracking
@@ -110,6 +110,7 @@ const Home = () => {
                   alt="Mert Acar"
                   className="w-full h-full object-cover"
                   style={getImageStyle()}
+                  onError={handleImageError}
                 />
               </div>
               <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-aggressive-white rounded-full border-4 border-aggressive-black"></div>
