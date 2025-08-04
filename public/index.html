@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#111827" />
+    <meta name="theme-color" content="#000000" />
     <meta name="description" content="Mert - Full Stack Developer. Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer" />
     <meta name="keywords" content="Mert, Full Stack Developer, React, Node.js, Portfolio, Web Development" />
     <meta name="author" content="Mert" />
@@ -37,15 +37,16 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     
-    <!-- Critical CSS - Minimal dark theme -->
+    <!-- Critical CSS - Aggressive Black & White Theme -->
     <style>
-      /* Basic dark theme setup */
+      /* Aggressive black and white theme setup */
       html, body, #root {
-        background-color: #111827;
-        color: #f9fafb;
+        background-color: #000000;
+        color: #ffffff;
         margin: 0;
         padding: 0;
         font-family: 'Inter', system-ui, sans-serif;
+        font-weight: bold;
       }
       
       /* Loading state */
@@ -53,19 +54,33 @@
         min-height: 100vh;
       }
       
-      /* Spinner */
+      /* Aggressive spinner */
       .spinner {
-        border: 2px solid #374151;
-        border-top: 2px solid #3b82f6;
+        border: 3px solid #ffffff;
+        border-top: 3px solid #000000;
         border-radius: 50%;
-        width: 20px;
-        height: 20px;
-        animation: spin 1s linear infinite;
+        width: 30px;
+        height: 30px;
+        animation: aggressive-spin 1s linear infinite;
       }
       
-      @keyframes spin {
+      @keyframes aggressive-spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+
+      /* Aggressive hover effects */
+      .hover-aggressive {
+        transition: all 0.2s ease;
+      }
+      
+      .hover-aggressive:hover {
+        transform: scale(1.05);
+      }
+
+      /* Aggressive shadows */
+      .shadow-aggressive {
+        box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
       }
     </style>
     
@@ -80,13 +95,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #111827;
-        color: #f9fafb;
+        background-color: #000000;
+        color: #ffffff;
         font-family: 'Inter', system-ui, sans-serif;
+        font-weight: bold;
       ">
         <div style="text-align: center;">
           <div class="spinner" style="margin: 0 auto 1rem;"></div>
-          <h2 style="font-size: 1.25rem; font-weight: 600; margin: 0;">Yükleniyor...</h2>
+          <h2 style="font-size: 1.25rem; font-weight: bold; margin: 0;">Yükleniyor...</h2>
         </div>
       </div>
     </div>

@@ -25,18 +25,18 @@ import AdminProfile from '../pages/admin/AdminProfile';
 // 404 component
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+    <div className="min-h-screen flex items-center justify-center bg-aggressive-black text-aggressive-white">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-        <p className="text-xl text-gray-400 mb-8">
+        <h1 className="text-6xl font-bold text-aggressive-white mb-4">404</h1>
+        <p className="text-xl text-aggressive-white mb-8 font-bold">
           Sayfa bulunamadı
         </p>
-        <p className="text-gray-500 mb-8">
+        <p className="text-aggressive-gray mb-8 font-bold">
           Aradığınız sayfa mevcut değil veya taşınmış olabilir.
         </p>
         <a 
           href="/" 
-          className="inline-flex items-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors duration-200"
+          className="inline-flex items-center px-6 py-3 bg-aggressive-white text-aggressive-black font-bold rounded-lg hover:bg-aggressive-gray-light transition-all duration-200 hover-aggressive shadow-aggressive"
         >
           Ana Sayfaya Dön
         </a>

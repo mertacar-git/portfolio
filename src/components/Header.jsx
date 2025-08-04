@@ -168,28 +168,28 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
-        ? 'bg-gray-900/95 backdrop-blur-md border-b border-gray-800' 
-        : 'bg-gray-900/80 backdrop-blur-sm'
+        ? 'bg-aggressive-black/95 backdrop-blur-md border-b-2 border-aggressive-white' 
+        : 'bg-aggressive-black/80 backdrop-blur-sm'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 group">
+          <Link to="/" className="flex items-center space-x-3 group hover-aggressive">
             <div className="relative">
               {getImageUrl() ? (
                 <img
                   src={getImageUrl()}
                   alt="Mert Açar"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-primary-500 group-hover:border-primary-400 transition-colors duration-200"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-aggressive-white group-hover:border-aggressive-white transition-colors duration-200"
                   style={getImageStyle()}
                 />
               ) : (
-                <div className="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-lg group-hover:bg-primary-500 transition-colors duration-200">
+                <div className="w-10 h-10 bg-aggressive-white text-aggressive-black rounded-full flex items-center justify-center text-white font-bold text-lg group-hover:bg-aggressive-white transition-colors duration-200">
                   M
                 </div>
               )}
             </div>
-            <span className="text-xl font-bold text-white group-hover:text-primary-400 transition-colors duration-200">
+            <span className="text-xl font-bold text-aggressive-white group-hover:text-aggressive-white transition-colors duration-200">
               {siteConfig.site.title.split(' - ')[0]}
             </span>
           </Link>
@@ -200,10 +200,10 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-sm font-bold transition-all duration-200 hover-aggressive ${
                   isActive(item.href)
-                    ? 'text-primary-400'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'text-aggressive-white bg-aggressive-white text-aggressive-black px-4 py-2 rounded-lg'
+                    : 'text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white px-4 py-2 rounded-lg'
                 }`}
               >
                 {item.name}
@@ -216,7 +216,7 @@ const Header = () => {
             {/* Search */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
+              className="p-2 text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white rounded-lg transition-all duration-200 hover-aggressive"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
@@ -226,7 +226,7 @@ const Header = () => {
             <button
               onClick={toggleTheme}
               disabled={isThemeLoading}
-              className="p-2 text-gray-400 hover:text-white transition-colors duration-200 disabled:opacity-50"
+              className="p-2 text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white rounded-lg transition-all duration-200 hover-aggressive disabled:opacity-50"
               aria-label="Toggle theme"
             >
               {theme === 'dark' ? (
@@ -239,7 +239,7 @@ const Header = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-400 hover:text-white transition-colors duration-200"
+              className="md:hidden p-2 text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white rounded-lg transition-all duration-200 hover-aggressive"
               aria-label="Toggle menu"
             >
               {isMenuOpen ? (
@@ -259,7 +259,7 @@ const Header = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-gray-900 border-t border-gray-800"
+            className="md:hidden bg-aggressive-black border-t-2 border-aggressive-white"
           >
             <nav className="px-4 py-4 space-y-2">
               {navigation.map((item) => (
@@ -267,10 +267,10 @@ const Header = () => {
                   key={item.name}
                   to={item.href}
                   onClick={closeMenu}
-                  className={`block px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                  className={`block px-3 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover-aggressive ${
                     isActive(item.href)
-                      ? 'text-primary-400 bg-gray-800'
-                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                      ? 'text-aggressive-black bg-aggressive-white'
+                      : 'text-aggressive-white hover:text-aggressive-black hover:bg-aggressive-white'
                   }`}
                 >
                   {item.name}
@@ -288,7 +288,7 @@ const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+            className="fixed inset-0 bg-aggressive-black/75 backdrop-blur-sm z-50"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div
@@ -298,20 +298,20 @@ const Header = () => {
               className="max-w-2xl mx-auto mt-20 p-4"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="bg-gray-900 rounded-lg border border-gray-700 shadow-xl">
-                <div className="p-4 border-b border-gray-700">
+              <div className="bg-aggressive-black rounded-lg border-2 border-aggressive-white shadow-aggressive-xl">
+                <div className="p-4 border-b-2 border-aggressive-white">
                   <div className="flex items-center space-x-3">
-                    <Search className="w-5 h-5 text-gray-400" />
+                    <Search className="w-5 h-5 text-aggressive-white" />
                     <input
                       type="text"
                       placeholder="Ara..."
                       value={searchTerm}
                       onChange={handleSearchChange}
-                      className="flex-1 bg-transparent text-white placeholder-gray-400 outline-none"
+                      className="flex-1 bg-transparent text-aggressive-white placeholder-aggressive-gray outline-none font-bold"
                       autoFocus
                     />
                     {isSearching && (
-                      <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-aggressive-white border-t-transparent rounded-full animate-aggressive-spin"></div>
                     )}
                   </div>
                 </div>
@@ -322,19 +322,19 @@ const Header = () => {
                       <button
                         key={result.id}
                         onClick={() => handleSearchResultClick(result)}
-                        className={`w-full p-3 text-left hover:bg-gray-800 transition-colors duration-200 flex items-center space-x-3 ${
-                          index === selectedIndex ? 'bg-gray-800' : ''
+                        className={`w-full p-3 text-left hover:bg-aggressive-white hover:text-aggressive-black transition-all duration-200 flex items-center space-x-3 font-bold ${
+                          index === selectedIndex ? 'bg-aggressive-white text-aggressive-black' : ''
                         }`}
                       >
                         {getResultIcon(result.type)}
-                        <span className="text-white">{result.title}</span>
+                        <span>{result.title}</span>
                       </button>
                     ))}
                   </div>
                 )}
                 
                 {searchTerm && searchResults.length === 0 && !isSearching && (
-                  <div className="p-4 text-gray-400 text-center">
+                  <div className="p-4 text-aggressive-gray text-center font-bold">
                     Sonuç bulunamadı
                   </div>
                 )}

@@ -33,7 +33,7 @@ function App() {
       <ThemeProvider>
         <ToastProvider>
           <Router>
-            <div className="min-h-screen bg-gray-900">
+            <div className="min-h-screen bg-aggressive-black text-aggressive-white">
               <Header />
               <main className="pt-16">
                 <RouteRenderer />
