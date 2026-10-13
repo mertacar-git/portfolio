@@ -1,7 +1,7 @@
 {
   "name": "mert-kisisel-website",
   "version": "1.1.0",
-  "description": "Mert'in kişisel web sitesi",
+  "description": "Mert'in kiÅŸisel web sitesi",
   "homepage": "https://mertacar-git.github.io/portfolio",
   "private": true,
   "dependencies": {
@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "dev": "set PORT=3003 && react-scripts start",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [

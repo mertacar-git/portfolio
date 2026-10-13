@@ -1,8 +1,8 @@
 // Kişisel Bilgiler
 export const personalInfo = {
   name: "Mert Açar",
-  title: "Full Stack Developer",
-  subtitle: "Modern web teknolojileri ile yaratıcı çözümler geliştiren Full Stack Developer",
+  title: "Software Developer · Aerospace Projects",
+  subtitle: "Web uygulamaları, veri analizi ve havacılık/uzay simülasyonları geliştiriyorum.",
   email: "mertacar011@gmail.com",
   phone: "+90 553 751 8433",
   location: "İstanbul, Türkiye",
@@ -52,7 +52,7 @@ export const personalInfo = {
   
   experience: [
     {
-      title: "Full Stack Developer",
+      title: "Software Developer · Aerospace Projects",
       company: "Freelance",
       period: "2023 - Günümüz",
       description: "Web uygulamaları geliştirme, API tasarımı ve proje yönetimi"
@@ -71,6 +71,8 @@ export const personalInfo = {
   // İlgi Alanları
   interests: [
     "Web Geliştirme",
+    "Havacılık ve Uzay",
+    "Sayısal Simülasyon",
     "Yapay Zeka",
     "Mobil Teknolojiler",
     "Spor",

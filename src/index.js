@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/globals.css';
 import App from './App';
+import { migrateAerospaceProjects } from './utils/projectMigration';
+migrateAerospaceProjects();
 
 // Force dark theme immediately before React loads
 (function() {

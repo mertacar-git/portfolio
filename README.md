@@ -184,3 +184,6 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 ---
 
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın! 
+## Aerospace portfolio update
+
+Six validated aerospace projects are featured in the project catalog. [Try the laboratory](https://mertacar-git.github.io/portfolio/lab/index.html). Browser demos, screenshots and short videos are included in `public/`. The project migration backs up existing local project data and preserves custom entries. Run `npm test -- --watchAll=false --runInBand` and `npm run build` to validate changes.

@@ -125,6 +125,9 @@ const Home = () => {
               <span>Projelerimi Gör</span>
               <ArrowRight className="w-5 h-5" />
             </Link>
+            <a href={`${process.env.PUBLIC_URL}/lab/index.html`} className="btn-secondary inline-flex items-center space-x-2">
+              <span>Havacılık & Uzay Laboratuvarı</span><ArrowRight className="w-5 h-5" />
+            </a>
             <Link
               to="/contact"
               className="btn-secondary hover-aggressive inline-flex items-center space-x-2"
