@@ -1,5 +1,17 @@
 export const projects = [
   {
+    "id": 107,
+    "title": "Mission Control",
+    "description": "Sanal İHA için görev planlama, ArduCopter SITL ve MAVLink ile canlı takip; SQLite uçuş kaydı, tekrar oynatma ve raporlama.",
+    "image": process.env.PUBLIC_URL + "/images/projects/mission-control.jpg",
+    "technologies": ["React", "TypeScript", "FastAPI", "MAVLink", "ArduPilot"],
+    "category": "Kontrol Sistemleri",
+    "liveUrl": "https://mertacar-git.github.io/mission-control/",
+    "githubUrl": "https://github.com/mertacar-git/mission-control",
+    "featured": true,
+    "publishDate": "15 Ekim 2026"
+  },
+  {
     "id": 101,
     "title": "Flight Telemetry Analyzer",
     "description": "Uçuş CSV kayıtlarından irtifa, hız ve batarya analizi; eşik uyarıları, veri kalitesi kontrolü ve rapor dışa aktarma.",
