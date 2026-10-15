@@ -1,6 +1,6 @@
 import { projects } from '../data/projects';
 
-const marker = 'portfolio-aerospace-projects-2026-v4';
+const marker = 'portfolio-aerospace-projects-2026-v5';
 const placeholders = new Set(['task-manager','weather-app','blog-platform','ecommerce-api','mobile-ui-kit'].map(name => `https://github.com/mertacar-git/${name}`));
 
 export function mergeProjects(saved) {

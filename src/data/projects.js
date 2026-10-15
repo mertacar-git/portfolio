@@ -2,8 +2,8 @@ export const projects = [
   {
     "id": 107,
     "title": "Mission Control",
-    "description": "Sanal İHA görev planlama; geri alınabilir rota editörü, MAVLink ile ArduCopter SITL uçuşu, bağlantı kesintisi yönetimi, kayıt/oynatma ve ölçümlere dayalı raporlama.",
-    "image": process.env.PUBLIC_URL + "/images/projects/mission-control-v12.jpg",
+    "description": "İçbükey alanlarda otomatik tarama rotası, bağımsız görev sınırı doğrulaması ve gerçek ArduCopter SITL uçuşu; kayıt, oynatma ve ihlal raporları.",
+    "image": process.env.PUBLIC_URL + "/images/projects/mission-control-v13.jpg",
     "technologies": ["React", "TypeScript", "FastAPI", "MAVLink", "ArduPilot"],
     "category": "Kontrol Sistemleri",
     "liveUrl": "https://mertacar-git.github.io/mission-control/",
