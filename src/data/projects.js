@@ -2,8 +2,8 @@ export const projects = [
   {
     "id": 107,
     "title": "Mission Control",
-    "description": "İçbükey alanlarda otomatik tarama rotası, bağımsız görev sınırı doğrulaması ve gerçek ArduCopter SITL uçuşu; kayıt, oynatma ve ihlal raporları.",
-    "image": process.env.PUBLIC_URL + "/images/projects/mission-control-v13.jpg",
+    "description": "İçbükey alan tarama, gerçek ArduCopter SITL uçuşları, GPS/batarya hata deneyleri ve kabul raporları; eşzamanlı harita, telemetri ve olay incelemesi.",
+    "image": process.env.PUBLIC_URL + "/images/projects/mission-control-v14.png",
     "technologies": ["React", "TypeScript", "FastAPI", "MAVLink", "ArduPilot"],
     "category": "Kontrol Sistemleri",
     "liveUrl": "https://mertacar-git.github.io/mission-control/",
