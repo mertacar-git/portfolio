@@ -2,7 +2,7 @@ export const projects = [
   {
     "id": 107,
     "title": "FLW VECTOR",
-    "description": "FLW Aerospace & Defense görev kontrol uygulaması. Gerekçeli uçuş hazırlığı, sürümlü SITL deneyleri ve 2–5 kayıt karşılaştırması; bağımsız Windows seri alıcısı, ham veri oynatma ve otomatik kabul raporları. ESP32 + MPU6050 + BME280 için sensör firmware’i ve CRC kontrollü MCS1 sözleşmesi. Donanım doğrulaması ayrı aşamadır.",
+    "description": "FLW Aerospace & Defense: SITL görev planlama ve kayıt analizi, Windows seri alıcısı ve ESP32 sensör prototipi. Ayrı sivil filo iş akışı tarayıcıda simüle edilir. Fiziksel donanım ve dağıtık filo bağlantısı kabulü bekliyor.",
     "image": process.env.PUBLIC_URL + "/images/projects/flw-vector.png",
     "technologies": ["React", "TypeScript", "FastAPI", "MAVLink", "ArduPilot"],
     "category": "Kontrol Sistemleri",
