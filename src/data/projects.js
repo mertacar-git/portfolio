@@ -1,15 +1,15 @@
 export const projects = [
   {
     "id": 107,
-    "title": "Mission Control",
-    "description": "Tarama rotalarını karşılaştırma, gerçek SITL uçuş analizi ve ayrı UDP bilgisayar emülatörü; CRC doğrulama, ham paket oynatma ve Python/C++ prototip sözleşmesi.",
-    "image": process.env.PUBLIC_URL + "/images/projects/mission-control-v17.png",
+    "title": "FLW VECTOR",
+    "description": "FLW Aerospace & Defense görev kontrol uygulaması. Gerekçeli uçuş hazırlığı, sürümlü SITL deneyleri ve 2–5 kayıt karşılaştırması; bağımsız Windows seri alıcısı, ham veri oynatma ve otomatik kabul raporları. Donanım doğrulaması ayrı aşamadır.",
+    "image": process.env.PUBLIC_URL + "/images/projects/flw-vector.png",
     "technologies": ["React", "TypeScript", "FastAPI", "MAVLink", "ArduPilot"],
     "category": "Kontrol Sistemleri",
     "liveUrl": "https://mertacar-git.github.io/mission-control/",
     "githubUrl": "https://github.com/mertacar-git/mission-control",
     "featured": true,
-    "publishDate": "15 Ekim 2026"
+    "publishDate": "17 Ekim 2026"
   },
   {
     "id": 101,
